@@ -56,17 +56,19 @@ public class SoundManager : MonoBehaviour
 
     private void HandleDataInitialized()
     {
+        GameEvents.OnDataInitialized -= HandleDataInitialized;
+
         RegisterBGMFromData();
+        PreloadSFXFromData();
         ApplyVolumeSettings();
+        
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
-        // GamePlay 종료 시 BGM 정지
         if (prev == GameState.GamePlay)
             StopBGM();
 
-        // 새 상태에 바인딩된 BGM 재생
         string bindState = next switch
         {
             GameState.Lobby => "Lobby",
@@ -103,6 +105,20 @@ public class SoundManager : MonoBehaviour
         }
 
         Debug.Log($"[SoundManager] BGM {_bgmAddressMap.Count}개 등록 완료");
+    }
+
+    private void PreloadSFXFromData()
+    {
+        foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
+        {
+            if (sound.Type != SoundType.SFX) continue;
+            if (_sfxHandles.ContainsKey(sound.SoundPath)) continue;
+
+            var handle = Addressables.LoadAssetAsync<AudioClip>(sound.SoundPath);
+            _sfxHandles[sound.SoundPath] = handle;
+        }
+
+        Debug.Log($"[SoundManager] SFX {_sfxHandles.Count}개 프리로드 시작");
     }
 
     private void ApplyVolumeSettings()

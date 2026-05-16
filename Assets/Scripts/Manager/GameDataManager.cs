@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using GameData;
+using Newtonsoft.Json;
 
 public class GameDataManager : MonoBehaviour
 {
@@ -111,15 +112,13 @@ public class GameDataManager : MonoBehaviour
 // =========================================================================
 public static class JsonHelper
 {
+    private static readonly JsonSerializerSettings _settings = new JsonSerializerSettings
+    {
+        Converters = { new Newtonsoft.Json.Converters.StringEnumConverter() }
+    };
+
     public static T[] FromJson<T>(string json)
     {
-        string wrapped = $"{{\"Items\":{json}}}";
-        return JsonUtility.FromJson<Wrapper<T>>(wrapped).Items;
-    }
-
-    [Serializable]
-    private class Wrapper<T>
-    {
-        public T[] Items;
+        return JsonConvert.DeserializeObject<T[]>(json, _settings);
     }
 }
