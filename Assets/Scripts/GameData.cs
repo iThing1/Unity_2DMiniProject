@@ -8,16 +8,11 @@ namespace GameData
         string Id { get; }
     }
 
-    public enum PlanetSize
-    {
-        None, Small, Medium, Large, Super
-    }
-
-    public enum CalcType
-    {
-        Sum,
-        Multi, 
-    }
+    public enum PlanetSize { None, Small, Medium, Large, Super }
+    public enum CalcType { Sum, Multi, }
+    public enum GameState { Loading, MainMenu, Lobby, GamePlay }
+    public enum UIType { Popup, Main, VeryFront }
+    public enum SoundType { BGM, SFX }
 
     [Serializable]
     public class GameContext
@@ -30,7 +25,6 @@ namespace GameData
 
         public Dictionary<string, bool> StageClearStatus = new Dictionary<string, bool>();
         public Dictionary<string, int> UpgradeLevels = new Dictionary<string, int>();
-
     }
 
     [Serializable]
@@ -69,7 +63,6 @@ namespace GameData
         string IGameData.Id => Id;
     }
 
-    // 스테이지 데이터 (Stage.json)
     [Serializable]
     public class StageData : IGameData
     {
@@ -110,7 +103,6 @@ namespace GameData
 
         string IGameData.Id => Id;
 
-        // level: 현재 업그레이드 레벨 (1~MaxLevel)
         public float GetStat(int level)
         {
             switch (CalcType)
@@ -120,5 +112,29 @@ namespace GameData
                 default: return BaseStats;
             }
         }
+    }
+
+    [Serializable]
+    public class SoundData : IGameData
+    {
+        public string Id = null!;
+        public string Name = null!;
+        public SoundType Type;
+        public string BindState = null!;
+        public string SoundPath = null!; 
+
+        string IGameData.Id => Id;
+    }
+
+    [Serializable]
+    public class UIData : IGameData
+    {
+        public string Id = null!;
+        public string Name = null!;
+        public UIType Type;
+        public string BindState = null!;
+        public string PrefabPath = null!;
+
+        string IGameData.Id => Id;
     }
 }

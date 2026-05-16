@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using GameData;
 
 public class GameDataManager : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class GameDataManager : MonoBehaviour
     private readonly Dictionary<Type, object> _tables = new Dictionary<Type, object>();
 
     public bool IsInitialized { get; private set; } = false;
-    public event Action OnInitialized;
 
     private void Awake()
     {
@@ -37,7 +37,6 @@ public class GameDataManager : MonoBehaviour
 
         foreach (var (address, type) in entries)
         {
-            // 런타임에 제네릭 메서드를 호출하기 위해 리플렉션 사용
             var method = typeof(GameDataManager)
                 .GetMethod(nameof(RegisterTable))
                 .MakeGenericMethod(type);
@@ -49,7 +48,7 @@ public class GameDataManager : MonoBehaviour
 
         IsInitialized = true;
         Debug.Log("<color=cyan><b>[GameDataManager]</b> 데이터 로드 완료!</color>");
-        OnInitialized?.Invoke();
+        GameEvents.RaiseDataInitialized();
     }
 
     public T Get<T>(string id) where T : IGameData
@@ -79,9 +78,6 @@ public class GameDataManager : MonoBehaviour
 
     public bool HasTable<T>() where T : IGameData => _tables.ContainsKey(typeof(T));
 
-    // =========================================================================
-    // 내부 로드 구현
-    // =========================================================================
     private async Task LoadTableAsync<T>(string address, Dictionary<string, T> dictionary) where T : IGameData
     {
         AsyncOperationHandle<TextAsset> handle = Addressables.LoadAssetAsync<TextAsset>(address);
@@ -113,11 +109,6 @@ public class GameDataManager : MonoBehaviour
 // =========================================================================
 // 공통 인터페이스 & 유틸리티
 // =========================================================================
-public interface IGameData
-{
-    string Id { get; }
-}
-
 public static class JsonHelper
 {
     public static T[] FromJson<T>(string json)
