@@ -220,7 +220,7 @@ public class ShipController : MonoBehaviour
 
     private void HandleUpgradeCompleted(string upgradeId, int newLevel)
     {
-        if (upgradeId != "UP_Ship_MaxFuel") return;
+        if (upgradeId != ShipStatHandler.UPGRADE_MAX_FUEL) return;
 
         float newMax = _stats.MaxFuel;
         if (Mathf.Approximately(newMax, MaxFuel)) return;
