@@ -10,33 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Data
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: Default Local Group
-  m_GUID: 2a7e22d867ae70b4cb6e573a9510a0e1
+  m_GroupName: Data
+  m_GUID: 0bfae9ded2be65046b54f45fc94c95d4
   m_SerializeEntries:
-  - m_GUID: 241f242112a53f640a4b1be962e0f02d
-    m_Address: Sounds/BGM/GamePlay_02
+  - m_GUID: 09e71c252c78a2d48a2c227d03cce64c
+    m_Address: Data/Sound
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 398d8f93e9f984844ad192e25520d4de
-    m_Address: Sounds/BGM/Lobby
+  - m_GUID: 107c812500f47c54599686b6fa1b9ed8
+    m_Address: Data/Planet
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 40b073712ed6fbc40b21b9bf4d92ffc5
-    m_Address: Sounds/SFX/PowerOff
+  - m_GUID: 326e0955e96da2c46954bbe8d3061ba5
+    m_Address: Data/GameConstant
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b8283d62a73561241bea201fb43462f3
-    m_Address: Sounds/SFX/Success
+  - m_GUID: 6ae946a9632749840939b348af63ecba
+    m_Address: Data/Upgrade
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cdb89c3c21ffb0d43874fe51c491009d
-    m_Address: Sounds/BGM/GamePlay_01
+  - m_GUID: 6ff030afc9ebd724cac1931a23f82606
+    m_Address: Data/GameSettings
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b49b668efe4fbb34aacf5e6dc4053611
+    m_Address: Data/Stage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3baa97d6b5cde84886f746b081420e6
+    m_Address: Data/UI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -44,5 +54,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 8c0f1b297cf3d994f90b126a4b26b215, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 30d009be9bb198f4cb995955d5b974b6, type: 2}
-    - {fileID: 11400000, guid: 759877f9337f18b40ba3e927d660c905, type: 2}
+    - {fileID: 11400000, guid: 5fb28888a5576114fa2f318f79e00db6, type: 2}
+    - {fileID: 11400000, guid: 44a7053c7bfe71943ae921b765efe170, type: 2}
