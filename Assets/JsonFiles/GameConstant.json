@@ -15,6 +15,16 @@
     "Desc": "과열 시 부스터 사용 금지 시간(초)"
   },
   {
+    "Id": "SHIP_ACCELERATION",
+    "Value": 5,
+    "Desc": "우주선 기본 가속력"
+  },
+  {
+    "Id": "SHIP_BOOST_ACCELERATION",
+    "Value": 20,
+    "Desc": "부스터 기본 가속력"
+  },
+  {
     "Id": "STATION_DOCKING_RANGE",
     "Value": 5,
     "Desc": "정거장 상호작용 가능 거리"

@@ -9,7 +9,8 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     [Header("이동 스탯 기본값")]
     [SerializeField] private float _defaultBaseSpeed = 10f;
-    [SerializeField] private float _defaultAcceleration = 30f;
+    [SerializeField] private float _defaultAcceleration = 5f;
+    [SerializeField] private float _defaultBoostAcceleration = 20f;
 
     [Header("연료 스탯 기본값")]
     [SerializeField] private float _defaultMaxFuel = 200f;
@@ -25,6 +26,7 @@ public class ShipStatHandler : MonoBehaviour
     // 업그레이드 스탯
     public float BaseSpeed { get; private set; }
     public float Acceleration { get; private set; }
+    public float BoostAcceleration { get; private set; }
     public float MaxFuel { get; private set; }
 
     // 상수 스탯
@@ -44,6 +46,8 @@ public class ShipStatHandler : MonoBehaviour
     private const string CONST_FUEL_REGEN = "FUEL_REGEN_RATE";
     private const string CONST_OVERHEAT_DUR = "OVERHEAT_DURATION";
     private const string CONST_DOCKING_SPEED = "STATION_DOCKING_SPEED";
+    private const string CONST_ACCELERATION = "SHIP_ACCELERATION";
+    private const string CONST_BOOST_ACCEL = "SHIP_BOOST_ACCELERATION";
 
     // =========================================================================
     // Unity 생명주기
@@ -72,6 +76,8 @@ public class ShipStatHandler : MonoBehaviour
         FuelRegenRate = dm.Get<GameConstantData>(CONST_FUEL_REGEN)?.Value ?? _defaultFuelRegenRate;
         OverheatDuration = dm.Get<GameConstantData>(CONST_OVERHEAT_DUR)?.Value ?? _defaultOverheatDuration;
         DockingSpeedThreshold = dm.Get<GameConstantData>(CONST_DOCKING_SPEED)?.Value ?? _defaultDockingSpeedThreshold;
+        Acceleration = dm.Get<GameConstantData>(CONST_ACCELERATION)?.Value ?? _defaultAcceleration;
+        BoostAcceleration = dm.Get<GameConstantData>(CONST_BOOST_ACCEL)?.Value ?? _defaultBoostAcceleration;
     }
 
     public void RefreshUpgradeStats()
@@ -82,7 +88,9 @@ public class ShipStatHandler : MonoBehaviour
         BaseSpeed = speedStat > 0f ? speedStat : _defaultBaseSpeed;
 
         float accelMult = gm.GetUpgradeStat(UPGRADE_ACCEL);
-        Acceleration = accelMult > 0f ? _defaultAcceleration * accelMult : _defaultAcceleration;
+        float baseBoost = GameDataManager.Instance.Get<GameConstantData>(CONST_BOOST_ACCEL)?.Value
+                          ?? _defaultBoostAcceleration;
+        BoostAcceleration = accelMult > 0f ? baseBoost * accelMult : baseBoost;
 
         float fuelStat = gm.GetUpgradeStat(UPGRADE_MAX_FUEL);
         MaxFuel = fuelStat > 0f ? fuelStat : _defaultMaxFuel;

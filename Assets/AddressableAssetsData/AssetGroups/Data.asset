@@ -15,38 +15,38 @@ MonoBehaviour:
   m_GroupName: Data
   m_GUID: 0bfae9ded2be65046b54f45fc94c95d4
   m_SerializeEntries:
-  - m_GUID: 09e71c252c78a2d48a2c227d03cce64c
-    m_Address: Data/Sound
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 107c812500f47c54599686b6fa1b9ed8
-    m_Address: Data/Planet
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 326e0955e96da2c46954bbe8d3061ba5
-    m_Address: Data/GameConstant
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6ae946a9632749840939b348af63ecba
+  - m_GUID: 15407c724bea04f44b1c10af5c472243
     m_Address: Data/Upgrade
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6ff030afc9ebd724cac1931a23f82606
+  - m_GUID: 25fdd5b8468d49441b9d098b58c3e652
+    m_Address: Data/Planet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e6114efae4fe82489dad3e1923afeb2
+    m_Address: Data/Sound
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 602556ae8a839fe4fbb7cf6e900048ad
     m_Address: Data/GameSettings
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b49b668efe4fbb34aacf5e6dc4053611
-    m_Address: Data/Stage
+  - m_GUID: 85adac0b6d09f9743b38eaa5c14368b0
+    m_Address: Data/UI
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c3baa97d6b5cde84886f746b081420e6
-    m_Address: Data/UI
+  - m_GUID: 95b798ef302ccee41bbed938f040dc89
+    m_Address: Data/GameConstant
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a53317e0d05ddf44183648c24f1b4263
+    m_Address: Data/Stage
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

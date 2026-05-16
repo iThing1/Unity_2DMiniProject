@@ -35,7 +35,7 @@ public class ShipController : MonoBehaviour
         _stats = GetComponent<ShipStatHandler>();
 
         _rigidbody2D.gravityScale = 0f;
-        _rigidbody2D.linearDamping = 3f;
+        _rigidbody2D.linearDamping = 0f;
     }
 
     private void OnEnable()
@@ -112,19 +112,19 @@ public class ShipController : MonoBehaviour
     // =========================================================================
     private void ApplyMovement()
     {
-        if (_moveInput == Vector2.zero) return;
+        if (_moveInput == Vector2.zero)
+        {
+            _rigidbody2D.linearDamping = 2f;
+            return;
+        }
 
-        if (IsBoosting)
-        {
-            // 부스터 ON: AddForce 누적 → BaseSpeed 초과 가속, 상한선 없음
-            _rigidbody2D.AddForce(_moveInput * _stats.Acceleration, ForceMode2D.Force);
-        }
-        else
-        {
-            // 부스터 OFF: BaseSpeed 목표로 Lerp 수렴
-            Vector2 targetVelocity = _moveInput * _stats.BaseSpeed;
-            _rigidbody2D.linearVelocity = Vector2.Lerp(_rigidbody2D.linearVelocity, targetVelocity, Time.fixedDeltaTime * 8f);
-        }
+        _rigidbody2D.linearDamping = 0f;
+
+        float force = IsBoosting ? _stats.BoostAcceleration : _stats.Acceleration;
+        _rigidbody2D.AddForce(_moveInput * force, ForceMode2D.Force);
+
+        if (!IsBoosting && _rigidbody2D.linearVelocity.magnitude > _stats.BaseSpeed)
+            _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _stats.BaseSpeed;
     }
 
     // =========================================================================
