@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.Lobby);
 
+#if UNITY_EDITOR
+        // [DEBUG] 플레이어 이동 테스트용 — GamePlay 강제 진입
+        ChangeState(GameState.GamePlay);
+#endif
+
         Debug.Log("<color=cyan>[GameManager] 초기화 완료</color>");
     }
 

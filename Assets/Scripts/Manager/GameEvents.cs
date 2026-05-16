@@ -24,6 +24,11 @@ public static class GameEvents
     public static event Action<string> OnStageClear;
     public static event Action<string> OnStageFailed;
 
+    // 우주선
+    public static event Action<float, float> OnFuelChanged;
+    public static event Action<bool> OnOverheatChanged;
+    public static event Action<bool> OnBoosterChanged;
+
     // =========================================================================
     // null 체크를 한 곳에서 처리
     // =========================================================================
@@ -36,6 +41,9 @@ public static class GameEvents
     public static void RaiseStageSelected(string stageId) => OnStageSelected?.Invoke(stageId);
     public static void RaiseStageClear(string stageId) => OnStageClear?.Invoke(stageId);
     public static void RaiseStageFailed(string stageId) => OnStageFailed?.Invoke(stageId);
+    public static void RaiseFuelChanged(float current, float max) => OnFuelChanged?.Invoke(current, max);
+    public static void RaiseOverheatChanged(bool isOverheat) => OnOverheatChanged?.Invoke(isOverheat);
+    public static void RaiseBoosterChanged(bool isActive) => OnBoosterChanged?.Invoke(isActive);
 
     public static void ClearAllListeners()
     {
@@ -48,5 +56,8 @@ public static class GameEvents
         OnStageSelected = null;
         OnStageClear = null;
         OnStageFailed = null;
+        OnFuelChanged = null;
+        OnOverheatChanged = null;
+        OnBoosterChanged = null;
     }
 }
