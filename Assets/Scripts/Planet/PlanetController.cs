@@ -20,6 +20,7 @@ public class PlanetController : MonoBehaviour
     private const float CYCLE_DURATION = 10f;
     private const float GAMEOVER_WARNING_TIME = 10f;
 
+    private const float PROSPERITY_MAX = 100f;
     private const float PROSPERITY_VERY_HIGH = 80f;
     private const float PROSPERITY_HIGH = 60f;
     private const float PROSPERITY_NEUTRAL = 40f;
@@ -27,7 +28,10 @@ public class PlanetController : MonoBehaviour
     private const float PROSPERITY_CRITICAL = 1f;
 
     private static readonly float[] ORE_MULTIPLIERS = { 1.5f, 1.3f, 1.0f, 0.8f, 0.6f };
-
+    private const string CONST_PROSPERITY_CHANGE_RATE = "PROSPERITY_CHANGE_RATE";
+    private const string CONST_PROSPERITY_INCREASE_MAX = "PROSPERITY_INCREASE_MAX";
+    private const string CONST_POPULATION_CHANGE_RATE = "POPULATION_CHANGE_RATE";
+    private const string CONST_POPULATION_INCREASE_MAX = "POPULATION_INCREASE_MAX";
     // =========================================================================
     // 런타임 상태 (외부 읽기 전용)
     // =========================================================================
@@ -46,6 +50,14 @@ public class PlanetController : MonoBehaviour
     // =========================================================================
     // 내부 상태
     // =========================================================================
+    private float _basePop;
+    private float _prosperityChangeRate;
+    private float _prosperityIncreaseMax;
+    private float _populationChangeRate;
+    private float _populationIncreaseMax;
+
+    private float _foodCycleStart;
+
     private float _foodConsumedThisCycle;
     private float _oreProducedThisCycle;
     private float _foodDeliveredThisCycle;
@@ -78,7 +90,7 @@ public class PlanetController : MonoBehaviour
     }
 
     // =========================================================================
-    // 외부 API:초기화
+    // 외부 API: 초기화
     // =========================================================================
 
     public void Initialize(PlanetData data, string instanceId)
@@ -88,11 +100,18 @@ public class PlanetController : MonoBehaviour
         Size = data.Size;
 
         Population = data.BasePop;
+        _basePop = data.BasePop;
         Prosperity = data.Property;
         StoredFood = data.BaseFood;
         StoredOre = data.BaseOre;
 
         _foodDeliveredThisCycle = 0f;
+
+        var dm = GameDataManager.Instance;
+        _prosperityChangeRate = dm.Get<GameConstantData>(CONST_PROSPERITY_CHANGE_RATE)?.Value ?? 0.15f;
+        _prosperityIncreaseMax = dm.Get<GameConstantData>(CONST_PROSPERITY_INCREASE_MAX)?.Value ?? 20f;
+        _populationChangeRate = dm.Get<GameConstantData>(CONST_POPULATION_CHANGE_RATE)?.Value ?? 0.1f;
+        _populationIncreaseMax = dm.Get<GameConstantData>(CONST_POPULATION_INCREASE_MAX)?.Value ?? 0.2f;
 
         State = CalcPlanetState(Prosperity);
         GameEvents.RaisePlanetStateChanged(InstanceId, State);
@@ -112,6 +131,7 @@ public class PlanetController : MonoBehaviour
     {
         while (_isRunning)
         {
+            _foodCycleStart = StoredFood;
             float elapsed = 0f;
 
             while (elapsed < CYCLE_DURATION)
@@ -127,18 +147,18 @@ public class PlanetController : MonoBehaviour
 
     private void CalculateCycle()
     {
-        // 이번 사이클에 필요한 식량 계산
         float foodRequired = CalcFoodRequired();
+        float satisfaction = (_foodCycleStart + _foodDeliveredThisCycle) / Mathf.Max(1f, foodRequired);
 
-        // 충족도
-        float satisfaction = (StoredFood + _foodDeliveredThisCycle) / Mathf.Max(1f, foodRequired);
-
-        // 번영도 갱신 (0~100 클램프)
-        float newProsperity = Mathf.Clamp(Prosperity * satisfaction, 0f, 100f);
+        // 번영도 갱신
+        float prosperityDelta = (PROSPERITY_MAX * satisfaction - PROSPERITY_MAX) * _prosperityChangeRate;
+        prosperityDelta = Mathf.Min(prosperityDelta, _prosperityIncreaseMax);
+        float newProsperity = Mathf.Clamp(Prosperity + prosperityDelta, 0f, PROSPERITY_MAX);
 
         // 인구 갱신
-        float newPopulation = Population * satisfaction;
-        newPopulation = Mathf.Max(newPopulation, 1f);
+        float populationDelta = (_basePop * satisfaction - _basePop) * _populationChangeRate;
+        populationDelta = Mathf.Min(populationDelta, _basePop * _populationIncreaseMax);
+        float newPopulation = Mathf.Max(Population + populationDelta, 1f);
 
         StoredFood = Mathf.Max(0f, StoredFood - foodRequired + _foodDeliveredThisCycle);
 

@@ -35,6 +35,26 @@
     "Desc": "정거장 상호작용 가능 속도"
   },
   {
+    "Id": "PROSPERITY_CHANGE_RATE",
+    "Value": 0.15,
+    "Desc": "번영도 변화 조정계수"
+  },
+  {
+    "Id": "PROSPERITY_INCREASE_MAX",
+    "Value": 20,
+    "Desc": "사이클당 번영도 최대 증가폭"
+  },
+  {
+    "Id": "POPULATION_CHANGE_RATE",
+    "Value": 0.1,
+    "Desc": "인구 변화 조정계수"
+  },
+  {
+    "Id": "POPULATION_INCREASE_MAX",
+    "Value": 0.2,
+    "Desc": "사이클당 인구 최대 증가폭 비율 (BasePop 기준)"
+  },
+  {
     "Id": "PLANET_GAMEOVER_TIME",
     "Value": 10,
     "Desc": "번영도 0일 때 유예 시간"
