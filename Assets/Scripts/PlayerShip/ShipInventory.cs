@@ -1,0 +1,232 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using GameData;
+
+public class ShipInventory : MonoBehaviour
+{
+    public enum CargoType { Food, Ore }
+
+    public struct Cargo
+    {
+        public CargoType Type;
+        public int Amount;
+
+        public Cargo(CargoType type, int amount = 1)
+        {
+            Type = type;
+            Amount = amount;
+        }
+    }
+
+    // =========================================================================
+    // 외부 읽기용
+    // =========================================================================
+    public int Count => _cargo.Count;
+    public int Capacity { get; private set; }
+
+    public bool IsFull => _cargo.Count >= Capacity;
+    public bool IsEmpty => _cargo.Count == 0;
+    public bool IsLoading { get; private set; }
+
+    // =========================================================================
+    // 내부 상태
+    // =========================================================================
+    private readonly List<Cargo> _cargo = new List<Cargo>();
+
+    private float _transferInterval;
+    private Coroutine _transferCoroutine;
+
+    // 업그레이드 ID 상수
+    private const string UPGRADE_CARGO = "UP_Ship_Cargo";
+    private const string CONST_TRANSFER_INTERVAL = "CARGO_TRANSFER_INTERVAL";
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    private void OnEnable()
+    {
+        GameEvents.OnDataInitialized += HandleDataInitialized;
+        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnDataInitialized -= HandleDataInitialized;
+        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    // =========================================================================
+    // 초기화
+    // =========================================================================
+    private void HandleDataInitialized()
+    {
+        var interval = GameDataManager.Instance.Get<GameConstantData>(CONST_TRANSFER_INTERVAL);
+        _transferInterval = interval != null ? interval.Value : 0.2f;
+
+        RefreshCapacity();
+
+        BroadcastState();
+        Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
+    }
+
+    private void RefreshCapacity()
+    {
+        float stat = GameManager.Instance.GetUpgradeStat(UPGRADE_CARGO);
+        Capacity = stat > 0f ? Mathf.RoundToInt(stat) : 10;
+    }
+
+    // =========================================================================
+    // 외부 API: 화물 추가/제거/조회
+    // =========================================================================
+
+    public bool TryAdd(CargoType type)
+    {
+        if (IsFull) return false;
+
+        _cargo.Add(new Cargo(type));
+        BroadcastState();
+        return true;
+    }
+
+    public bool TryRemove(CargoType type)
+    {
+        int idx = _cargo.FindLastIndex(c => c.Type == type);
+        if (idx < 0) return false;
+
+        _cargo.RemoveAt(idx);
+        BroadcastState();
+        return true;
+    }
+
+    public int CountOf(CargoType type)
+    {
+        int n = 0;
+        foreach (var c in _cargo)
+            if (c.Type == type) n += c.Amount;
+        return n;
+    }
+
+    public IReadOnlyList<Cargo> GetAll() => _cargo;
+
+    // =========================================================================
+    // 외부 API: 코루틴 적재 / 하역
+    // =========================================================================
+
+    public void StartLoading(CargoType type, int totalAmount, Action<int> onComplete = null)
+    {
+        StopTransfer();
+        _transferCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onComplete));
+    }
+
+    public void StartUnloading(CargoType type, Action onEach = null, Action<int> onComplete = null)
+    {
+        StopTransfer();
+        _transferCoroutine = StartCoroutine(UnloadRoutine(type, onEach, onComplete));
+    }
+
+    public void StopTransfer()
+    {
+        if (_transferCoroutine != null)
+        {
+            StopCoroutine(_transferCoroutine);
+            _transferCoroutine = null;
+        }
+        IsLoading = false;
+    }
+
+    // =========================================================================
+    // 코루틴 구현
+    // =========================================================================
+    private IEnumerator LoadRoutine(CargoType type, int totalAmount, Action<int> onComplete)
+    {
+        IsLoading = true;
+        int loaded = 0;
+        var wait = new WaitForSeconds(_transferInterval);
+
+        while (loaded < totalAmount && !IsFull)
+        {
+            if (TryAdd(type))
+                loaded++;
+
+            yield return wait;
+        }
+
+        IsLoading = false;
+        onComplete?.Invoke(loaded);
+
+        Debug.Log($"[CargoInventory] 적재 완료. {type} x{loaded}");
+    }
+
+    private IEnumerator UnloadRoutine(CargoType type, Action onEach, Action<int> onComplete)
+    {
+        IsLoading = true;
+        int unloaded = 0;
+        var wait = new WaitForSeconds(_transferInterval);
+
+        while (CountOf(type) > 0)
+        {
+            if (TryRemove(type))
+            {
+                unloaded++;
+                onEach?.Invoke();
+            }
+
+            yield return wait;
+        }
+
+        IsLoading = false;
+        onComplete?.Invoke(unloaded);
+
+        Debug.Log($"[CargoInventory] 하역 완료. {type} x {unloaded}");
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    {
+        if (upgradeId != UPGRADE_CARGO) return;
+        RefreshCapacity();
+        BroadcastState();
+        Debug.Log($"[CargoInventory] 용량 갱신. {Capacity}");
+    }
+
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        if (prev == GameState.GamePlay)
+            StopTransfer();
+    }
+
+    // =========================================================================
+    // 내부 유틸
+    // =========================================================================
+    private void BroadcastState()
+    {
+        GameEvents.RaiseCargoChanged(Count, Capacity);
+    }
+
+    // =========================================================================
+    // 디버그
+    // =========================================================================
+#if UNITY_EDITOR
+    [ContextMenu("디버그: 식량 1개 추가")]
+    private void Debug_AddFood() => TryAdd(CargoType.Food);
+
+    [ContextMenu("디버그: 광석 1개 추가")]
+    private void Debug_AddOre() => TryAdd(CargoType.Ore);
+
+    [ContextMenu("디버그: 식량 1개 제거")]
+    private void Debug_RemoveFood() => TryRemove(CargoType.Food);
+
+    [ContextMenu("디버그: 전체 초기화")]
+    private void Debug_Clear()
+    {
+        _cargo.Clear();
+        BroadcastState();
+    }
+#endif
+}
