@@ -16,7 +16,12 @@ MonoBehaviour:
   m_GUID: 7f6fa1a585f28b947aa0d0d3547c4d5a
   m_SerializeEntries:
   - m_GUID: 14efd0521b3865d44a6131f25337e995
-    m_Address: Upgrade/EngineOverclock.png
+    m_Address: Upgrade/EngineOverclock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f58d7daf265ecb48b3d4af7948b0d1e
+    m_Address: Background/Lobby_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -31,17 +36,42 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5da0f5985d6bd484c9b24e6688a6cc67
-    m_Address: Upgrade/Hydroponics.png
+    m_Address: Upgrade/Hydroponics
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7ee9a86a366db0045a1c845830052032
-    m_Address: Upgrade/ExtraFuelTank.png
+    m_Address: Upgrade/ExtraFuelTank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99ca28cd618a43b4784ab4967c552cbb
+    m_Address: UI/GUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99ec9edb83779004e828456201c7efe6
+    m_Address: Background/Loading_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a037c64284a4974992df1be2459e499
+    m_Address: Background/GamePlay_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a8913844dd194d742a85f99f6bfaba83
-    m_Address: Upgrade/EnhancedNozzle.png
+    m_Address: Upgrade/EnhancedNozzle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddbf3a8c7e557d8419cc3d7692a3376a
+    m_Address: Background/MainMenu_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e55bfba1959fd884c8c8a5d400fd172d
+    m_Address: UI/Container_Popup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

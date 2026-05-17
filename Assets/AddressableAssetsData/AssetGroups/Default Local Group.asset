@@ -14,77 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 2a7e22d867ae70b4cb6e573a9510a0e1
-  m_SerializeEntries:
-  - m_GUID: 241f242112a53f640a4b1be962e0f02d
-    m_Address: Sounds/BGM/GamePlay_02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2f58d7daf265ecb48b3d4af7948b0d1e
-    m_Address: UI_Panel_03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 398d8f93e9f984844ad192e25520d4de
-    m_Address: Sounds/BGM/Lobby
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 40b073712ed6fbc40b21b9bf4d92ffc5
-    m_Address: Sounds/SFX/PowerOff
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 65de31d925e8e0f4badf7632bc5803c6
-    m_Address: UI_Panel_02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 99ec9edb83779004e828456201c7efe6
-    m_Address: UI_Loading_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9a037c64284a4974992df1be2459e499
-    m_Address: UI_Panel_02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b80c2921b1b7ccd44b8bc8c8e7674e5f
-    m_Address: UI_Panel_04
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b8283d62a73561241bea201fb43462f3
-    m_Address: Sounds/SFX/Success
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c152de9c51752d4498766551aa2eae98
-    m_Address: UI_Panel_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cdb89c3c21ffb0d43874fe51c491009d
-    m_Address: Sounds/BGM/GamePlay_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ddbf3a8c7e557d8419cc3d7692a3376a
-    m_Address: UI_Panel_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df7015a9b02c01b479d09e6758579288
-    m_Address: UI_Loading_01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e5302302e68a7274a8378f116dfc8502
-    m_Address: UI_Panel_03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8c0f1b297cf3d994f90b126a4b26b215, type: 2}
   m_SchemaSet:

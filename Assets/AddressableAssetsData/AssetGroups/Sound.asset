@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: UI
+  m_Name: Sound
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
-  m_GroupName: UI
-  m_GUID: ee903ef0396e76548af69fc2f1b2966d
+  m_GroupName: Sound
+  m_GUID: 0750d1174705fa842bc8c279a084b4a9
   m_SerializeEntries:
-  - m_GUID: 65de31d925e8e0f4badf7632bc5803c6
-    m_Address: UI_Panel_02
+  - m_GUID: 241f242112a53f640a4b1be962e0f02d
+    m_Address: Sounds/BGM/GamePlay_02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b80c2921b1b7ccd44b8bc8c8e7674e5f
-    m_Address: UI_Panel_04
+  - m_GUID: 398d8f93e9f984844ad192e25520d4de
+    m_Address: Sounds/BGM/Lobby
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c152de9c51752d4498766551aa2eae98
-    m_Address: UI_Panel_01
+  - m_GUID: 40b073712ed6fbc40b21b9bf4d92ffc5
+    m_Address: Sounds/SFX/PowerOff
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: df7015a9b02c01b479d09e6758579288
-    m_Address: UI_Loading_01
+  - m_GUID: b8283d62a73561241bea201fb43462f3
+    m_Address: Sounds/SFX/Success
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e5302302e68a7274a8378f116dfc8502
-    m_Address: UI_Panel_03
+  - m_GUID: cdb89c3c21ffb0d43874fe51c491009d
+    m_Address: Sounds/BGM/GamePlay_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 8c0f1b297cf3d994f90b126a4b26b215, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 5cf1967f2eb94f643ac7836eafff2290, type: 2}
-    - {fileID: 11400000, guid: 6e11ece3cde0d754eb6923b72af57726, type: 2}
+    - {fileID: 11400000, guid: abf1e0eaf5070494d9094c289d2c30e3, type: 2}
+    - {fileID: 11400000, guid: 5d9f5fa5d52f74e4b8231777eb74ae43, type: 2}
