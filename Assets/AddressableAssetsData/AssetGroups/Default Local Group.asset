@@ -30,13 +30,43 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65de31d925e8e0f4badf7632bc5803c6
+    m_Address: UI_Panel_02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94123dfb7cd5d804b93bfebd24c702e8
+    m_Address: Background/GameTitle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b80c2921b1b7ccd44b8bc8c8e7674e5f
+    m_Address: UI_Panel_04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b8283d62a73561241bea201fb43462f3
     m_Address: Sounds/SFX/Success
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c152de9c51752d4498766551aa2eae98
+    m_Address: UI_Panel_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cdb89c3c21ffb0d43874fe51c491009d
     m_Address: Sounds/BGM/GamePlay_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df7015a9b02c01b479d09e6758579288
+    m_Address: UI_Loading_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5302302e68a7274a8378f116dfc8502
+    m_Address: UI_Panel_03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -3,63 +3,54 @@
     "Id": "UI_Popup_01",
     "Name": "OpenedStage",
     "Type": "Popup",
-    "BindState": null,
-    "PrefabPath": "Prefabs/UI/Popup/OpenedStage"
+    "BindState": null
   },
   {
     "Id": "UI_Popup_02",
     "Name": "ClosedStage",
     "Type": "Popup",
-    "BindState": null,
-    "PrefabPath": "Prefabs/UI/Popup/ClosedStage"
+    "BindState": null
   },
   {
     "Id": "UI_Popup_03",
     "Name": "StageClear",
     "Type": "Popup",
-    "BindState": null,
-    "PrefabPath": "Prefabs/UI/Popup/StageClear"
+    "BindState": null
   },
   {
     "Id": "UI_Popup_04",
     "Name": "StageFailed",
     "Type": "Popup",
-    "BindState": null,
-    "PrefabPath": "Prefabs/UI/Popup/StageFailed"
+    "BindState": null
   },
   {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",
-    "BindState": "MainMenu",
-    "PrefabPath": "Prefabs/UI/Panel/MainMenu"
+    "BindState": "MainMenu"
   },
   {
     "Id": "UI_Panel_02",
     "Name": "GamePlay",
     "Type": "Main",
-    "BindState": "GamePlay",
-    "PrefabPath": "Prefabs/UI/Panel/GamePlay"
+    "BindState": "GamePlay"
   },
   {
     "Id": "UI_Panel_03",
     "Name": "GameLobby",
     "Type": "Main",
-    "BindState": "Lobby",
-    "PrefabPath": "Prefabs/UI/Panel/GameLobby"
+    "BindState": "Lobby"
   },
   {
     "Id": "UI_Panel_04",
     "Name": "Upgrade",
     "Type": "Main",
-    "BindState": "Lobby",
-    "PrefabPath": "Prefabs/UI/Panel/Upgrade"
+    "BindState": "Lobby"
   },
   {
     "Id": "UI_Loading_01",
     "Name": "Loading",
     "Type": "VeryFront",
-    "BindState": null,
-    "PrefabPath": "Prefabs/UI/Panel/Loading"
+    "BindState": null
   }
 ]
