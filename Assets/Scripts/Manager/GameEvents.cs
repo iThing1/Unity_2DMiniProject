@@ -28,8 +28,15 @@ public static class GameEvents
     public static event Action<float, float> OnFuelChanged;
     public static event Action<bool> OnOverheatChanged;
     public static event Action<bool> OnBoosterChanged;
-
     public static event Action<int, int> OnCargoChanged;
+
+    // 행성
+    public static event Action<string, PlanetState> OnPlanetStateChanged;
+    public static event Action<string, bool> OnPlanetGameOverWarning;
+    public static event Action<string> OnPlanetDestroyed;
+    public static event Action<string, int> OnFoodDelivered;
+    public static event Action<string, int> OnOreCollected;
+    public static event Action<string, float> OnPlanetCycleProgress;
 
     // =========================================================================
     // null 체크를 한 곳에서 처리
@@ -51,8 +58,14 @@ public static class GameEvents
     public static void RaiseFuelChanged(float current, float max) => OnFuelChanged?.Invoke(current, max);
     public static void RaiseOverheatChanged(bool isOverheat) => OnOverheatChanged?.Invoke(isOverheat);
     public static void RaiseBoosterChanged(bool isActive) => OnBoosterChanged?.Invoke(isActive);
-
     public static void RaiseCargoChanged(int count, int capacity) => OnCargoChanged?.Invoke(count, capacity);
+
+    public static void RaisePlanetStateChanged(string instanceId, PlanetState state) => OnPlanetStateChanged?.Invoke(instanceId, state);
+    public static void RaisePlanetGameOverWarning(string instanceId, bool isWarning) => OnPlanetGameOverWarning?.Invoke(instanceId, isWarning);
+    public static void RaisePlanetDestroyed(string instanceId) => OnPlanetDestroyed?.Invoke(instanceId);
+    public static void RaiseFoodDelivered(string instanceId, int amount) => OnFoodDelivered?.Invoke(instanceId, amount);
+    public static void RaiseOreCollected(string instanceId, int amount) => OnOreCollected?.Invoke(instanceId, amount);
+    public static void RaisePlanetCycleProgress(string instanceId, float progress) => OnPlanetCycleProgress?.Invoke(instanceId, progress);
 
     public static void ClearAllListeners()
     {
@@ -73,7 +86,13 @@ public static class GameEvents
         OnFuelChanged = null;
         OnOverheatChanged = null;
         OnBoosterChanged = null;
-
         OnCargoChanged = null;
+
+        OnPlanetStateChanged = null;
+        OnPlanetGameOverWarning = null;
+        OnPlanetDestroyed = null;
+        OnFoodDelivered = null;
+        OnOreCollected = null;
+        OnPlanetCycleProgress = null;
     }
 }

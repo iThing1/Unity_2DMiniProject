@@ -1,0 +1,337 @@
+﻿using System.Collections;
+using UnityEngine;
+using GameData;
+
+public enum PlanetState
+{
+    VeryProsperous,
+    Prosperous,
+    Neutral,
+    Poor,
+    Critical,
+    Destroyed 
+}
+
+public class PlanetController : MonoBehaviour
+{
+    // =========================================================================
+    // 상수
+    // =========================================================================
+    private const float CYCLE_DURATION = 10f;
+    private const float GAMEOVER_WARNING_TIME = 10f;
+
+    private const float PROSPERITY_VERY_HIGH = 80f;
+    private const float PROSPERITY_HIGH = 60f;
+    private const float PROSPERITY_NEUTRAL = 40f;
+    private const float PROSPERITY_LOW = 20f;
+    private const float PROSPERITY_CRITICAL = 1f;
+
+    private static readonly float[] ORE_MULTIPLIERS = { 1.5f, 1.3f, 1.0f, 0.8f, 0.6f };
+
+    // =========================================================================
+    // 런타임 상태 (외부 읽기 전용)
+    // =========================================================================
+    public string InstanceId { get; private set; }
+    public string PlanetName { get; private set; }
+    public PlanetSize Size { get; private set; }
+
+    public float Prosperity { get; private set; }
+    public float Population { get; private set; }
+    public float StoredFood { get; private set; }
+    public float StoredOre { get; private set; }
+    public PlanetState State { get; private set; }
+
+    public bool IsGameOverWarning { get; private set; }
+
+    // =========================================================================
+    // 내부 상태
+    // =========================================================================
+    private float _foodConsumedThisCycle;
+    private float _oreProducedThisCycle;
+    private float _foodDeliveredThisCycle;
+
+    private bool _isRunning = false;
+    private Coroutine _cycleCoroutine;
+    private Coroutine _gameOverCoroutine;
+    private Coroutine _productionCoroutine;
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    private void OnEnable()
+    {
+        GameEvents.OnFoodDelivered += HandleFoodDelivered;
+        GameEvents.OnOreCollected += HandleOreCollected;
+        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnFoodDelivered -= HandleFoodDelivered;
+        GameEvents.OnOreCollected -= HandleOreCollected;
+        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
+    // =========================================================================
+    // 외부 API:초기화
+    // =========================================================================
+
+    public void Initialize(PlanetData data, string instanceId)
+    {
+        InstanceId = instanceId;
+        PlanetName = data.Name;
+        Size = data.Size;
+
+        Population = data.BasePop;
+        Prosperity = data.Property;
+        StoredFood = data.BaseFood;
+        StoredOre = data.BaseOre;
+
+        _foodDeliveredThisCycle = 0f;
+
+        State = CalcPlanetState(Prosperity);
+        GameEvents.RaisePlanetStateChanged(InstanceId, State);
+
+        _isRunning = true;
+        _cycleCoroutine = StartCoroutine(ProsperityCycleRoutine());
+        _productionCoroutine = StartCoroutine(RealTimeProductionRoutine());
+
+        Debug.Log($"[PlanetController] '{PlanetName}' 초기화 완료. 인구: {Population:F0}, 번영도: {Prosperity:F1}");
+    }
+
+    // =========================================================================
+    // 핵심 코루틴: 10초 번영도 사이클
+    // =========================================================================
+
+    private IEnumerator ProsperityCycleRoutine()
+    {
+        while (_isRunning)
+        {
+            float elapsed = 0f;
+
+            while (elapsed < CYCLE_DURATION)
+            {
+                elapsed += Time.deltaTime;
+                GameEvents.RaisePlanetCycleProgress(InstanceId, elapsed / CYCLE_DURATION);
+                yield return null;
+            }
+
+            CalculateCycle();
+        }
+    }
+
+    private void CalculateCycle()
+    {
+        // 이번 사이클에 필요한 식량 계산
+        float foodRequired = CalcFoodRequired();
+
+        // 충족도
+        float satisfaction = (StoredFood + _foodDeliveredThisCycle) / Mathf.Max(1f, foodRequired);
+
+        // 번영도 갱신 (0~100 클램프)
+        float newProsperity = Mathf.Clamp(Prosperity * satisfaction, 0f, 100f);
+
+        // 인구 갱신
+        float newPopulation = Population * satisfaction;
+        newPopulation = Mathf.Max(newPopulation, 1f);
+
+        StoredFood = Mathf.Max(0f, StoredFood - foodRequired + _foodDeliveredThisCycle);
+
+        Prosperity = newProsperity;
+        Population = newPopulation;
+
+        _foodDeliveredThisCycle = 0f;
+        _oreProducedThisCycle = 0f;
+
+        PlanetState newState = CalcPlanetState(Prosperity);
+        if (newState != State)
+        {
+            State = newState;
+            GameEvents.RaisePlanetStateChanged(InstanceId, State);
+        }
+
+        if (Prosperity <= 0f)
+        {
+            TriggerGameOverWarning();
+            return;
+        }
+
+        if (IsGameOverWarning)
+            CancelGameOverWarning();
+
+        Debug.Log($"[PlanetController] '{PlanetName}' 사이클. 충족도: {satisfaction:F2}, 번영도: {Prosperity:F1}, 인구: {Population:F0}");
+    }
+
+    // =========================================================================
+    // 핵심 코루틴: 실시간 자원 생산/소비
+    // =========================================================================
+
+    private IEnumerator RealTimeProductionRoutine()
+    {
+        while (_isRunning)
+        {
+            float dt = Time.deltaTime;
+
+            // 식량 소비 (초당)
+            float foodConsume = CalcFoodConsumePerSec() * dt;
+            StoredFood = Mathf.Max(0f, StoredFood - foodConsume);
+
+            // 광석 생산 (초당, 번영도 배율 적용)
+            float oreMultiplier = GetOreMultiplier(State);
+            float oreGain = CalcOreProductionPerSec() * oreMultiplier * dt;
+            StoredOre += oreGain;
+            _oreProducedThisCycle += oreGain;
+
+            yield return null;
+        }
+    }
+
+    // =========================================================================
+    // 게임오버 판정
+    // =========================================================================
+
+    private void TriggerGameOverWarning()
+    {
+        if (IsGameOverWarning) return;
+
+        IsGameOverWarning = true;
+        GameEvents.RaisePlanetGameOverWarning(InstanceId, true);
+
+        if (_gameOverCoroutine != null)
+            StopCoroutine(_gameOverCoroutine);
+
+        _gameOverCoroutine = StartCoroutine(GameOverCountdownRoutine());
+
+        Debug.LogWarning($"[PlanetController] '{PlanetName}' 멸망 위기! {GAMEOVER_WARNING_TIME}초 유예 시작");
+    }
+
+    private IEnumerator GameOverCountdownRoutine()
+    {
+        yield return new WaitForSeconds(GAMEOVER_WARNING_TIME);
+
+        if (Prosperity <= 0f)
+        {
+            _isRunning = false;
+            State = PlanetState.Destroyed;
+            IsGameOverWarning = false;
+
+            GameEvents.RaisePlanetGameOverWarning(InstanceId, false);
+            GameEvents.RaisePlanetDestroyed(InstanceId);
+
+            Debug.LogError($"[PlanetController] '{PlanetName}' 멸망! 게임오버");
+        }
+        else
+        {
+            CancelGameOverWarning();
+        }
+    }
+
+    private void CancelGameOverWarning()
+    {
+        if (!IsGameOverWarning) return;
+
+        IsGameOverWarning = false;
+        GameEvents.RaisePlanetGameOverWarning(InstanceId, false);
+
+        if (_gameOverCoroutine != null)
+        {
+            StopCoroutine(_gameOverCoroutine);
+            _gameOverCoroutine = null;
+        }
+
+        Debug.Log($"[PlanetController] '{PlanetName}' 게임오버 경고 해제");
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleFoodDelivered(string instanceId, int amount)
+    {
+        if (instanceId != InstanceId) return;
+
+        StoredFood += amount;
+        _foodDeliveredThisCycle += amount;
+
+        if (IsGameOverWarning && amount > 0)
+            CancelGameOverWarning();
+
+        Debug.Log($"[PlanetController] '{PlanetName}' 식량 수령 +{amount} / 보유: {StoredFood:F0}");
+    }
+
+    private void HandleOreCollected(string instanceId, int amount)
+    {
+        if (instanceId != InstanceId) return;
+
+        StoredOre = Mathf.Max(0f, StoredOre - amount);
+        Debug.Log($"[PlanetController] '{PlanetName}' 광석 수거 -{amount} / 잔여: {StoredOre:F0}");
+    }
+
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        if (next != GameState.GamePlay)
+        {
+            _isRunning = false;
+            StopAllCoroutines();
+        }
+
+        // GamePlay로 재진입 시 재개 (필요한 경우 외부에서 Initialize 재호출)
+    }
+
+    // =========================================================================
+    // 계산 유틸
+    // =========================================================================
+
+    private float CalcFoodConsumePerSec() => Population / 10000f;
+    private float CalcFoodRequired() => CalcFoodConsumePerSec() * CYCLE_DURATION;
+
+    private float CalcOreProductionPerSec() => 1f + (Population / 20000f);
+
+    private PlanetState CalcPlanetState(float prosperity)
+    {
+        if (prosperity >= PROSPERITY_VERY_HIGH) return PlanetState.VeryProsperous;
+        if (prosperity >= PROSPERITY_HIGH) return PlanetState.Prosperous;
+        if (prosperity >= PROSPERITY_NEUTRAL) return PlanetState.Neutral;
+        if (prosperity >= PROSPERITY_LOW) return PlanetState.Poor;
+        if (prosperity >= PROSPERITY_CRITICAL) return PlanetState.Critical;
+        return PlanetState.Destroyed;
+    }
+
+    private float GetOreMultiplier(PlanetState state)
+    {
+        switch (state)
+        {
+            case PlanetState.VeryProsperous: return ORE_MULTIPLIERS[0];
+            case PlanetState.Prosperous: return ORE_MULTIPLIERS[1];
+            case PlanetState.Neutral: return ORE_MULTIPLIERS[2];
+            case PlanetState.Poor: return ORE_MULTIPLIERS[3];
+            case PlanetState.Critical: return ORE_MULTIPLIERS[4];
+            default: return 0f;
+        }
+    }
+
+    // =========================================================================
+    // 디버그
+    // =========================================================================
+#if UNITY_EDITOR
+    [ContextMenu("디버그: 식량 50개 공급")]
+    private void Debug_DeliverFood() => HandleFoodDelivered(InstanceId, 50);
+
+    [ContextMenu("디버그: 번영도 0으로 강제")]
+    private void Debug_ForceDeath()
+    {
+        Prosperity = 0f;
+        TriggerGameOverWarning();
+    }
+
+    [ContextMenu("디버그: 현재 상태 출력")]
+    private void Debug_PrintState()
+    {
+        Debug.Log($"[{PlanetName}] 번영도:{Prosperity:F1} / 인구:{Population:F0} / 식량:{StoredFood:F0} / 광석:{StoredOre:F0} / 상태:{State}");
+    }
+#endif
+}
