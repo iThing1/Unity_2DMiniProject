@@ -804,6 +804,8 @@ GameObject:
   - component: {fileID: 1438427760}
   - component: {fileID: 1438427761}
   - component: {fileID: 1438427765}
+  - component: {fileID: 1438427766}
+  - component: {fileID: 1438427767}
   - component: {fileID: 1438427759}
   - component: {fileID: 1438427764}
   - component: {fileID: 1438427763}
@@ -996,6 +998,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6d36157e75b114b9a810516bc7f44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipInventory
+--- !u!114 &1438427766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438427758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf83fc659ae2224f81345810a286c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryVisualize
+  _boxObjects:
+  - {fileID: 5244795624702746697, guid: 6f90ce257453db04ca1881d0a27e7149, type: 3}
+  - {fileID: 8836876185822099395, guid: c7f3d293bc6012e4282e854bfc48f9f7, type: 3}
+--- !u!114 &1438427767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438427758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f592f9269f08144f8b3677fadddee3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipInventoryTester
+  _shipInventory: {fileID: 1438427765}
+  _testCargoType: 0
+  _bulkAmount: 5
 --- !u!1 &1502698776
 GameObject:
   m_ObjectHideFlags: 0
