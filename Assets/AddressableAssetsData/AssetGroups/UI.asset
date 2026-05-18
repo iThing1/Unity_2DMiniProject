@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99ca28cd618a43b4784ab4967c552cbb
+    m_Address: UI/GUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b80c2921b1b7ccd44b8bc8c8e7674e5f
     m_Address: UI_Panel_04
     m_ReadOnly: 0
@@ -30,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d23b4c1dbe5d4cb48aafef6f2f02e423
+    m_Address: UI/Button/btn_direction
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df7015a9b02c01b479d09e6758579288
     m_Address: UI_Loading_01
     m_ReadOnly: 0
@@ -37,6 +47,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e5302302e68a7274a8378f116dfc8502
     m_Address: UI_Panel_03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e55bfba1959fd884c8c8a5d400fd172d
+    m_Address: UI/Container_Popup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
