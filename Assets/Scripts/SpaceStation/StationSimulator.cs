@@ -25,7 +25,6 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private const string UPGRADE_FARM = "UP_Stat_Farm";
     private const string UPGRADE_REFINE = "UP_Stat_Refine";
-    private const string CONST_ORE_TO_INGOT = "ORE_TO_INGOT_RATIO";
 
     // =========================================================================
     // 내부 상태
@@ -162,9 +161,7 @@ public class StationSimulator : MonoBehaviour
         var dm = GameDataManager.Instance;
         var gm = GameManager.Instance;
 
-        _oreToIngotRatio = dm.Get<GameConstantData>(CONST_ORE_TO_INGOT)?.Value
-                           ?? dm.Get<UpgradeData>(UPGRADE_FARM)?.BaseStats
-                           ?? 10f;
+        _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
 
         _farmRate = gm.GetUpgradeStat(UPGRADE_FARM);
         _refineRate = gm.GetUpgradeStat(UPGRADE_REFINE);

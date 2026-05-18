@@ -41,7 +41,6 @@ public class ShipInventory : MonoBehaviour
 
     // 업그레이드 ID 상수
     private const string UPGRADE_CARGO = "UP_Ship_Cargo";
-    private const string CONST_TRANSFER_INTERVAL = "CARGO_TRANSFER_INTERVAL";
 
     // =========================================================================
     // Unity 생명주기
@@ -65,11 +64,9 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     private void HandleDataInitialized()
     {
-        var interval = GameDataManager.Instance.Get<GameConstantData>(CONST_TRANSFER_INTERVAL);
-        _transferInterval = interval != null ? interval.Value : 0.2f;
+        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
 
         RefreshCapacity();
-
         BroadcastState();
         Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
     }

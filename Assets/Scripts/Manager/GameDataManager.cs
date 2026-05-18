@@ -7,12 +7,41 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using GameData;
 using Newtonsoft.Json;
 
+// =========================================================================
+// 추가: 게임 상수 전용 구조체
+// =========================================================================
+public struct GameConstants
+{
+    // 우주선
+    public float FuelConsumeRate;
+    public float FuelRegenRate;
+    public float OverheatDuration;
+    public float ShipAcceleration;
+    public float ShipBoostAccel;
+    public float DockingSpeed;
+
+    // 행성
+    public float ProsperityChangeRate;
+    public float ProsperityIncreaseMax;
+    public float PopulationChangeRate;
+    public float PopulationIncreaseMax;
+    public float PlanetGameoverTime;
+    public float PlanetConsumeInterval;
+    public float PlanetProsperityMax;
+
+    // 정거장 / 화물
+    public float CargoTransferInterval;
+    public float OreToIngotRatio;
+    public float StationDockingRange;
+}
+
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
     private readonly Dictionary<Type, object> _tables = new Dictionary<Type, object>();
 
     public bool IsInitialized { get; private set; } = false;
+    public GameConstants Constants { get; private set; }
 
     private void Awake()
     {
@@ -47,6 +76,8 @@ public class GameDataManager : MonoBehaviour
 
         await Task.WhenAll(tasks);
 
+        CacheConstants();
+
         IsInitialized = true;
         Debug.Log("<color=cyan><b>[GameDataManager]</b> 데이터 로드 완료!</color>");
         GameEvents.RaiseDataInitialized();
@@ -78,6 +109,44 @@ public class GameDataManager : MonoBehaviour
     }
 
     public bool HasTable<T>() where T : IGameData => _tables.ContainsKey(typeof(T));
+
+    private void CacheConstants()
+    {
+        float Get(string id, float fallback)
+        {
+            var data = Get<GameConstantData>(id);
+            if (data == null)
+                Debug.LogWarning($"[GameDataManager] 상수 키 없음: '{id}' → 기본값 {fallback} 사용");
+            return data?.Value ?? fallback;
+        }
+
+        Constants = new GameConstants
+        {
+            // 우주선
+            FuelConsumeRate = Get("FUEL_CONSUME_RATE", 50f),
+            FuelRegenRate = Get("FUEL_REGEN_RATE", 20f),
+            OverheatDuration = Get("OVERHEAT_DURATION", 5f),
+            ShipAcceleration = Get("SHIP_ACCELERATION", 5f),
+            ShipBoostAccel = Get("SHIP_BOOST_ACCELERATION", 20f),
+            DockingSpeed = Get("STATION_DOCKING_SPEED", 0.5f),
+
+            // 행성
+            ProsperityChangeRate = Get("PROSPERITY_CHANGE_RATE", 0.15f),
+            ProsperityIncreaseMax = Get("PROSPERITY_INCREASE_MAX", 20f),
+            PopulationChangeRate = Get("POPULATION_CHANGE_RATE", 0.1f),
+            PopulationIncreaseMax = Get("POPULATION_INCREASE_MAX", 0.2f),
+            PlanetGameoverTime = Get("PLANET_GAMEOVER_TIME", 10f),
+            PlanetConsumeInterval = Get("PLANET_CONSUME_INTERVAL", 10f),
+            PlanetProsperityMax = Get("PLANET_PROSPERITY_MAX", 100f),
+
+            // 정거장 / 화물
+            CargoTransferInterval = Get("CARGO_TRANSFER_INTERVAL", 0.2f),
+            OreToIngotRatio = Get("ORE_TO_INGOT_RATIO", 10f),
+            StationDockingRange = Get("STATION_DOCKING_RANGE", 5f),
+        };
+
+        Debug.Log("<color=cyan><b>[GameDataManager]</b> 상수 캐싱 완료</color>");
+    }
 
     private async Task LoadTableAsync<T>(string address, Dictionary<string, T> dictionary) where T : IGameData
     {

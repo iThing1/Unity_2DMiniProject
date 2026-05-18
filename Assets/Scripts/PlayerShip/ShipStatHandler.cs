@@ -42,13 +42,6 @@ public class ShipStatHandler : MonoBehaviour
     public const string UPGRADE_ACCEL = "UP_Ship_Accel";
     public const string UPGRADE_MAX_FUEL = "UP_Ship_MaxFuel";
 
-    private const string CONST_FUEL_CONSUME = "FUEL_CONSUME_RATE";
-    private const string CONST_FUEL_REGEN = "FUEL_REGEN_RATE";
-    private const string CONST_OVERHEAT_DUR = "OVERHEAT_DURATION";
-    private const string CONST_DOCKING_SPEED = "STATION_DOCKING_SPEED";
-    private const string CONST_ACCELERATION = "SHIP_ACCELERATION";
-    private const string CONST_BOOST_ACCEL = "SHIP_BOOST_ACCELERATION";
-
     private float _baseBoostAcceleration; // 업그레이드 배율 계산용 베이스값 캐싱
 
     // =========================================================================
@@ -72,17 +65,17 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     private void LoadConstantStats()
     {
-        var dm = GameDataManager.Instance;
+        var c = GameDataManager.Instance.Constants;
 
-        FuelConsumeRate = dm.Get<GameConstantData>(CONST_FUEL_CONSUME)?.Value ?? _defaultFuelConsumeRate;
-        FuelRegenRate = dm.Get<GameConstantData>(CONST_FUEL_REGEN)?.Value ?? _defaultFuelRegenRate;
-        OverheatDuration = dm.Get<GameConstantData>(CONST_OVERHEAT_DUR)?.Value ?? _defaultOverheatDuration;
-        DockingSpeedThreshold = dm.Get<GameConstantData>(CONST_DOCKING_SPEED)?.Value ?? _defaultDockingSpeedThreshold;
-        Acceleration = dm.Get<GameConstantData>(CONST_ACCELERATION)?.Value ?? _defaultAcceleration;
-        _baseBoostAcceleration = dm.Get<GameConstantData>(CONST_BOOST_ACCEL)?.Value ?? _defaultBoostAcceleration;
+        FuelConsumeRate = c.FuelConsumeRate != 0f ? c.FuelConsumeRate : _defaultFuelConsumeRate;
+        FuelRegenRate = c.FuelRegenRate != 0f ? c.FuelRegenRate : _defaultFuelRegenRate;
+        OverheatDuration = c.OverheatDuration != 0f ? c.OverheatDuration : _defaultOverheatDuration;
+        DockingSpeedThreshold = c.DockingSpeed != 0f ? c.DockingSpeed : _defaultDockingSpeedThreshold;
+        Acceleration = c.ShipAcceleration != 0f ? c.ShipAcceleration : _defaultAcceleration;
+        _baseBoostAcceleration = c.ShipBoostAccel != 0f ? c.ShipBoostAccel : _defaultBoostAcceleration;
         BoostAcceleration = _baseBoostAcceleration;
     }
-
+        
     public void RefreshUpgradeStats()
     {
         var gm = GameManager.Instance;

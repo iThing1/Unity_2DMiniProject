@@ -7,13 +7,13 @@ public class InventoryVisualize : MonoBehaviour
     [SerializeField] private GameObject _boxPrefab;
     [SerializeField] private int _maxBoxCount = 10;
 
-    [Header("물리 체인 설정")]
+    [Header("물리 설정")]
     [SerializeField] private float _boxSpacing = 1.2f;
-    [SerializeField] private float _springFrequency = 2f; // 스프링 진동 주기(낮을수록 느리게 복원)
-    [SerializeField] private float _springDampingRatio = 0.3f; // 감쇠 비율(1에 가까울수록 빨리 안정)
-    [SerializeField] private float _boxMass = 0.5f; // 각 박스의 질량
-    [SerializeField] private float _boxLinearDrag = 1.5f; // 선형 저항(공기 저항)
-    [SerializeField] private float _boxAngularDrag = 2f; // 각 저항(회전 저항)
+    [SerializeField] private float _springFrequency = 2f;
+    [SerializeField] private float _springDampingRatio = 0.3f;
+    [SerializeField] private float _boxMass = 0.5f;
+    [SerializeField] private float _boxLinearDrag = 1.5f;
+    [SerializeField] private float _boxAngularDrag = 2f;
 
     private const int CARGO_PER_BOX = 10;
 

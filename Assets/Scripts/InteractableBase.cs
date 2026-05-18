@@ -4,8 +4,6 @@ using GameData;
 // 우주선과 상호작용 가능한 오브젝트(행성, 정거장)의 공통 베이스 클래스.
 public abstract class InteractableBase : MonoBehaviour
 {
-    private const string CONST_DOCKING_SPEED = "STATION_DOCKING_SPEED";
-
     protected ShipController _shipController;
     protected ShipInventory _shipInventory;
 
@@ -71,16 +69,13 @@ public abstract class InteractableBase : MonoBehaviour
     // =========================================================================
     // 하위 클래스 구현부
     // =========================================================================
-
     protected abstract void OnActivate();
     protected abstract void OnDeactivate();
-
     protected virtual bool CanInteract() => true;
 
     private void HandleDataInitialized()
     {
-        _dockingSpeedThreshold =
-            GameDataManager.Instance.Get<GameConstantData>(CONST_DOCKING_SPEED)?.Value ?? 0.5f;
+        _dockingSpeedThreshold = GameDataManager.Instance.Constants.DockingSpeed;
 
         CacheShipReferences();
         OnDataInitialized();

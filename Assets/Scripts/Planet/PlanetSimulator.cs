@@ -30,11 +30,6 @@ public class PlanetSimulator : MonoBehaviour
 
     private static readonly float[] ORE_MULTIPLIERS = { 1.5f, 1.3f, 1.0f, 0.8f, 0.6f };
 
-    private const string CONST_PROSPERITY_CHANGE_RATE = "PROSPERITY_CHANGE_RATE";
-    private const string CONST_PROSPERITY_INCREASE_MAX = "PROSPERITY_INCREASE_MAX";
-    private const string CONST_POPULATION_CHANGE_RATE = "POPULATION_CHANGE_RATE";
-    private const string CONST_POPULATION_INCREASE_MAX = "POPULATION_INCREASE_MAX";
-
     // =========================================================================
     // 런타임 상태 (외부 읽기용)
     // =========================================================================
@@ -104,11 +99,12 @@ public class PlanetSimulator : MonoBehaviour
 
         _foodDeliveredThisCycle = 0f;
 
-        var dm = GameDataManager.Instance;
-        _prosperityChangeRate = dm.Get<GameConstantData>(CONST_PROSPERITY_CHANGE_RATE)?.Value ?? 0.15f;
-        _prosperityIncreaseMax = dm.Get<GameConstantData>(CONST_PROSPERITY_INCREASE_MAX)?.Value ?? 20f;
-        _populationChangeRate = dm.Get<GameConstantData>(CONST_POPULATION_CHANGE_RATE)?.Value ?? 0.1f;
-        _populationIncreaseMax = dm.Get<GameConstantData>(CONST_POPULATION_INCREASE_MAX)?.Value ?? 0.2f;
+        var c = GameDataManager.Instance.Constants;
+
+        _prosperityChangeRate = c.ProsperityChangeRate;
+        _prosperityIncreaseMax = c.ProsperityIncreaseMax;
+        _populationChangeRate = c.PopulationChangeRate;
+        _populationIncreaseMax = c.PopulationIncreaseMax;
 
         State = CalcPlanetState(Prosperity);
         GameEvents.RaisePlanetStateChanged(_instanceId, State);
