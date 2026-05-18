@@ -734,6 +734,7 @@ GameObject:
   - component: {fileID: 960896189}
   - component: {fileID: 960896187}
   - component: {fileID: 960896186}
+  - component: {fileID: 960896190}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -863,7 +864,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc32c11467a5eb542adb230fd116dbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetController
-  _debugPlanetId: Planet_medium_01
+  _debugPlanetId: Planet_small_01
+--- !u!114 &960896190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960896185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b4a98fdd7de314988b5116086a7d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSimulator
 --- !u!1 &996764277
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,7 +1175,6 @@ GameObject:
   - component: {fileID: 1438427761}
   - component: {fileID: 1438427765}
   - component: {fileID: 1438427766}
-  - component: {fileID: 1438427767}
   - component: {fileID: 1438427759}
   - component: {fileID: 1438427764}
   - component: {fileID: 1438427763}
@@ -1375,21 +1387,6 @@ MonoBehaviour:
   _boxMass: 0.5
   _boxLinearDrag: 1.5
   _boxAngularDrag: 2
---- !u!114 &1438427767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1438427758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f592f9269f08144f8b3677fadddee3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ShipInventoryTester
-  _shipInventory: {fileID: 1438427765}
-  _testCargoType: 0
-  _bulkAmount: 5
 --- !u!1 &1502698776
 GameObject:
   m_ObjectHideFlags: 0
@@ -1681,8 +1678,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1871375138}
+  - component: {fileID: 1871375141}
   - component: {fileID: 1871375137}
-  - component: {fileID: 1871375139}
+  - component: {fileID: 1871375140}
   m_Layer: 0
   m_Name: SpaceStation
   m_TagString: Untagged
@@ -1767,7 +1765,19 @@ Transform:
   - {fileID: 1301141791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1871375139
+--- !u!114 &1871375140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871375136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e06e978ca77fd342ba64c41b60f1099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationSimulator
+--- !u!114 &1871375141
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
