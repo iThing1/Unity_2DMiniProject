@@ -23,6 +23,7 @@ public class StationController : InteractableBase
     private StationZoneType? _activeZone = null;
     private bool _isGamePlay = false;
     private Coroutine _interactCoroutine;
+    private int _pendingFoodLoad;
 
     // =========================================================================
     // Unity 생명주기
@@ -166,20 +167,12 @@ public class StationController : InteractableBase
             yield break;
         }
 
+        _pendingFoodLoad = toLoad;
         _simulator.TryConsumeFood(toLoad);
 
-        _shipInventory.StartLoading(
-            ShipInventory.CargoType.Food,
-            toLoad,
-            loaded =>
-            {
-                int refund = toLoad - loaded;
-                if (refund > 0) _simulator.RefundFood(refund);
-                Debug.Log($"[StationController] 식량 적재 완료: {loaded}개");
-            }
-        );
+        _shipInventory.StartLoading(ShipInventory.CargoType.Food, toLoad, OnFoodLoadComplete);
 
-        yield return new WaitUntil(() => !_shipInventory.IsLoading);
+        yield return new WaitUntil(IsLoadingDone);
         _interactCoroutine = null;
         CompleteInteraction();
     }
@@ -198,18 +191,37 @@ public class StationController : InteractableBase
             yield break;
         }
 
-        _shipInventory.StartUnloading(
-            ShipInventory.CargoType.Ore,
-            onEach: () => _simulator.AddOre(1f),
-            onComplete: unloaded =>
-                Debug.Log($"[StationController] 광석 하역 완료: {unloaded}개 → 저장소 총 {_simulator.StoredOre:F0}개")
-        );
+        _shipInventory.StartUnloading(ShipInventory.CargoType.Ore, OnOreUnloadEach, OnOreUnloadComplete);
 
-        yield return new WaitUntil(() => !_shipInventory.IsLoading);
+        yield return new WaitUntil(IsLoadingDone);
         _interactCoroutine = null;
         CompleteInteraction();
     }
+    // =========================================================================
+    // 적재/하역 콜백 메서드
+    // =========================================================================
+    private void OnFoodLoadComplete(int loaded)
+    {
+        int refund = _pendingFoodLoad - loaded;
+        if (refund > 0)
+            _simulator.RefundFood(refund);
+        Debug.Log($"[StationController] 식량 적재 완료: {loaded}개");
+    }
 
+    private void OnOreUnloadEach()
+    {
+        _simulator.AddOre(1f);
+    }
+
+    private void OnOreUnloadComplete(int unloaded)
+    {
+        Debug.Log($"[StationController] 광석 하역 완료: {unloaded}개 → 저장소 총 {_simulator.StoredOre:F0}개");
+    }
+
+    private bool IsLoadingDone()
+    {
+        return !_shipInventory.IsLoading;
+    }
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================

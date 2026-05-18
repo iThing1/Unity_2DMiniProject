@@ -94,11 +94,7 @@ public class PlanetController : InteractableBase
         int foodCount = _shipInventory.CountOf(ShipInventory.CargoType.Food);
         if (foodCount > 0)
         {
-            _shipInventory.StartUnloading(
-                ShipInventory.CargoType.Food,
-                onEach: () => GameEvents.RaiseFoodDelivered(InstanceId, 1),
-                onComplete: n => Debug.Log($"[PlanetController] '{PlanetName}' 식량 하역 완료: {n}개")
-            );
+            _shipInventory.StartUnloading(ShipInventory.CargoType.Food, OnFoodUnloadEach, OnFoodUnloadComplete);
         }
 
         int oreToLoad = Mathf.Min(
@@ -107,21 +103,37 @@ public class PlanetController : InteractableBase
         );
         if (oreToLoad > 0)
         {
-            _shipInventory.StartLoading(
-                ShipInventory.CargoType.Ore,
-                oreToLoad,
-                loaded =>
-                {
-                    GameEvents.RaiseOreCollected(InstanceId, loaded);
-                    Debug.Log($"[PlanetController] '{PlanetName}' 광석 적재 완료: {loaded}개");
-                }
-            );
+            _shipInventory.StartLoading(ShipInventory.CargoType.Ore, oreToLoad, OnOreLoadComplete);
         }
 
-        yield return new WaitUntil(() => !_shipInventory.IsLoading);
+        yield return new WaitUntil(IsLoadingDone);
 
         _interactCoroutine = null;
         CompleteInteraction();
+    }
+
+    // =========================================================================
+    // 적재/하역 콜백 메서드
+    // =========================================================================
+    private void OnFoodUnloadEach()
+    {
+        GameEvents.RaiseFoodDelivered(InstanceId, 1);
+    }
+
+    private void OnFoodUnloadComplete(int n)
+    {
+        Debug.Log($"[PlanetController] '{PlanetName}' 식량 하역 완료: {n}개");
+    }
+
+    private void OnOreLoadComplete(int loaded)
+    {
+        GameEvents.RaiseOreCollected(InstanceId, loaded);
+        Debug.Log($"[PlanetController] '{PlanetName}' 광석 적재 완료: {loaded}개");
+    }
+
+    private bool IsLoadingDone()
+    {
+        return !_shipInventory.IsLoading;
     }
 
     // =========================================================================

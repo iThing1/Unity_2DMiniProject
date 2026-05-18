@@ -69,12 +69,13 @@ public class SoundManager : MonoBehaviour
         if (prev == GameState.GamePlay)
             StopBGM();
 
-        string bindState = next switch
+        string bindState;
+        switch (next)
         {
-            GameState.Lobby => "Lobby",
-            GameState.GamePlay => "GamePlay",
-            _ => null
-        };
+            case GameState.Lobby: bindState = "Lobby"; break;
+            case GameState.GamePlay: bindState = "GamePlay"; break;
+            default: bindState = null; break;
+        }
 
         if (bindState == null) return;
 
