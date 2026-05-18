@@ -28,7 +28,7 @@ public class ShipInventory : MonoBehaviour
 
     public bool IsFull => _cargo.Count >= Capacity;
     public bool IsEmpty => _cargo.Count == 0;
-    public bool IsLoading { get; private set; }
+    public bool IsLoading => _loadCoroutine != null || _unloadCoroutine != null;
 
     // =========================================================================
     // 내부 상태
@@ -36,7 +36,8 @@ public class ShipInventory : MonoBehaviour
     private readonly List<Cargo> _cargo = new List<Cargo>();
 
     private float _transferInterval;
-    private Coroutine _transferCoroutine;
+    private Coroutine _loadCoroutine;
+    private Coroutine _unloadCoroutine;
 
     // 업그레이드 ID 상수
     private const string UPGRADE_CARGO = "UP_Ship_Cargo";
@@ -119,23 +120,37 @@ public class ShipInventory : MonoBehaviour
     public void StartLoading(CargoType type, int totalAmount, Action<int> onComplete = null)
     {
         StopTransfer();
-        _transferCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onComplete));
+        _loadCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onComplete));
     }
 
     public void StartUnloading(CargoType type, Action onEach = null, Action<int> onComplete = null)
     {
         StopTransfer();
-        _transferCoroutine = StartCoroutine(UnloadRoutine(type, onEach, onComplete));
+        _unloadCoroutine = StartCoroutine(UnloadRoutine(type, onEach, onComplete));
+    }
+
+    public void StopLoading()
+    {
+        if (_loadCoroutine != null)
+        {
+            StopCoroutine(_loadCoroutine);
+            _loadCoroutine = null;
+        }
+    }
+
+    public void StopUnloading()
+    {
+        if (_unloadCoroutine != null)
+        {
+            StopCoroutine(_unloadCoroutine);
+            _unloadCoroutine = null;
+        }
     }
 
     public void StopTransfer()
     {
-        if (_transferCoroutine != null)
-        {
-            StopCoroutine(_transferCoroutine);
-            _transferCoroutine = null;
-        }
-        IsLoading = false;
+        StopLoading();
+        StopUnloading();
     }
 
     // =========================================================================
@@ -143,7 +158,6 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     private IEnumerator LoadRoutine(CargoType type, int totalAmount, Action<int> onComplete)
     {
-        IsLoading = true;
         int loaded = 0;
         var wait = new WaitForSeconds(_transferInterval);
 
@@ -155,7 +169,7 @@ public class ShipInventory : MonoBehaviour
             yield return wait;
         }
 
-        IsLoading = false;
+        _loadCoroutine = null;
         onComplete?.Invoke(loaded);
 
         Debug.Log($"[CargoInventory] 적재 완료. {type} x{loaded}");
@@ -163,7 +177,6 @@ public class ShipInventory : MonoBehaviour
 
     private IEnumerator UnloadRoutine(CargoType type, Action onEach, Action<int> onComplete)
     {
-        IsLoading = true;
         int unloaded = 0;
         var wait = new WaitForSeconds(_transferInterval);
 
@@ -178,7 +191,7 @@ public class ShipInventory : MonoBehaviour
             yield return wait;
         }
 
-        IsLoading = false;
+        _unloadCoroutine = null;
         onComplete?.Invoke(unloaded);
 
         Debug.Log($"[CargoInventory] 하역 완료. {type} x {unloaded}");

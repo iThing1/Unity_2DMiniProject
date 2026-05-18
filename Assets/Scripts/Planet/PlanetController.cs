@@ -32,6 +32,7 @@ public class PlanetController : MonoBehaviour
     private const string CONST_PROSPERITY_INCREASE_MAX = "PROSPERITY_INCREASE_MAX";
     private const string CONST_POPULATION_CHANGE_RATE = "POPULATION_CHANGE_RATE";
     private const string CONST_POPULATION_INCREASE_MAX = "POPULATION_INCREASE_MAX";
+    private const string CONST_DOCKING_SPEED = "STATION_DOCKING_SPEED";
     // =========================================================================
     // 런타임 상태 (외부 읽기 전용)
     // =========================================================================
@@ -67,6 +68,13 @@ public class PlanetController : MonoBehaviour
     private Coroutine _gameOverCoroutine;
     private Coroutine _productionCoroutine;
 
+    private ShipController _shipController;
+    private ShipInventory _shipInventory;
+    private float _dockingSpeedThreshold;
+    private bool _isPlayerInside = false;
+    private bool _isInteracting = false;
+    private Coroutine _interactCoroutine;
+
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -87,6 +95,18 @@ public class PlanetController : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+    }
+
+    private void Update()
+    {
+        if (!_isRunning || !_isPlayerInside || _shipController == null) return;
+
+        bool speedOk = _shipController.Velocity.magnitude <= _dockingSpeedThreshold;
+
+        if (speedOk && !_isInteracting)
+            ActivateInteraction();
+        else if (!speedOk && _isInteracting)
+            DeactivateInteraction();
     }
 
     // =========================================================================
@@ -119,6 +139,10 @@ public class PlanetController : MonoBehaviour
         _isRunning = true;
         _cycleCoroutine = StartCoroutine(ProsperityCycleRoutine());
         _productionCoroutine = StartCoroutine(RealTimeProductionRoutine());
+
+        _dockingSpeedThreshold = GameDataManager.Instance.Get<GameConstantData>(CONST_DOCKING_SPEED)?.Value ?? 0.5f;
+        CacheShipReferences();
+
 
         Debug.Log($"[PlanetController] '{PlanetName}' 초기화 완료. 인구: {Population:F0}, 번영도: {Prosperity:F1}");
     }
@@ -212,9 +236,99 @@ public class PlanetController : MonoBehaviour
     }
 
     // =========================================================================
-    // 게임오버 판정
+    // 우주선 상호작용: 트리거 감지 + 저속 체크
     // =========================================================================
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log($"[PlanetController] '{PlanetName}' 트리거 진입: {other.gameObject.name} / 태그: {other.tag}");
+        if (!other.CompareTag("Player")) return;
+        _isPlayerInside = true;
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        Debug.Log($"[PlanetController] '{PlanetName}' 트리거 이탈: {other.gameObject.name} / 태그: {other.tag}");
+        if (!other.CompareTag("Player")) return;
+        _isPlayerInside = false;
+        DeactivateInteraction();
+    }
+
+    private void ActivateInteraction()
+    {
+        _isInteracting = true;
+
+        if (_interactCoroutine != null)
+            StopCoroutine(_interactCoroutine);
+
+        _interactCoroutine = StartCoroutine(InteractRoutine());
+        Debug.Log($"[PlanetController] '{PlanetName}' 상호작용 시작");
+    }
+
+    private void DeactivateInteraction()
+    {
+        if (!_isInteracting) return;
+        _isInteracting = false;
+
+        if (_interactCoroutine != null)
+        {
+            StopCoroutine(_interactCoroutine);
+            _interactCoroutine = null;
+        }
+
+        _shipInventory?.StopTransfer();
+        Debug.Log($"[PlanetController] '{PlanetName}' 상호작용 중단");
+    }
+
+    private IEnumerator InteractRoutine()
+    {
+        int foodCount = _shipInventory.CountOf(ShipInventory.CargoType.Food);
+        if (foodCount > 0)
+        {
+            _shipInventory.StartUnloading(
+                ShipInventory.CargoType.Food,
+                onEach: () => GameEvents.RaiseFoodDelivered(InstanceId, 1),
+                onComplete: n => Debug.Log($"[PlanetController] '{PlanetName}' 식량 하역 완료: {n}개")
+            );
+        }
+
+        int oreToLoad = Mathf.Min(
+            Mathf.FloorToInt(StoredOre),
+            _shipInventory.Capacity - _shipInventory.Count
+        );
+        if (oreToLoad > 0)
+        {
+            _shipInventory.StartLoading(
+                ShipInventory.CargoType.Ore,
+                oreToLoad,
+                loaded =>
+                {
+                    GameEvents.RaiseOreCollected(InstanceId, loaded);
+                    Debug.Log($"[PlanetController] '{PlanetName}' 광석 적재 완료: {loaded}개");
+                }
+            );
+        }
+
+        yield return null;
+        _isInteracting = false;
+        _interactCoroutine = null;
+    }
+
+    private void CacheShipReferences()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogWarning($"[PlanetController] '{PlanetName}' Player 태그 오브젝트를 찾지 못했습니다.");
+            return;
+        }
+        _shipController = player.GetComponent<ShipController>();
+        _shipInventory = player.GetComponent<ShipInventory>();
+    }
+
+    // =========================================================================
+    // 게임오버 판정
+    // =========================================================================
     private void TriggerGameOverWarning()
     {
         if (IsGameOverWarning) return;
@@ -338,6 +452,31 @@ public class PlanetController : MonoBehaviour
     // 디버그
     // =========================================================================
 #if UNITY_EDITOR
+    [Header("디버그 전용")]
+    [SerializeField] private string _debugPlanetId = "Planet_medium_01";
+
+    private void Start()
+    {
+        if (!GameDataManager.Instance.IsInitialized)
+        {
+            GameEvents.OnDataInitialized += DebugInitialize;
+            return;
+        }
+        DebugInitialize();
+    }
+
+    private void DebugInitialize()
+    {
+        GameEvents.OnDataInitialized -= DebugInitialize;
+        var data = GameDataManager.Instance.Get<PlanetData>(_debugPlanetId);
+        if (data == null)
+        {
+            Debug.LogWarning($"[PlanetController] 디버그 데이터 없음: {_debugPlanetId}");
+            return;
+        }
+        Initialize(data, gameObject.name);
+    }
+
     [ContextMenu("디버그: 식량 50개 공급")]
     private void Debug_DeliverFood() => HandleFoodDelivered(InstanceId, 50);
 
