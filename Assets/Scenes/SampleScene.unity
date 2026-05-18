@@ -833,6 +833,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1301141791}
   - component: {fileID: 1301141792}
+  - component: {fileID: 1301141793}
   m_Layer: 0
   m_Name: Right_FoodProductor
   m_TagString: Untagged
@@ -849,7 +850,7 @@ Transform:
   m_GameObject: {fileID: 1301141790}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.2, y: 0, z: 0}
+  m_LocalPosition: {x: 4.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -885,7 +886,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -899,8 +900,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 3}
+  m_Size: {x: 3, y: 4.5}
   m_EdgeRadius: 0
+--- !u!114 &1301141793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1301141790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3d755df164a2544840691e9bbaf768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationZone
+  _zoneType: 2
 --- !u!1 &1411310794
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,6 +925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1411310795}
   - component: {fileID: 1411310796}
+  - component: {fileID: 1411310797}
   m_Layer: 0
   m_Name: Left_OreRefiner
   m_TagString: Untagged
@@ -927,7 +942,7 @@ Transform:
   m_GameObject: {fileID: 1411310794}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.2, y: 0, z: 0}
+  m_LocalPosition: {x: -4.4, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -963,7 +978,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -977,8 +992,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 3}
+  m_Size: {x: 3, y: 4.5}
   m_EdgeRadius: 0
+--- !u!114 &1411310797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411310794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3d755df164a2544840691e9bbaf768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationZone
+  _zoneType: 0
 --- !u!1 &1438427758
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +1026,7 @@ GameObject:
   - component: {fileID: 1438427763}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1463,8 +1491,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1828045216}
   - component: {fileID: 1828045217}
+  - component: {fileID: 1828045218}
   m_Layer: 0
-  m_Name: Middle_UnLockBtn
+  m_Name: Center_UnLockBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1520,7 +1549,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1530,8 +1559,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2, y: 3}
+  m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &1828045218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828045215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3d755df164a2544840691e9bbaf768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationZone
+  _zoneType: 1
 --- !u!1 &1871375136
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,6 +1584,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1871375138}
   - component: {fileID: 1871375137}
+  - component: {fileID: 1871375139}
   m_Layer: 0
   m_Name: SpaceStation
   m_TagString: Untagged
@@ -1626,6 +1669,19 @@ Transform:
   - {fileID: 1301141791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1871375139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871375136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dc147a1c90a0eb4480371fe2c73f5c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationController
+  _spawnPoint: {fileID: 76088622}
 --- !u!1 &2137377617
 GameObject:
   m_ObjectHideFlags: 0

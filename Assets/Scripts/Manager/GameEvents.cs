@@ -38,6 +38,12 @@ public static class GameEvents
     public static event Action<string, int> OnOreCollected;
     public static event Action<string, float> OnPlanetCycleProgress;
 
+    // 우주 정거장
+    public static event Action<StationZoneType, bool> OnStationInteractionChanged;
+    public static event Action<float, float, float> OnStationStorageChanged;
+    public static event Action<float> OnOreUnload;
+    public static event Action OnIngotSellRequested;
+
     // =========================================================================
     // null 체크를 한 곳에서 처리
     // =========================================================================
@@ -67,6 +73,11 @@ public static class GameEvents
     public static void RaiseOreCollected(string instanceId, int amount) => OnOreCollected?.Invoke(instanceId, amount);
     public static void RaisePlanetCycleProgress(string instanceId, float progress) => OnPlanetCycleProgress?.Invoke(instanceId, progress);
 
+    public static void RaiseStationInteractionChanged(StationZoneType zoneType, bool isActive) => OnStationInteractionChanged?.Invoke(zoneType, isActive);
+    public static void RaiseStationStorageChanged(float food, float ore, float ingot) => OnStationStorageChanged?.Invoke(food, ore, ingot);
+    public static void RaiseOreUnload(float amount) => OnOreUnload?.Invoke(amount);
+    public static void RaiseIngotSellRequested() => OnIngotSellRequested?.Invoke();
+
     public static void ClearAllListeners()
     {
         OnDataInitialized = null;
@@ -94,5 +105,10 @@ public static class GameEvents
         OnFoodDelivered = null;
         OnOreCollected = null;
         OnPlanetCycleProgress = null;
+
+        OnStationInteractionChanged = null;
+        OnStationStorageChanged = null;
+        OnOreUnload = null;
+        OnIngotSellRequested = null;
     }
 }

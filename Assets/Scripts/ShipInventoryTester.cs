@@ -1,17 +1,7 @@
-﻿// 추가 - 인벤토리 비주얼라이징 테스트용 컴포넌트
-// 사용법:
-//   1. ShipInventory, InventoryVisualize가 붙어있는 우주선 오브젝트에 이 컴포넌트를 추가
-//   2. Inspector에서 _shipInventory 슬롯에 ShipInventory 컴포넌트를 연결
-//   3. Play 후 Game 뷰 좌상단 버튼 또는 Inspector 우클릭 ContextMenu로 테스트
-
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEngine;
 using GameData;
 
-/// <summary>
-/// ShipInventory → GameEvents.OnCargoChanged → InventoryVisualize 흐름을 검증하는 테스트 컴포넌트.
-/// UNITY_EDITOR 빌드에서만 포함됩니다.
-/// </summary>
 public class ShipInventoryTester : MonoBehaviour
 {
     // =========================================================================
@@ -88,7 +78,7 @@ public class ShipInventoryTester : MonoBehaviour
         if (!_stylesInitialized)
             InitStyles();
 
-        GUILayout.BeginArea(new Rect(10, 10, 400, 520));
+        GUILayout.BeginArea(new Rect(10, 10, 220, 420));
         GUILayout.BeginVertical("box");
 
         GUILayout.Label("<b>[ShipInventory 테스트]</b>", _styleTitle);
@@ -130,10 +120,10 @@ public class ShipInventoryTester : MonoBehaviour
     // 변경 - 스타일 초기화를 별도 메서드로 분리 (OnGUI 첫 호출 시 1회만 실행)
     private void InitStyles()
     {
-        _styleTitle = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 18 };
-        _styleStatus = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 15 };
-        _styleSection = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 14 };
-        _styleLog = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 13 };
+        _styleTitle = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 14 };
+        _styleStatus = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 11 };
+        _styleSection = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 10 };
+        _styleLog = new GUIStyle(GUI.skin.label) { richText = true, fontSize = 9 };
         _styleButton = new GUIStyle(GUI.skin.button) { fontSize = 14, fixedHeight = 36 };
 
         _stylesInitialized = true;
