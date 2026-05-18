@@ -220,5 +220,6 @@ public class ShipInventory : MonoBehaviour
     private void BroadcastState()
     {
         GameEvents.RaiseCargoChanged(Count, Capacity);
+        GameEvents.RaiseCargoDetailChanged(CountOf(CargoType.Food), CountOf(CargoType.Ore), Count, Capacity);
     }
 }

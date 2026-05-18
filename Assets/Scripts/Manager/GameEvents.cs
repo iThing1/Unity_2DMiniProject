@@ -29,6 +29,7 @@ public static class GameEvents
     public static event Action<bool> OnOverheatChanged;
     public static event Action<bool> OnBoosterChanged;
     public static event Action<int, int> OnCargoChanged;
+    public static event Action<int, int, int, int> OnCargoDetailChanged;
 
     // 행성
     public static event Action<string, PlanetState> OnPlanetStateChanged;
@@ -65,6 +66,7 @@ public static class GameEvents
     public static void RaiseOverheatChanged(bool isOverheat) => OnOverheatChanged?.Invoke(isOverheat);
     public static void RaiseBoosterChanged(bool isActive) => OnBoosterChanged?.Invoke(isActive);
     public static void RaiseCargoChanged(int count, int capacity) => OnCargoChanged?.Invoke(count, capacity);
+    public static void RaiseCargoDetailChanged(int food, int ore, int total, int capacity) => OnCargoDetailChanged?.Invoke(food, ore, total, capacity);
 
     public static void RaisePlanetStateChanged(string instanceId, PlanetState state) => OnPlanetStateChanged?.Invoke(instanceId, state);
     public static void RaisePlanetGameOverWarning(string instanceId, bool isWarning) => OnPlanetGameOverWarning?.Invoke(instanceId, isWarning);
@@ -98,6 +100,7 @@ public static class GameEvents
         OnOverheatChanged = null;
         OnBoosterChanged = null;
         OnCargoChanged = null;
+        OnCargoDetailChanged = null;
 
         OnPlanetStateChanged = null;
         OnPlanetGameOverWarning = null;

@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.Lobby);
 
+        Context.CurrentGold = 1000f; // [DEBUG] 초기 골드
+        Context.CurrentIngot = 100f;  // [DEBUG] 초기 주괴
+
 #if UNITY_EDITOR
         // [DEBUG] 플레이어 이동 테스트용 — GamePlay 강제 진입
         ChangeState(GameState.GamePlay);

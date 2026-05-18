@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ab21f351df488844b88d46683e9881a
+    m_Address: Assets/Sprites/UI/ProgressBar.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8c0f1b297cf3d994f90b126a4b26b215, type: 2}
   m_SchemaSet:
