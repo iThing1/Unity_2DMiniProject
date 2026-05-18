@@ -101,12 +101,7 @@ public class PlanetController : MonoBehaviour
     {
         if (!_isRunning || !_isPlayerInside || _shipController == null) return;
 
-        bool speedOk = _shipController.Velocity.magnitude <= _dockingSpeedThreshold;
-
-        if (speedOk && !_isInteracting)
-            ActivateInteraction();
-        else if (!speedOk && _isInteracting)
-            DeactivateInteraction();
+        CheckInteractionCondition();
     }
 
     // =========================================================================
@@ -241,17 +236,37 @@ public class PlanetController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"[PlanetController] '{PlanetName}' 트리거 진입: {other.gameObject.name} / 태그: {other.tag}");
         if (!other.CompareTag("Player")) return;
+
+        if (_shipController == null) _shipController = other.GetComponent<ShipController>();
+        if (_shipInventory == null) _shipInventory = other.GetComponent<ShipInventory>();
         _isPlayerInside = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log($"[PlanetController] '{PlanetName}' 트리거 이탈: {other.gameObject.name} / 태그: {other.tag}");
         if (!other.CompareTag("Player")) return;
+
         _isPlayerInside = false;
         DeactivateInteraction();
+
+        _shipController = null;
+        _shipInventory = null;
+    }
+
+    // =========================================================================
+    // 상호작용 조건 체크 (Update)
+    // =========================================================================
+    private void CheckInteractionCondition()
+    {
+        if (_shipController == null) return;
+
+        bool speedOk = _shipController.Velocity.magnitude <= _dockingSpeedThreshold;
+
+        if (speedOk && !_isInteracting)
+            ActivateInteraction();
+        else if (!speedOk && _isInteracting)
+            DeactivateInteraction();
     }
 
     private void ActivateInteraction()
@@ -309,7 +324,7 @@ public class PlanetController : MonoBehaviour
             );
         }
 
-        yield return null;
+        yield return new WaitUntil(() => !_shipInventory.IsLoading);
         _isInteracting = false;
         _interactCoroutine = null;
     }
@@ -465,6 +480,7 @@ public class PlanetController : MonoBehaviour
         DebugInitialize();
     }
 
+    [ContextMenu("디버그: 데이터 초기화")]
     private void DebugInitialize()
     {
         GameEvents.OnDataInitialized -= DebugInitialize;

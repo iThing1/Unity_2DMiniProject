@@ -132,13 +132,12 @@ public class StationController : MonoBehaviour
             return;
         }
 
-        bool speedCheck = _shipController.IsInteractable;
+        bool speedOK = _shipController.IsInteractable;
 
-        if (speedCheck && !_isInteracting)
+        if (speedOK && !_isInteracting)
             ActivateInteraction(_activeZone.Value);
-        else if (!speedCheck && _isInteracting)
+        else if (!speedOK && _isInteracting)
             DeactivateInteraction();
-
     }
 
     // =========================================================================

@@ -119,13 +119,13 @@ public class ShipInventory : MonoBehaviour
 
     public void StartLoading(CargoType type, int totalAmount, Action<int> onComplete = null)
     {
-        StopTransfer();
+        StopLoading();
         _loadCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onComplete));
     }
 
     public void StartUnloading(CargoType type, Action onEach = null, Action<int> onComplete = null)
     {
-        StopTransfer();
+        StopUnloading();
         _unloadCoroutine = StartCoroutine(UnloadRoutine(type, onEach, onComplete));
     }
 
@@ -221,25 +221,4 @@ public class ShipInventory : MonoBehaviour
     {
         GameEvents.RaiseCargoChanged(Count, Capacity);
     }
-
-    // =========================================================================
-    // 디버그
-    // =========================================================================
-#if UNITY_EDITOR
-    [ContextMenu("디버그: 식량 1개 추가")]
-    private void Debug_AddFood() => TryAdd(CargoType.Food);
-
-    [ContextMenu("디버그: 광석 1개 추가")]
-    private void Debug_AddOre() => TryAdd(CargoType.Ore);
-
-    [ContextMenu("디버그: 식량 1개 제거")]
-    private void Debug_RemoveFood() => TryRemove(CargoType.Food);
-
-    [ContextMenu("디버그: 전체 초기화")]
-    private void Debug_Clear()
-    {
-        _cargo.Clear();
-        BroadcastState();
-    }
-#endif
 }
