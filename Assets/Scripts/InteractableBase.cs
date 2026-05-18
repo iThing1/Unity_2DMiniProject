@@ -14,6 +14,8 @@ public abstract class InteractableBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         GameEvents.OnDataInitialized += HandleDataInitialized;
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
+            HandleDataInitialized();
     }
 
     protected virtual void OnDisable()

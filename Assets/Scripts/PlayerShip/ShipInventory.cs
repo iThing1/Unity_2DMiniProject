@@ -92,7 +92,15 @@ public class ShipInventory : MonoBehaviour
 
     public bool TryRemove(CargoType type)
     {
-        int idx = _cargo.FindLastIndex(c => c.Type == type);
+        int idx = -1;
+        for (int i = _cargo.Count - 1; i >= 0; i--)
+        {
+            if (_cargo[i].Type == type)
+            {
+                idx = i;
+                break;
+            }
+        }
         if (idx < 0) return false;
 
         _cargo.RemoveAt(idx);
