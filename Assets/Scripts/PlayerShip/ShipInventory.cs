@@ -50,6 +50,7 @@ public class ShipInventory : MonoBehaviour
         GameEvents.OnDataInitialized += HandleDataInitialized;
         GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEvents.OnShipSpawned += HandleShipSpawned;
     }
 
     private void OnDisable()
@@ -57,6 +58,7 @@ public class ShipInventory : MonoBehaviour
         GameEvents.OnDataInitialized -= HandleDataInitialized;
         GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEvents.OnShipSpawned -= HandleShipSpawned;
     }
 
     // =========================================================================
@@ -217,6 +219,14 @@ public class ShipInventory : MonoBehaviour
     {
         if (prev == GameState.GamePlay)
             StopTransfer();
+    }
+
+    private void HandleShipSpawned(Transform shipTransform)
+    {
+        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
+        RefreshCapacity();
+        BroadcastState();
+        Debug.Log($"[ShipInventory] 스폰 후 초기화 완료. 용량: {Capacity}");
     }
 
     // =========================================================================

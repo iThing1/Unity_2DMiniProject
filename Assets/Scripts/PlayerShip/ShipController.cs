@@ -40,14 +40,12 @@ public class ShipController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += InitializeFuel;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= InitializeFuel;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
     }
@@ -205,6 +203,13 @@ public class ShipController : MonoBehaviour
     // =========================================================================
     // 초기화 및 이벤트 핸들러
     // =========================================================================
+    public void Initialize()
+    {
+        _stats.LoadConstantStats();
+        _stats.RefreshUpgradeStats();
+        InitializeFuel();
+        _isControllable = GameManager.Instance.CurrentState == GameState.GamePlay;
+    }
 
     private void InitializeFuel()
     {

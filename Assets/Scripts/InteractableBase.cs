@@ -14,6 +14,7 @@ public abstract class InteractableBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         GameEvents.OnDataInitialized += HandleDataInitialized;
+        GameEvents.OnShipSpawned += HandleShipSpawned;
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
     }
@@ -21,6 +22,7 @@ public abstract class InteractableBase : MonoBehaviour
     protected virtual void OnDisable()
     {
         GameEvents.OnDataInitialized -= HandleDataInitialized;
+        GameEvents.OnShipSpawned -= HandleShipSpawned;
     }
 
     private void Update()
@@ -78,24 +80,15 @@ public abstract class InteractableBase : MonoBehaviour
     private void HandleDataInitialized()
     {
         _dockingSpeedThreshold = GameDataManager.Instance.Constants.DockingSpeed;
-
-        CacheShipReferences();
         OnDataInitialized();
     }
 
     protected virtual void OnDataInitialized() { }
 
-    protected void CacheShipReferences()
+    private void HandleShipSpawned(Transform shipTransform)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
-        {
-            Debug.LogWarning($"[{GetType().Name}] 'Player' 태그 오브젝트를 찾지 못했습니다.");
-            return;
-        }
-
-        _shipController = player.GetComponent<ShipController>();
-        _shipInventory = player.GetComponent<ShipInventory>();
+        _shipController = shipTransform.GetComponent<ShipController>();
+        _shipInventory = shipTransform.GetComponent<ShipInventory>();
 
         if (_shipController == null)
             Debug.LogWarning($"[{GetType().Name}] ShipController를 찾지 못했습니다.");

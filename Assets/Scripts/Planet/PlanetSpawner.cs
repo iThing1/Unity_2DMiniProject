@@ -1,16 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlanetSpawner : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // =========================================================================
+    // Inspector 연결
+    // =========================================================================
+    [Header("행성 프리팹")]
+    [SerializeField] private GameObject _planetPrefab;
 }

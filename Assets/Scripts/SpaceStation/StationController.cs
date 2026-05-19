@@ -52,12 +52,28 @@ public class StationController : InteractableBase
     {
         base.OnEnable();
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+
+        if (GameManager.Instance != null)
+            _isGamePlay = GameManager.Instance.CurrentState == GameState.GamePlay;
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+    }
+    // =========================================================================
+    // 초기화 
+    // =========================================================================
+    public void Initialize()
+    {
+        _isGamePlay = true;
+        _simulator.Initialize();
+    }
+
+    public void StopSimulation()
+    {
+        _simulator.StopProduction();
     }
 
     // =========================================================================
@@ -69,6 +85,7 @@ public class StationController : InteractableBase
         playerTransform.position = _spawnPoint.position;
         playerTransform.rotation = _spawnPoint.rotation;
     }
+
 
     // =========================================================================
     // 구역 진입 / 이탈
@@ -110,15 +127,12 @@ public class StationController : InteractableBase
         switch (_activeZone.Value)
         {
             case StationZoneType.Left:
-                Debug.Log("[SpaceStation] 좌측 구역: 광석 하역 루틴 시작");
                 routine = UnloadOreRoutine();
                 break;
             case StationZoneType.Right:
-                Debug.Log("[SpaceStation] 우측 구역: 식량 적재 루틴 시작");
                 routine = LoadFoodRoutine();
                 break;
             default:
-                Debug.LogWarning($"[SpaceStation] 상호작용 불가 구역 또는 중앙 구역: {_activeZone.Value}");
                 routine = null;
                 break;
         }
@@ -130,7 +144,6 @@ public class StationController : InteractableBase
         }
 
         _interactCoroutine = StartCoroutine(routine);
-        Debug.Log($"[StationController] 상호작용 활성화: {_activeZone.Value}");
     }
 
     protected override void OnDeactivate()
@@ -141,7 +154,6 @@ public class StationController : InteractableBase
             GameEvents.RaiseStationInteractionChanged(z, false);
 
         _shipInventory?.StopTransfer();
-        Debug.Log("[StationController] 상호작용 비활성화");
     }
 
     // =========================================================================

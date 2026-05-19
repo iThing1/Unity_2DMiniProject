@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 878448512821524544}
   - component: {fileID: 4372862238298799196}
-  - component: {fileID: 449550070383548311}
   - component: {fileID: 9052737656280952091}
+  - component: {fileID: 449550070383548311}
   m_Layer: 0
   m_Name: SpaceStation
   m_TagString: Untagged
@@ -50,6 +50,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StationController
   _spawnPoint: {fileID: 6067600735465733133}
+--- !u!114 &9052737656280952091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1481687766246868662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e06e978ca77fd342ba64c41b60f1099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StationSimulator
 --- !u!212 &449550070383548311
 SpriteRenderer:
   serializedVersion: 2
@@ -109,18 +121,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &9052737656280952091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1481687766246868662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e06e978ca77fd342ba64c41b60f1099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StationSimulator
 --- !u!1 &4126773633018645585
 GameObject:
   m_ObjectHideFlags: 0

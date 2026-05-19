@@ -36,8 +36,6 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
         GameEvents.OnOreUnload += HandleOreUnload;
         GameEvents.OnIngotSellRequested += HandleIngotSellRequested;
@@ -45,15 +43,29 @@ public class StationSimulator : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
         GameEvents.OnOreUnload -= HandleOreUnload;
         GameEvents.OnIngotSellRequested -= HandleIngotSellRequested;
     }
 
     // =========================================================================
-    // 외부 API: 저장소 직접 접근
+    // 외부 API: 초기화
+    // =========================================================================
+    public void Initialize()
+    {
+        LoadStats();
+        ResetTempUpgrades();
+        StartIdleProduction();
+        BroadcastStorage();
+    }
+
+    public void StopProduction()
+    {
+        StopIdleProduction();
+    }
+
+    // =========================================================================
+    // 외부 API: 저장소 접근
     // =========================================================================
     public void AddOre(float amount)
     {
@@ -71,7 +83,7 @@ public class StationSimulator : MonoBehaviour
     }
 
     public void RefundFood(int amount)
-    {
+    {   
         StoredFood += amount;
         BroadcastStorage();
     }
@@ -86,11 +98,12 @@ public class StationSimulator : MonoBehaviour
             float dt = Time.deltaTime;
             StoredFood += _farmRate * dt;
 
-            if (StoredOre >= 1f)
+            if (StoredOre >= 10f)
             {
                 float refineAmount = Mathf.Min(_refineRate * dt, StoredOre);
                 StoredOre -= refineAmount;
                 StoredIngot += refineAmount / _oreToIngotRatio;
+                GameManager.Instance.Context.CurrentIngot += StoredIngot;
             }
 
             BroadcastStorage();
@@ -110,7 +123,7 @@ public class StationSimulator : MonoBehaviour
         }
 
         float ingotToSell = Mathf.Floor(StoredIngot);
-        float goldEarned = ingotToSell; // 주괴 1개 = 골드 1개
+        float goldEarned = ingotToSell * 10f;   // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
 
         StoredIngot -= ingotToSell;
         GameManager.Instance.AddGold(goldEarned);
@@ -122,25 +135,6 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleDataInitialized()
-    {
-        LoadStats();
-        BroadcastStorage();
-    }
-
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        if (next == GameState.GamePlay)
-        {
-            ResetTempUpgrades();
-            StartIdleProduction();
-        }
-        else
-        {
-            StopIdleProduction();
-        }
-    }
-
     private void HandleUpgradeCompleted(string upgradeId, int newLevel)
     {
         if (upgradeId == UPGRADE_FARM || upgradeId == UPGRADE_REFINE)
@@ -158,13 +152,9 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private void LoadStats()
     {
-        var dm = GameDataManager.Instance;
-        var gm = GameManager.Instance;
-
         _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
-
-        _farmRate = gm.GetUpgradeStat(UPGRADE_FARM);
-        _refineRate = gm.GetUpgradeStat(UPGRADE_REFINE);
+        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);
+        _refineRate = GameManager.Instance.GetUpgradeStat(UPGRADE_REFINE);
 
         Debug.Log($"[StationSimulator] 스탯 로드 - 농장:{_farmRate:F2}/s, 제련:{_refineRate:F2}/s, 비율:1:{_oreToIngotRatio}");
     }
@@ -172,7 +162,7 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // TEMP 업그레이드 초기화
     // =========================================================================
-    private void ResetTempUpgrades()
+    public void ResetTempUpgrades()
     {
         var context = GameManager.Instance.Context;
         var dm = GameDataManager.Instance;
@@ -191,7 +181,7 @@ public class StationSimulator : MonoBehaviour
         if (keysToReset.Count > 0)
         {
             LoadStats();
-            Debug.Log($"[StationSimulator] 임시 업그레이드 {keysToReset.Count}개 초기화");
+            Debug.Log($"[StationSimulator] 임시 업그레이드 초기화");
         }
     }
 

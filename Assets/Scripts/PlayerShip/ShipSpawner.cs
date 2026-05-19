@@ -1,16 +1,91 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // =========================================================================
+    // Inspector 연결
+    // =========================================================================
+    [Header("우주선 프리팹")]
+    [SerializeField] private GameObject _shipPrefab;
+
+    // =========================================================================
+    // 내부 상태
+    // =========================================================================
+    private GameObject _spawnedShip;
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    private void OnEnable()
     {
-        
+        GameEvents.OnStationSpawned += HandleStationSpawned;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        GameEvents.OnStationSpawned -= HandleStationSpawned;
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleStationSpawned(Transform stationTransform)
+    {
+        if (_spawnedShip == null)
+            SpawnShip(stationTransform);
+        else
+            ActivateShip(stationTransform);
+    }
+
+    // =========================================================================
+    // 스폰 로직
+    // =========================================================================
+    private void SpawnShip(Transform stationTransform)
+    {
+        if (_shipPrefab == null)
+        {
+            Debug.LogError("[ShipSpawner] 우주선 프리팹이 연결되지 않았습니다.");
+            return;
+        }
+
+        StationController station = stationTransform.GetComponent<StationController>();
+        if (station == null)
+        {
+            Debug.LogError("[ShipSpawner] StationController 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+
+        _spawnedShip = Instantiate(_shipPrefab);
+
+        ShipController shipController = _spawnedShip.GetComponent<ShipController>();
+        if (shipController == null)
+        {
+            Debug.LogError("[ShipSpawner] ShipController 컴포넌트를 찾을 수 없습니다.");
+            Destroy(_spawnedShip);
+            return;
+        }
+
+        station.PlacePlayerAtSpawn(_spawnedShip.transform);
+        shipController.Initialize();
+        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+        Debug.Log("[ShipSpawner] 우주선 스폰 완료");
+    }
+
+    private void ActivateShip(Transform stationTransform)
+    {
+        StationController station = stationTransform.GetComponent<StationController>();
+        if (station == null)
+        {
+            Debug.LogError("[ShipSpawner] StationController 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+
+        _spawnedShip.SetActive(true);
+        ShipController shipController = _spawnedShip.GetComponent<ShipController>();
+        shipController.Initialize();
+
+        station.PlacePlayerAtSpawn(_spawnedShip.transform);
+        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+        Debug.Log("[ShipSpawner] 우주선 재활성화");
     }
 }

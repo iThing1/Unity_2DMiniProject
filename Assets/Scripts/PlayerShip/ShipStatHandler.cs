@@ -63,7 +63,7 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     // 스탯 로드
     // =========================================================================
-    private void LoadConstantStats()
+    public void LoadConstantStats()
     {
         var c = GameDataManager.Instance.Constants;
 

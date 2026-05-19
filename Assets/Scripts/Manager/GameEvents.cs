@@ -1,5 +1,6 @@
-﻿using System;
-using GameData;
+﻿using GameData;
+using System;
+using UnityEngine;
 
 public static class GameEvents
 {
@@ -45,6 +46,11 @@ public static class GameEvents
     public static event Action<float> OnOreUnload;
     public static event Action OnIngotSellRequested;
 
+    // 스폰 관련
+    public static event Action<Transform> OnStationSpawned;
+    public static event Action<Transform> OnShipSpawned;
+    public static event Action<Transform> OnPlanetSpawned;
+
     // =========================================================================
     // null 체크를 한 곳에서 처리
     // =========================================================================
@@ -80,6 +86,10 @@ public static class GameEvents
     public static void RaiseOreUnload(float amount) => OnOreUnload?.Invoke(amount);
     public static void RaiseIngotSellRequested() => OnIngotSellRequested?.Invoke();
 
+    public static void RaiseStationSpawned(Transform stationTransform) => OnStationSpawned?.Invoke(stationTransform);
+    public static void RaiseShipSpawned(Transform shipTransform) => OnShipSpawned?.Invoke(shipTransform);
+    public static void RaisePlanetSpawned(Transform planetTransform) => OnPlanetSpawned?.Invoke(planetTransform);
+
     public static void ClearAllListeners()
     {
         OnDataInitialized = null;
@@ -113,5 +123,9 @@ public static class GameEvents
         OnStationStorageChanged = null;
         OnOreUnload = null;
         OnIngotSellRequested = null;
+
+        OnStationSpawned = null;
+        OnShipSpawned = null;
+        OnPlanetSpawned = null;
     }
 }

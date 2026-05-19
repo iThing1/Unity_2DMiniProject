@@ -53,8 +53,6 @@ public class PlanetController : InteractableBase
         PlanetName = data.Name;
         Size = data.Size;
 
-        if (_shipController == null) CacheShipReferences();
-
         _simulator.Initialize(data, instanceId);
 
         Debug.Log($"[PlanetController] '{PlanetName}' 초기화 완료");
@@ -71,7 +69,6 @@ public class PlanetController : InteractableBase
             StopCoroutine(_interactCoroutine);
 
         _interactCoroutine = StartCoroutine(InteractRoutine());
-        Debug.Log($"[PlanetController] '{PlanetName}' 상호작용 시작");
     }
 
     protected override void OnDeactivate()
@@ -83,7 +80,6 @@ public class PlanetController : InteractableBase
         }
 
         _shipInventory?.StopTransfer();
-        Debug.Log($"[PlanetController] '{PlanetName}' 상호작용 중단");
     }
 
     // =========================================================================
