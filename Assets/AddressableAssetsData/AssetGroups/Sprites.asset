@@ -66,7 +66,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8ab21f351df488844b88d46683e9881a
-    m_Address: UI/ProgressBar.png
+    m_Address: UI/ProgressBar
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

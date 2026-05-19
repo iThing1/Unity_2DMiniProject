@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleStageClear(string stageId)
     {
-        Context.StageClearStatus[stageId] = true;
+        Context.StageClearStatus[stageId] = true;   // 클리어 상태 저장. TODO: 다음 스테이지 잠금 해제용
 
         if (!Context.UnlockedStageIds.Contains(stageId))
             Context.UnlockedStageIds.Add(stageId);

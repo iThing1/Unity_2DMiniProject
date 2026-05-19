@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using GameData;
 
-public class GamePlayUI : MonoBehaviour
+public class GamePlayUI : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -42,6 +42,8 @@ public class GamePlayUI : MonoBehaviour
         GameEvents.OnCargoDetailChanged += HandleCargoDetailChanged;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnDataInitialized += HandleDataInitialized;
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
+            HandleDataInitialized();
     }
 
     private void OnDisable()
@@ -62,8 +64,9 @@ public class GamePlayUI : MonoBehaviour
             _btnCargo.onClick.RemoveListener(OnClickCargo);
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         RefreshFuel(0f, 1f);
         RefreshBooster(false);
         RefreshCargo(0, 0, 0, 1);

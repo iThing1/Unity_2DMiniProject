@@ -14,6 +14,32 @@ namespace GameData
     public enum UIType { Popup, Main, VeryFront }
     public enum SoundType { BGM, SFX }
 
+    public struct UIId
+    {
+        public struct Panel
+        {
+            public const string MainMenu = "UI_Panel_01";
+            public const string GamePlay = "UI_Panel_02";
+            public const string GameLobby = "UI_Panel_03";
+            public const string Upgrade = "UI_Panel_04";
+        }
+
+        public struct Popup
+        {
+            public const string StageStart = "UI_Popup_05";
+            public const string StageClear = "UI_Popup_03";
+            public const string StageFailed = "UI_Popup_04";
+            public const string PlanetInfo = "UI_Popup_06";
+            public const string RefinerUpgrade = "UI_Popup_07";
+            public const string FarmUpgrade = "UI_Popup_08";
+        }
+
+        public struct VeryFront
+        {
+            public const string Loading = "UI_Loading_01";
+        }
+    }
+
     [Serializable]
     public class GameContext
     {
@@ -133,7 +159,7 @@ namespace GameData
         public string Name = null!;
         public UIType Type;
         public string BindState = null!;
-        public string PrefabPath = null!;
+        public bool AutoSpawn;
 
         string IGameData.Id => Id;
     }

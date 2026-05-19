@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using GameData;
 
-public class StageStartPopup : MonoBehaviour
+public class StageStartPopup : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -26,8 +26,9 @@ public class StageStartPopup : MonoBehaviour
         GameEvents.OnStageSelected -= HandleStageSelected;
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         if (_btnStart != null)
             _btnStart.onClick.AddListener(OnClickStart);
     }

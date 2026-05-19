@@ -1212,6 +1212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83eeece293ddba43b41284526b571a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GamePlayUI
+  _uiId: UI_Panel_02
+  _btnClose: {fileID: 0}
   _fuelSlider: {fileID: 8255962527147410799}
   _boostIcon: {fileID: 6774050591406030823}
   _boostOnSprite: {fileID: 990671240, guid: 99ca28cd618a43b4784ab4967c552cbb, type: 3}

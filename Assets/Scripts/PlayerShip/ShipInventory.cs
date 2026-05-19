@@ -64,14 +64,7 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 초기화
     // =========================================================================
-    private void HandleDataInitialized()
-    {
-        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
 
-        RefreshCapacity();
-        BroadcastState();
-        Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
-    }
 
     private void RefreshCapacity()
     {
@@ -207,6 +200,15 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
+    private void HandleDataInitialized()
+    {
+        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
+
+        RefreshCapacity();
+        BroadcastState();
+        Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
+    }
+
     private void HandleUpgradeCompleted(string upgradeId, int newLevel)
     {
         if (upgradeId != UPGRADE_CARGO) return;

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using GameData;
 
-public class LobbyUI : MonoBehaviour
+public class LobbyUI : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -47,8 +47,9 @@ public class LobbyUI : MonoBehaviour
         GameEvents.OnGoldChanged -= HandleGoldChanged;
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         if (_btnStart != null)
             _btnStart.onClick.AddListener(OnClickStart);
         if (_btnLeft != null)

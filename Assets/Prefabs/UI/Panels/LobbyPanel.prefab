@@ -1985,6 +1985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6595d3b02d749d84ab5f9fa8613b5a64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LobbyUI
+  _uiId: UI_Panel_03
+  _btnClose: {fileID: 0}
   _txtStageName: {fileID: 2551296905742201562}
   _btnStart: {fileID: 2892536868949747927}
   _btnLeft: {fileID: 7446559903557036861}
