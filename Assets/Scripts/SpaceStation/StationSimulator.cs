@@ -153,7 +153,7 @@ public class StationSimulator : MonoBehaviour
     private void LoadStats()
     {
         _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
-        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);
+        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);  
         _refineRate = GameManager.Instance.GetUpgradeStat(UPGRADE_REFINE);
 
         Debug.Log($"[StationSimulator] 스탯 로드 - 농장:{_farmRate:F2}/s, 제련:{_refineRate:F2}/s, 비율:1:{_oreToIngotRatio}");

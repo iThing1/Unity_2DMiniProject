@@ -15,28 +15,8 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 2a7e22d867ae70b4cb6e573a9510a0e1
   m_SerializeEntries:
-  - m_GUID: 0f8610c350d44a343880112ee67de222
-    m_Address: Icon/Ore
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 10d43ba5493ee684a80dfde92ce8131c
-    m_Address: Icon/Ingot
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6fb5781901c75134fb7dac3fa2bcf6b1
-    m_Address: Icon/Gold
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 88f0d2e25dd371345a87ece345e178d1
-    m_Address: Icon/Food
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8ab21f351df488844b88d46683e9881a
-    m_Address: Assets/Sprites/UI/ProgressBar.png
+  - m_GUID: 0d79cd2eaacc7ad4bb1c13208b673b03
+    m_Address: Prefabs/Planet
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

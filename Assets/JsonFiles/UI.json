@@ -29,20 +29,27 @@
   },
   {
     "Id": "UI_Popup_05",
-    "Name": "PlanetInfo",
+    "Name": "StageStart",
     "Type": "Popup",
     "BindState": "GamePlay",
     "AutoSpawn": false
   },
   {
     "Id": "UI_Popup_06",
-    "Name": "RefinerUpgrade",
+    "Name": "PlanetInfo",
     "Type": "Popup",
     "BindState": "GamePlay",
     "AutoSpawn": false
   },
   {
     "Id": "UI_Popup_07",
+    "Name": "RefinerUpgrade",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "AutoSpawn": false
+  },
+  {
+    "Id": "UI_Popup_08",
     "Name": "FarmUpgrade",
     "Type": "Popup",
     "BindState": "GamePlay",

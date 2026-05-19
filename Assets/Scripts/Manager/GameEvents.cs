@@ -22,6 +22,7 @@ public static class GameEvents
 
     // 스테이지
     public static event Action<string> OnStageSelected;
+    public static event Action OnStageStartRequested;
     public static event Action<string> OnStageClear;
     public static event Action<string> OnStageFailed;
 
@@ -65,6 +66,7 @@ public static class GameEvents
     public static void RaiseUpgradeCompleted(string upgradeId, int lv) => OnUpgradeCompleted?.Invoke(upgradeId, lv);
 
     public static void RaiseStageSelected(string stageId) => OnStageSelected?.Invoke(stageId);
+    public static void RaiseStageStartRequested() => OnStageStartRequested?.Invoke();
     public static void RaiseStageClear(string stageId) => OnStageClear?.Invoke(stageId);
     public static void RaiseStageFailed(string stageId) => OnStageFailed?.Invoke(stageId);
 
@@ -103,6 +105,7 @@ public static class GameEvents
         OnUpgradeCompleted = null;
 
         OnStageSelected = null;
+        OnStageStartRequested = null;
         OnStageClear = null;
         OnStageFailed = null;
 
