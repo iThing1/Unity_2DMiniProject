@@ -73,6 +73,7 @@ public class LobbyUI : UIBase
     // =========================================================================
     private void HandleDataInitialized()
     {
+        Debug.Log("[LobbyUI] HandleDataInitialized 호출");
         LoadStageList();
         RefreshUI();
     }
@@ -183,7 +184,7 @@ public class LobbyUI : UIBase
         foreach (PlanetItem item in _planetItems)
         {
             if (item != null)
-                Destroy(item.gameObject);
+                DestroyImmediate(item.gameObject);
         }
         _planetItems.Clear();
 
@@ -197,7 +198,8 @@ public class LobbyUI : UIBase
             if (planetData == null) continue;
 
             GameObject instance = Instantiate(_planetItemPrefab, _planetListContent);
-            PlanetItem item = instance.GetComponent<PlanetItem>();
+
+            PlanetItem item = instance.GetComponentInChildren<PlanetItem>();
 
             if (item == null) continue;
 

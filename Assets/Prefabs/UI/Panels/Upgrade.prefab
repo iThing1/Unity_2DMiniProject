@@ -603,6 +603,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5616495511725991005}
+  - component: {fileID: 9179817762788187018}
   - component: {fileID: 184242332252362603}
   - component: {fileID: 948250477829485373}
   m_Layer: 5
@@ -634,6 +635,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &9179817762788187018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164749988134846369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41e4e3731c564c4d92294869db85b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeUI
+  _uiId: UI_Panel_04
+  _btnClose: {fileID: 0}
 --- !u!222 &184242332252362603
 CanvasRenderer:
   m_ObjectHideFlags: 0

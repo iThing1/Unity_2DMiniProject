@@ -1,6 +1,6 @@
 [
   {
-    "Stage_ID": "Stage_tutorial_00",
+    "Stage_ID": "Stage_normal_00",
     "Name": "Training Zone",
     "MaxPlanet": 3,
     "SpawnInteval": 15,

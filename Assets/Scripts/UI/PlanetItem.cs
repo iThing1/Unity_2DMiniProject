@@ -18,11 +18,19 @@ public class PlanetItem : MonoBehaviour
     {
         if (data == null) return;
 
+        Debug.Log($"[PlanetItem] Setup 호출: {data.Name}, {data.PlanetSprite}");  // 임시 추가
+
         if (_txtName != null)
             _txtName.text = data.Name;
 
         if (_imgPlanet != null)
-            ResourceManager.Instance.LoadSprite(data.PlanetSprite, OnSpriteLoaded);
+        {
+            string[] parts = data.PlanetSprite.Split('/');
+            if (parts.Length == 2)
+                ResourceManager.Instance.LoadSpriteFromSheet(parts[0], parts[1], OnSpriteLoaded);
+            else
+                Debug.LogWarning($"[PlanetItem] PlanetSprite 경로 형식이 올바르지 않습니다: {data.PlanetSprite}");
+        }
     }
 
     // =========================================================================

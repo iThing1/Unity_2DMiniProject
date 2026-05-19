@@ -896,10 +896,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8f91a488a52ca94da85bbe8103c09a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  _mainRoot: {fileID: 0}
-  _popupRoot: {fileID: 0}
-  _veryFrontRoot: {fileID: 0}
-  _uiPrefabs: []
+  _mainRoot: {fileID: 996764278}
+  _popupRoot: {fileID: 1502698777}
+  _veryFrontRoot: {fileID: 100637882}
+  _uiPrefabs:
+  - {fileID: 7164749988134846369, guid: df7015a9b02c01b479d09e6758579288, type: 3}
+  - {fileID: 7164749988134846369, guid: c152de9c51752d4498766551aa2eae98, type: 3}
+  - {fileID: 7164749988134846369, guid: e5302302e68a7274a8378f116dfc8502, type: 3}
+  - {fileID: 7164749988134846369, guid: 65de31d925e8e0f4badf7632bc5803c6, type: 3}
+  - {fileID: 7164749988134846369, guid: b80c2921b1b7ccd44b8bc8c8e7674e5f, type: 3}
+  - {fileID: 6868254862704934756, guid: 0320b40221164d447ac013ed09055075, type: 3}
+  - {fileID: 6868254862704934756, guid: 6885a62bf1d177b4abd4aa73e9e03d4a, type: 3}
 --- !u!4 &1307725867
 Transform:
   m_ObjectHideFlags: 0
@@ -1240,9 +1247,9 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 1731452549}
   - {fileID: 1582712957}
+  - {fileID: 1307725867}
   - {fileID: 920499278}
   - {fileID: 471296884}
   - {fileID: 229872839}
-  - {fileID: 837498830}
   - {fileID: 17693463}
-  - {fileID: 1307725867}
+  - {fileID: 837498830}
