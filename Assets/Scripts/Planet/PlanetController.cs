@@ -7,7 +7,7 @@ using GameData;
 public class PlanetController : InteractableBase
 {
     // =========================================================================
-    // 런타임 상태 (외부 읽기용 - 시뮬레이터 위임)
+    // 런타임 상태
     // =========================================================================
     public string InstanceId { get; private set; }
     public string PlanetName { get; private set; }
@@ -17,6 +17,7 @@ public class PlanetController : InteractableBase
     public float Population => _simulator.Population;
     public float StoredFood => _simulator.StoredFood;
     public float StoredOre => _simulator.StoredOre;
+    public float CycleProgress => _simulator.CycleProgress;
     public PlanetState State => _simulator.State;
     public bool IsGameOverWarning => _simulator.IsGameOverWarning;
 
@@ -114,14 +115,14 @@ public class PlanetController : InteractableBase
     // =========================================================================
     private void OnFoodUnloadEach()
     {
-        GameEvents.RaiseFoodDelivered(InstanceId, 1);
+        _simulator.DeliverFood(1);
     }
 
     private void OnFoodUnloadComplete(int n) { }
 
     private void OnOreLoadComplete(int loaded)
     {
-        GameEvents.RaiseOreCollected(InstanceId, loaded);
+        _simulator.CollectOre(loaded);
     }
 
     private bool IsLoadingDone()

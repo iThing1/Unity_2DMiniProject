@@ -549,7 +549,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 6fb5781901c75134fb7dac3fa2bcf6b1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1493,7 +1493,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 10d43ba5493ee684a80dfde92ce8131c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1704,6 +1704,8 @@ MonoBehaviour:
   _btnRight: {fileID: 3030289426087489181}
   _planetListContent: {fileID: 6060800400605602658}
   _planetItemPrefab: {fileID: 2916308515960010113, guid: 7ab8f4aa808c0ae4b924378a1df35c4e, type: 3}
+  _txtGold: {fileID: 1102963677307884820}
+  _txtIngot: {fileID: 4792248431171545799}
   _lockedAlpha: 0.3
 --- !u!222 &184242332252362603
 CanvasRenderer:

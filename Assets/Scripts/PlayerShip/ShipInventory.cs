@@ -70,12 +70,10 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 초기화
     // =========================================================================
-
     public void InitializeStats()
     {
         _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
         RefreshCapacity();
-        BroadcastState();
     }
 
     private void RefreshCapacity()
@@ -87,13 +85,12 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 외부 API: 화물 추가/제거/조회
     // =========================================================================
-
     public bool TryAdd(CargoType type)
     {
         if (IsFull) return false;
 
         _cargo.Add(new Cargo(type));
-        BroadcastState();
+        // 삭제: BroadcastState()
         return true;
     }
 
@@ -111,7 +108,6 @@ public class ShipInventory : MonoBehaviour
         if (idx < 0) return false;
 
         _cargo.RemoveAt(idx);
-        BroadcastState();
         return true;
     }
 
@@ -128,7 +124,6 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 외부 API: 코루틴 적재 / 하역
     // =========================================================================
-
     public void StartLoading(CargoType type, int totalAmount, Action<int> onComplete = null)
     {
         StopLoading();
@@ -222,7 +217,6 @@ public class ShipInventory : MonoBehaviour
     {
         if (upgradeId != UPGRADE_CARGO) return;
         RefreshCapacity();
-        BroadcastState();
         Debug.Log($"[CargoInventory] 용량 갱신. {Capacity}");
     }
 
@@ -236,14 +230,5 @@ public class ShipInventory : MonoBehaviour
     {
         InitializeStats();
         Debug.Log($"[ShipInventory] 스폰 후 초기화 완료. 용량: {Capacity}");
-    }
-
-    // =========================================================================
-    // 내부 유틸
-    // =========================================================================
-    private void BroadcastState()
-    {
-        GameEvents.RaiseCargoChanged(Count, Capacity);
-        GameEvents.RaiseCargoDetailChanged(CountOf(CargoType.Food), CountOf(CargoType.Ore), Count, Capacity);
     }
 }

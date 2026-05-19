@@ -29,7 +29,6 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // 내부 상태
     // =========================================================================
-
     private Coroutine _farmCoroutine;
     private Coroutine _refineCoroutine;
 
@@ -39,15 +38,11 @@ public class StationSimulator : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
-        GameEvents.OnOreUnload += HandleOreUnload;
-        GameEvents.OnIngotSellRequested += HandleIngotSellRequested;
     }
 
     private void OnDisable()
     {
         GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
-        GameEvents.OnOreUnload -= HandleOreUnload;
-        GameEvents.OnIngotSellRequested -= HandleIngotSellRequested;
     }
 
     // =========================================================================
@@ -58,7 +53,6 @@ public class StationSimulator : MonoBehaviour
         LoadStats();
         ResetTempUpgrades();
         StartProduction();
-        BroadcastStorage();
     }
 
     public void StopProduction()
@@ -73,7 +67,6 @@ public class StationSimulator : MonoBehaviour
     public void AddOre(float amount)
     {
         StoredOre += amount;
-        BroadcastStorage();
     }
 
     public bool TryConsumeFood(int amount)
@@ -81,14 +74,35 @@ public class StationSimulator : MonoBehaviour
         if (StoredFood < amount) return false;
         StoredFood -= amount;
         StoredFood = Mathf.Max(0f, StoredFood);
-        BroadcastStorage();
         return true;
     }
 
     public void RefundFood(int amount)
     {
         StoredFood += amount;
-        BroadcastStorage();
+    }
+
+    public void UnloadOre(float amount)
+    {
+        StoredOre += amount;
+    }
+
+    public void SellIngot()
+    {
+        if (StoredIngot < 1f)
+        {
+            Debug.Log("[StationSimulator] 판매할 주괴가 없습니다.");
+            return;
+        }
+
+        float ingotToSell = Mathf.Floor(StoredIngot);
+        float goldEarned = ingotToSell * 10f;   // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
+
+        StoredIngot -= ingotToSell;
+        GameManager.Instance.TrySpendIngot(ingotToSell);
+        GameManager.Instance.AddGold(goldEarned);
+
+        Debug.Log($"[StationSimulator] 주괴 {ingotToSell:F0}개 판매 → 골드 +{goldEarned:F0}");
     }
 
     // =========================================================================
@@ -99,7 +113,6 @@ public class StationSimulator : MonoBehaviour
         while (true)
         {
             StoredFood += _farmRate * Time.deltaTime;
-            BroadcastStorage();
             yield return null;
         }
     }
@@ -119,34 +132,10 @@ public class StationSimulator : MonoBehaviour
                 float ingotGain = refineAmount / _oreToIngotRatio;
                 StoredIngot += ingotGain;
                 GameManager.Instance.AddIngot(ingotGain);
-
-                BroadcastStorage();
             }
 
             yield return null;
         }
-    }
-
-    // =========================================================================
-    // 주괴 판매
-    // =========================================================================
-    private void HandleIngotSellRequested()
-    {
-        if (StoredIngot < 1f)
-        {
-            Debug.Log("[StationSimulator] 판매할 주괴가 없습니다.");
-            return;
-        }
-
-        float ingotToSell = Mathf.Floor(StoredIngot);
-        float goldEarned = ingotToSell * 10f;   // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
-
-        StoredIngot -= ingotToSell;
-        GameManager.Instance.TrySpendIngot(ingotToSell);
-        GameManager.Instance.AddGold(goldEarned);
-        BroadcastStorage();
-
-        Debug.Log($"[StationSimulator] 주괴 {ingotToSell:F0}개 판매 → 골드 +{goldEarned:F0}");
     }
 
     // =========================================================================
@@ -156,12 +145,6 @@ public class StationSimulator : MonoBehaviour
     {
         if (upgradeId == UPGRADE_FARM || upgradeId == UPGRADE_REFINE)
             LoadStats();
-    }
-
-    private void HandleOreUnload(float amount)
-    {
-        StoredOre += amount;
-        BroadcastStorage();
     }
 
     // =========================================================================
@@ -230,9 +213,4 @@ public class StationSimulator : MonoBehaviour
             _refineCoroutine = null;
         }
     }
-
-    // =========================================================================
-    // 브로드캐스트
-    // =========================================================================
-    public void BroadcastStorage() => GameEvents.RaiseStationStorageChanged(StoredFood, StoredOre, StoredIngot);
 }

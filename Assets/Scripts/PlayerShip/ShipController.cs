@@ -87,11 +87,7 @@ public class ShipController : MonoBehaviour
     {
         if (!_isControllable)
         {
-            if (IsBoosting)
-            {
-                IsBoosting = false;
-                GameEvents.RaiseBoosterChanged(false);
-            }
+            IsBoosting = false;
             return;
         }
 
@@ -102,7 +98,6 @@ public class ShipController : MonoBehaviour
         if (shouldBoost == IsBoosting) return;
 
         IsBoosting = shouldBoost;
-        GameEvents.RaiseBoosterChanged(IsBoosting);
     }
 
     // =========================================================================
@@ -142,11 +137,7 @@ public class ShipController : MonoBehaviour
 
     private void ConsumeFuel(float deltaTime)
     {
-        float prev = CurrentFuel;
         CurrentFuel = Mathf.Max(0f, CurrentFuel - _stats.FuelConsumeRate * deltaTime);
-
-        if (!Mathf.Approximately(prev, CurrentFuel))
-            GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
 
         if (CurrentFuel <= 0f && !IsOverheat)
             EnterOverheat();
@@ -154,22 +145,16 @@ public class ShipController : MonoBehaviour
 
     private void RegenerateFuel(float deltaTime)
     {
-        float prev = CurrentFuel;
         CurrentFuel = Mathf.Min(MaxFuel, CurrentFuel + _stats.FuelRegenRate * deltaTime);
-
-        if (!Mathf.Approximately(prev, CurrentFuel))
-            GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
     }
+
     // =========================================================================
     // 과열 시스템
     // =========================================================================
     private void EnterOverheat()
     {
         IsBoosting = false;
-        GameEvents.RaiseBoosterChanged(false);
-
         IsOverheat = true;
-        GameEvents.RaiseOverheatChanged(true);
 
         if (_overheatCoroutine != null)
             StopCoroutine(_overheatCoroutine);
@@ -182,9 +167,9 @@ public class ShipController : MonoBehaviour
         yield return new WaitForSeconds(_stats.OverheatDuration);
 
         IsOverheat = false;
-        GameEvents.RaiseOverheatChanged(false);
         _overheatCoroutine = null;
     }
+
     // =========================================================================
     // 회전 (이동 방향 바라보기)
     // =========================================================================
@@ -215,7 +200,6 @@ public class ShipController : MonoBehaviour
     {
         MaxFuel = _stats.MaxFuel;
         CurrentFuel = MaxFuel;
-        GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)
@@ -233,23 +217,20 @@ public class ShipController : MonoBehaviour
         float ratio = CurrentFuel / MaxFuel;
         MaxFuel = newMax;
         CurrentFuel = MaxFuel * ratio;
-        GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
     }
 
     // =========================================================================
     // 외부 제어 API
     // =========================================================================
-
     public bool IsInteractable => _rigidbody2D.linearVelocity.magnitude <= _stats.DockingSpeedThreshold;
+
     public void RefillFuel(float amount)
     {
         CurrentFuel = Mathf.Min(MaxFuel, CurrentFuel + amount);
-        GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
     }
 
     public void RefillFuelFull()
     {
         CurrentFuel = MaxFuel;
-        GameEvents.RaiseFuelChanged(CurrentFuel, MaxFuel);
     }
 }

@@ -8,11 +8,10 @@ public class GamePlayUI : UIBase
     // =========================================================================
     // Inspector 연결
     // =========================================================================
-
     [Header("연료 슬라이더")]
     [SerializeField] private Slider _fuelSlider;
 
-    [Header("부스터 아이콘 (img_boost)")]
+    [Header("부스터 아이콘")]
     [SerializeField] private Image _boostIcon;
     [SerializeField] private Sprite _boostOnSprite;
     [SerializeField] private Sprite _boostOffSprite;
@@ -29,32 +28,40 @@ public class GamePlayUI : UIBase
     [SerializeField] private GameObject _cargoPanel;
 
     // =========================================================================
+    // 직접 참조
+    // =========================================================================
+    private ShipController _controller;
+    private ShipInventory _cargo;
+
+    // =========================================================================
+    // 이전 값 캐싱 (변경 시에만 갱신)
+    // =========================================================================
+    private float _lastFuel = -1f;
+    private float _lastMaxFuel = -1f;
+    private bool _lastIsBoosting;
+    private bool _lastIsOverheat;
+    private int _lastCargoCount = -1;
+    private int _lastCargoCapacity = -1;
+
+    // =========================================================================
     // Unity 생명주기
     // =========================================================================
-
     private void OnEnable()
     {
-        GameEvents.OnFuelChanged += HandleFuelChanged;
-        GameEvents.OnBoosterChanged += HandleBoosterChanged;
-        GameEvents.OnOverheatChanged += HandleOverheatChanged;
         GameEvents.OnGoldChanged += HandleGoldChanged;
         GameEvents.OnIngotChanged += HandleIngotChanged;
-        GameEvents.OnCargoDetailChanged += HandleCargoDetailChanged;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
         GameEvents.OnDataInitialized += HandleDataInitialized;
+
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
     }
 
     private void OnDisable()
     {
-        GameEvents.OnFuelChanged -= HandleFuelChanged;
-        GameEvents.OnBoosterChanged -= HandleBoosterChanged;
-        GameEvents.OnOverheatChanged -= HandleOverheatChanged;
         GameEvents.OnGoldChanged -= HandleGoldChanged;
         GameEvents.OnIngotChanged -= HandleIngotChanged;
-        GameEvents.OnCargoDetailChanged -= HandleCargoDetailChanged;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnShipSpawned -= HandleShipSpawned;
         GameEvents.OnDataInitialized -= HandleDataInitialized;
@@ -71,6 +78,7 @@ public class GamePlayUI : UIBase
         base.Start();
         RefreshFuel(0f, 1f);
         RefreshBooster(false);
+        RefreshCargo(0, 0, 0, 1);
 
         if (_btnCargo != null)
             _btnCargo.onClick.AddListener(OnClickCargo);
@@ -78,23 +86,49 @@ public class GamePlayUI : UIBase
         SetCargoPanel(false);
     }
 
+    private void Update()
+    {
+        if (_controller == null || _cargo == null) return;
+
+        // 연료
+        if (!Mathf.Approximately(_controller.CurrentFuel, _lastFuel) ||
+            !Mathf.Approximately(_controller.MaxFuel, _lastMaxFuel))
+        {
+            _lastFuel = _controller.CurrentFuel;
+            _lastMaxFuel = _controller.MaxFuel;
+            RefreshFuel(_lastFuel, _lastMaxFuel);
+        }
+
+        // 부스터
+        if (_controller.IsBoosting != _lastIsBoosting)
+        {
+            _lastIsBoosting = _controller.IsBoosting;
+            RefreshBooster(_lastIsBoosting);
+        }
+
+        // 과열
+        if (_controller.IsOverheat != _lastIsOverheat)
+        {
+            _lastIsOverheat = _controller.IsOverheat;
+            if (_lastIsOverheat)
+                RefreshBooster(false);
+        }
+
+        // 화물
+        if (_cargo.Count != _lastCargoCount ||
+            _cargo.Capacity != _lastCargoCapacity)
+        {
+            _lastCargoCount = _cargo.Count;
+            _lastCargoCapacity = _cargo.Capacity;
+            RefreshCargo(_cargo.CountOf(ShipInventory.CargoType.Food), _cargo.CountOf(ShipInventory.CargoType.Ore), _lastCargoCount, _lastCargoCapacity);
+        }
+    }
+
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-
-    private void HandleFuelChanged(float current, float max) => RefreshFuel(current, max);
-
-    private void HandleBoosterChanged(bool isOn )=> RefreshBooster(isOn);
-
-    private void HandleOverheatChanged(bool isOverheat)
-    {
-        if (isOverheat)
-            RefreshBooster(false);
-    }
-
     private void HandleGoldChanged(float gold) => RefreshGold(gold);
     private void HandleIngotChanged(float ingot) => RefreshIngot(ingot);
-    private void HandleCargoDetailChanged(int food, int ore, int total, int capacity)  => RefreshCargo(food, ore, total, capacity);
 
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
@@ -107,9 +141,14 @@ public class GamePlayUI : UIBase
 
     private void HandleShipSpawned(Transform shipTransform)
     {
-        ShipController ship = shipTransform.GetComponent<ShipController>();
-        if (ship != null)
-            RefreshFuel(ship.CurrentFuel, ship.MaxFuel);
+        _controller = shipTransform.GetComponent<ShipController>();
+        _cargo = shipTransform.GetComponent<ShipInventory>();
+
+        // 캐시 초기화 (다음 Update에서 즉시 갱신)
+        _lastFuel = -1f;
+        _lastMaxFuel = -1f;
+        _lastCargoCount = -1;
+        _lastCargoCapacity = -1;
     }
 
     private void HandleDataInitialized()
@@ -146,7 +185,6 @@ public class GamePlayUI : UIBase
     private void RefreshBooster(bool isOn)
     {
         if (_boostIcon == null) return;
-
         Sprite target = isOn ? _boostOnSprite : _boostOffSprite;
         if (target != null)
             _boostIcon.sprite = target;

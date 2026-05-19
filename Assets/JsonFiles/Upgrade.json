@@ -9,7 +9,7 @@
     "CostIncrease": 500,
     "BaseIngotCost": 5,
     "IngotIncrease": 5,
-    "BaseStats": 10,
+    "BaseStats": 20,
     "UpgradeValue": 10,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/CargoExpand",

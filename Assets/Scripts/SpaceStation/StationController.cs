@@ -17,8 +17,7 @@ public class StationController : InteractableBase
 
     private StationSimulator _simulator;
 
-    private readonly Dictionary<StationZoneType, StationZone> _zones
-        = new Dictionary<StationZoneType, StationZone>();
+    private readonly Dictionary<StationZoneType, StationZone> _zones = new Dictionary<StationZoneType, StationZone>();
 
     private StationZoneType? _activeZone = null;
     private bool _isGamePlay = false;
@@ -61,8 +60,9 @@ public class StationController : InteractableBase
         base.OnDisable();
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
     }
+
     // =========================================================================
-    // 초기화 
+    // 초기화
     // =========================================================================
     public void Initialize()
     {
@@ -85,6 +85,13 @@ public class StationController : InteractableBase
         playerTransform.rotation = _spawnPoint.rotation;
     }
 
+    // =========================================================================
+    // 외부 API: 주괴 판매
+    // =========================================================================
+    public void SellIngot()
+    {
+        _simulator.SellIngot();
+    }
 
     // =========================================================================
     // 구역 진입 / 이탈
@@ -106,7 +113,6 @@ public class StationController : InteractableBase
     // =========================================================================
     // InteractableBase 구현
     // =========================================================================
-
     protected override void OnTriggerEnter2D(Collider2D other) { }
     protected override void OnTriggerExit2D(Collider2D other) { }
 
@@ -154,7 +160,7 @@ public class StationController : InteractableBase
     }
 
     // =========================================================================
-    // 적재 코루틴: 식량 ->우주선
+    // 적재 코루틴: 식량 → 우주선
     // =========================================================================
     private IEnumerator LoadFoodRoutine()
     {
@@ -187,7 +193,7 @@ public class StationController : InteractableBase
     }
 
     // =========================================================================
-    // 하역 코루틴: 우주선 광석 -> 정거장 저장소
+    // 하역 코루틴: 우주선 광석 → 정거장 저장소
     // =========================================================================
     private IEnumerator UnloadOreRoutine()
     {
@@ -206,6 +212,7 @@ public class StationController : InteractableBase
         _interactCoroutine = null;
         CompleteInteraction();
     }
+
     // =========================================================================
     // 적재/하역 콜백 메서드
     // =========================================================================
@@ -218,7 +225,7 @@ public class StationController : InteractableBase
 
     private void OnOreUnloadEach()
     {
-        _simulator.AddOre(1f);
+        _simulator.UnloadOre(1f);
     }
 
     private void OnOreUnloadComplete(int unloaded) { }
@@ -227,6 +234,7 @@ public class StationController : InteractableBase
     {
         return !_shipInventory.IsLoading;
     }
+
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================

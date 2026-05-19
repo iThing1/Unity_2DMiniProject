@@ -22,7 +22,10 @@ public class InventoryVisualize : MonoBehaviour
     private readonly List<SpringJoint2D> _boxJoints = new List<SpringJoint2D>();
 
     private Rigidbody2D _shipRigidbody;
+
+    private ShipInventory _shipInventory;
     private int _activeBoxCount = 0;
+    private int _lastCargoCount = -1;
 
     // =========================================================================
     // Unity 생명주기
@@ -33,17 +36,11 @@ public class InventoryVisualize : MonoBehaviour
         if (_shipRigidbody == null)
             Debug.LogError("[InventoryVisualize] 우주선에 Rigidbody2D가 없습니다.");
 
+        _shipInventory = GetComponent<ShipInventory>();
+        if (_shipInventory == null)
+            Debug.LogError("[InventoryVisualize] ShipInventory를 찾지 못했습니다.");
+
         PreloadPool();
-    }
-
-    private void OnEnable()
-    {
-        GameEvents.OnCargoChanged += HandleCargoChanged;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnCargoChanged -= HandleCargoChanged;
     }
 
     private void Start()
@@ -51,8 +48,24 @@ public class InventoryVisualize : MonoBehaviour
         SetActiveBoxCount(0);
     }
 
+    private void Update()
+    {
+        if (_shipInventory == null) return;
+
+        int count = _shipInventory.Count;
+        if (count == _lastCargoCount) return;
+
+        _lastCargoCount = count;
+
+        int targetBoxes = Mathf.Clamp(
+            Mathf.CeilToInt((float)count / CARGO_PER_BOX),
+            0, _maxBoxCount
+        );
+        SetActiveBoxCount(targetBoxes);
+    }
+
     // =========================================================================
-    // 추가
+    // 풀 생성
     // =========================================================================
     private void PreloadPool()
     {
@@ -68,12 +81,12 @@ public class InventoryVisualize : MonoBehaviour
             box.name = $"CargoBox_{i}";
             box.SetActive(false);
 
-            var rb = box.GetComponent<Rigidbody2D>();
-            if (rb == null) rb = box.AddComponent<Rigidbody2D>();
-            rb.gravityScale = 0f;
-            rb.mass = _boxMass;
-            rb.linearDamping = _boxLinearDrag;
-            rb.angularDamping = _boxAngularDrag;
+            var rigidbody = box.GetComponent<Rigidbody2D>();
+            if (rigidbody == null) rigidbody = box.AddComponent<Rigidbody2D>();
+            rigidbody.gravityScale = 0f;
+            rigidbody.mass = _boxMass;
+            rigidbody.linearDamping = _boxLinearDrag;
+            rigidbody.angularDamping = _boxAngularDrag;
 
             var joint = box.GetComponent<SpringJoint2D>();
             if (joint == null) joint = box.AddComponent<SpringJoint2D>();
@@ -84,21 +97,9 @@ public class InventoryVisualize : MonoBehaviour
             joint.enableCollision = false;
 
             _boxObjects.Add(box);
-            _boxRigidbodies.Add(rb);
+            _boxRigidbodies.Add(rigidbody);
             _boxJoints.Add(joint);
         }
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleCargoChanged(int count, int capacity)
-    {
-        int targetBoxes = Mathf.Clamp(
-            Mathf.CeilToInt((float)count / CARGO_PER_BOX),
-            0, _maxBoxCount
-        );
-        SetActiveBoxCount(targetBoxes);
     }
 
     // =========================================================================
@@ -123,7 +124,6 @@ public class InventoryVisualize : MonoBehaviour
     private void ConnectChain(int index)
     {
         var joint = _boxJoints[index];
-
         joint.connectedBody = index == 0 ? _shipRigidbody : _boxRigidbodies[index - 1];
 
         _boxObjects[index].transform.position = GetChainSpawnPosition(index);

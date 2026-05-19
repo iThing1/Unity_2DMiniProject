@@ -19,6 +19,10 @@ public class LobbyUI : UIBase
     [SerializeField] private Transform _planetListContent;
     [SerializeField] private GameObject _planetItemPrefab;
 
+    [Header("재화")]
+    [SerializeField] private TMP_Text _txtGold;
+    [SerializeField] private TMP_Text _txtIngot;
+
     [Header("잠금 표시")]
     [SerializeField] private float _lockedAlpha = 0.3f; // TODO: 스프라이트 교체 방식으로 변경 고려
 
@@ -38,7 +42,7 @@ public class LobbyUI : UIBase
         GameEvents.OnGoldChanged += HandleGoldChanged;
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-            HandleDataInitialized();
+           HandleDataInitialized();
     }
 
     private void OnDisable()
@@ -72,7 +76,12 @@ public class LobbyUI : UIBase
     // 이벤트 핸들러
     // =========================================================================
     private void HandleDataInitialized()
-    {
+    { 
+        var ctx = GameManager.Instance.Context;
+
+        RefreshGold(ctx.CurrentGold);
+        RefreshIngot(ctx.CurrentIngot);
+
         LoadStageList();
         RefreshUI();
     }
@@ -132,6 +141,19 @@ public class LobbyUI : UIBase
     // =========================================================================
     // UI 갱신
     // =========================================================================
+    private void RefreshGold(float gold)
+    {
+        if (_txtGold == null) return;
+        _txtGold.text = Mathf.FloorToInt(gold).ToString("N0");
+    }
+
+    private void RefreshIngot(float ingot)
+    {
+        if (_txtIngot == null) return;
+        _txtIngot.text = Mathf.FloorToInt(ingot).ToString("N0");
+    }
+
+
     private void RefreshUI()
     {
         if (_stageList.Count == 0) return;

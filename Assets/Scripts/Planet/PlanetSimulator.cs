@@ -18,7 +18,6 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // 상수
     // =========================================================================
-
     private const float PROSPERITY_VERY_HIGH = 80f;
     private const float PROSPERITY_HIGH = 60f;
     private const float PROSPERITY_NEUTRAL = 40f;
@@ -34,6 +33,7 @@ public class PlanetSimulator : MonoBehaviour
     public float Population { get; private set; }
     public float StoredFood { get; private set; }
     public float StoredOre { get; private set; }
+    public float CycleProgress { get; private set; }
     public PlanetState State { get; private set; }
     public bool IsGameOverWarning { get; private set; }
     public bool IsRunning { get; private set; }
@@ -54,7 +54,7 @@ public class PlanetSimulator : MonoBehaviour
 
     private float _cycleDuration;
     private float _gameoverWarningTime;
-    
+
     private float _foodCycleStart;
     private float _foodDeliveredThisCycle;
     private float _oreProducedThisCycle;
@@ -68,15 +68,11 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnFoodDelivered += HandleFoodDelivered;
-        GameEvents.OnOreCollected += HandleOreCollected;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnFoodDelivered -= HandleFoodDelivered;
-        GameEvents.OnOreCollected -= HandleOreCollected;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
     }
 
@@ -100,6 +96,7 @@ public class PlanetSimulator : MonoBehaviour
         StoredOre = data.BaseOre;
 
         _foodDeliveredThisCycle = 0f;
+        CycleProgress = 0f;
 
         var c = GameDataManager.Instance.Constants;
 
@@ -110,18 +107,34 @@ public class PlanetSimulator : MonoBehaviour
         _populationIncreaseMax = c.PopulationIncreaseMax;
         _cycleDuration = c.PlanetConsumeInterval;
         _gameoverWarningTime = c.PlanetGameoverTime;
-       
+
         State = CalcPlanetState(Prosperity);
-        GameEvents.RaisePlanetStateChanged(_instanceId, State);
 
         IsRunning = true;
         _cycleCoroutine = StartCoroutine(ProsperityCycleRoutine());
         _productionCoroutine = StartCoroutine(RealTimeProductionRoutine());
-
     }
 
     // =========================================================================
-    // 번영도 사이클 (10초)
+    // 외부 API: 식량 전달 / 광석 수거
+    // =========================================================================
+
+    public void DeliverFood(int amount)
+    {
+        StoredFood += amount;
+        _foodDeliveredThisCycle += amount;
+
+        if (IsGameOverWarning && amount > 0)
+            CancelGameOverWarning();
+    }
+
+    public void CollectOre(int amount)
+    {
+        StoredOre = Mathf.Max(0f, StoredOre - amount);
+    }
+
+    // =========================================================================
+    // 번영도 사이클
     // =========================================================================
     private IEnumerator ProsperityCycleRoutine()
     {
@@ -133,7 +146,7 @@ public class PlanetSimulator : MonoBehaviour
             while (elapsed < _cycleDuration)
             {
                 elapsed += Time.deltaTime;
-                GameEvents.RaisePlanetCycleProgress(_instanceId, elapsed / _cycleDuration);
+                CycleProgress = elapsed / _cycleDuration;
                 yield return null;
             }
 
@@ -161,12 +174,7 @@ public class PlanetSimulator : MonoBehaviour
         _foodDeliveredThisCycle = 0f;
         _oreProducedThisCycle = 0f;
 
-        PlanetState newState = CalcPlanetState(Prosperity);
-        if (newState != State)
-        {
-            State = newState;
-            GameEvents.RaisePlanetStateChanged(_instanceId, State);
-        }
+        State = CalcPlanetState(Prosperity);
 
         if (Prosperity <= 0f)
         {
@@ -176,7 +184,6 @@ public class PlanetSimulator : MonoBehaviour
 
         if (IsGameOverWarning)
             CancelGameOverWarning();
-
     }
 
     // =========================================================================
@@ -255,24 +262,6 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleFoodDelivered(string instanceId, int amount)
-    {
-        if (instanceId != _instanceId) return;
-
-        StoredFood += amount;
-        _foodDeliveredThisCycle += amount;
-
-        if (IsGameOverWarning && amount > 0)
-            CancelGameOverWarning();
-    }
-
-    private void HandleOreCollected(string instanceId, int amount)
-    {
-        if (instanceId != _instanceId) return;
-
-        StoredOre = Mathf.Max(0f, StoredOre - amount);
-    }
-
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         if (next != GameState.GamePlay)

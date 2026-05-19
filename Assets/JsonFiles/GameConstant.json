@@ -61,12 +61,12 @@
   },
   {
     "Id": "CARGO_TRANSFER_INTERVAL",
-    "Value": 0.2,
+    "Value": 0.1,
     "Desc": "기본 화물 적재/하역 속도(초)"
   },
   {
     "Id": "PLANET_CONSUME_INTERVAL",
-    "Value": 10,
+    "Value": 20,
     "Desc": "행성이 자원을 소모하고 생산하는 주기"
   },
   {
