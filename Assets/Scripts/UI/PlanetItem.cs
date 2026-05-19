@@ -18,8 +18,6 @@ public class PlanetItem : MonoBehaviour
     {
         if (data == null) return;
 
-        Debug.Log($"[PlanetItem] Setup 호출: {data.Name}, {data.PlanetSprite}");  // 임시 추가
-
         if (_txtName != null)
             _txtName.text = data.Name;
 

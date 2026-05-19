@@ -87,8 +87,6 @@ public class InventoryVisualize : MonoBehaviour
             _boxRigidbodies.Add(rb);
             _boxJoints.Add(joint);
         }
-
-        Debug.Log($"[InventoryVisualize] 박스 풀 생성 완료: {_maxBoxCount}개");
     }
 
     // =========================================================================

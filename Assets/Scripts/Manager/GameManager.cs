@@ -47,8 +47,6 @@ public class GameManager : MonoBehaviour
 
     private async Task InitializeAsync()
     {
-        Debug.Log("<color=cyan>[GameManager] 초기화 시작</color>");
-
         await GameDataManager.Instance.RegisterAllTables(
             (Addr.Sound, typeof(SoundData)),
             (Addr.Planet, typeof(PlanetData)),
@@ -63,8 +61,6 @@ public class GameManager : MonoBehaviour
 
         Context.CurrentGold = 1000f; // [DEBUG] 초기 골드
         Context.CurrentIngot = 100f;  // [DEBUG] 초기 주괴
-
-        Debug.Log("<color=cyan>[GameManager] 초기화 완료</color>");
     }
 
     public void ChangeState(GameState newState)

@@ -54,14 +54,15 @@ public class PlanetController : InteractableBase
         Size = data.Size;
 
         _simulator.Initialize(data, instanceId);
-
-        Debug.Log($"[PlanetController] '{PlanetName}' 초기화 완료");
     }
 
     // =========================================================================
     // InteractableBase 구현
     // =========================================================================
-    protected override bool CanInteract() => _simulator != null && _simulator.IsRunning;
+    protected override bool CanInteract()
+    {
+        return _simulator != null && _simulator.IsRunning;
+    }
 
     protected override void OnActivate()
     {
@@ -116,56 +117,15 @@ public class PlanetController : InteractableBase
         GameEvents.RaiseFoodDelivered(InstanceId, 1);
     }
 
-    private void OnFoodUnloadComplete(int n)
-    {
-        Debug.Log($"[PlanetController] '{PlanetName}' 식량 하역 완료: {n}개");
-    }
+    private void OnFoodUnloadComplete(int n) { }
 
     private void OnOreLoadComplete(int loaded)
     {
         GameEvents.RaiseOreCollected(InstanceId, loaded);
-        Debug.Log($"[PlanetController] '{PlanetName}' 광석 적재 완료: {loaded}개");
     }
 
     private bool IsLoadingDone()
     {
         return !_shipInventory.IsLoading;
     }
-
-    // =========================================================================
-    // 디버그
-    // =========================================================================
-#if UNITY_EDITOR
-    [Header("디버그 전용")]
-    [SerializeField] private string _debugPlanetId = "Planet_small_01";
-
-    private void Start()
-    {
-        if (!GameDataManager.Instance.IsInitialized)
-        {
-            GameEvents.OnDataInitialized += DebugInitialize;
-            return;
-        }
-        DebugInitialize();
-    }
-
-    [ContextMenu("디버그: 데이터 초기화")]
-    private void DebugInitialize()
-    {
-        GameEvents.OnDataInitialized -= DebugInitialize;
-        var data = GameDataManager.Instance.Get<PlanetData>(_debugPlanetId);
-        if (data == null)
-        {
-            Debug.LogWarning($"[PlanetController] 디버그 데이터 없음: {_debugPlanetId}");
-            return;
-        }
-        Initialize(data, gameObject.name);
-    }
-
-    [ContextMenu("디버그: 현재 상태 출력")]
-    private void Debug_PrintState()
-    {
-        Debug.Log($"[{PlanetName}] 번영도:{Prosperity:F1} / 인구:{Population:F0} / 식량:{StoredFood:F0} / 광석:{StoredOre:F0} / 상태:{State}");
-    }
-#endif
 }

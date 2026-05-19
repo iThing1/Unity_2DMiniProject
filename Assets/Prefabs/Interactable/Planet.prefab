@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2529187700852452149}
   - component: {fileID: 4603943229447279556}
+  - component: {fileID: 6383534077554289595}
   - component: {fileID: 2117299056285563292}
   - component: {fileID: 701441645592902837}
-  - component: {fileID: 6383534077554289595}
   m_Layer: 0
   m_Name: Planet
   m_TagString: Untagged
@@ -48,6 +48,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetController
   _debugPlanetId: Planet_small_01
+--- !u!114 &6383534077554289595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6563278665419688659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b4a98fdd7de314988b5116086a7d1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetSimulator
 --- !u!212 &2117299056285563292
 SpriteRenderer:
   serializedVersion: 2
@@ -95,7 +107,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2111998125, guid: 42917889fe61a724e923d0b5cb6c9918, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -142,16 +154,4 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 3
---- !u!114 &6383534077554289595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6563278665419688659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75b4a98fdd7de314988b5116086a7d1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlanetSimulator
+  m_Radius: 4

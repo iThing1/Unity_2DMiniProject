@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using GameData;
 
-public class StageStartPopup : UIBase
+public class StageStart : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -52,7 +52,7 @@ public class StageStartPopup : UIBase
         }
 
         RefreshUI(data);
-        gameObject.SetActive(true);
+        UIManager.Instance.OpenUI<StageStart>(UIId.Popup.StageStart);
         Time.timeScale = 0f;
     }
 
@@ -61,6 +61,7 @@ public class StageStartPopup : UIBase
     // =========================================================================
     private void OnClickStart()
     {
+        Time.timeScale = 1f;
         gameObject.SetActive(false);
         GameEvents.RaiseStageStartRequested();
     }
@@ -74,6 +75,6 @@ public class StageStartPopup : UIBase
             _txtName.text = data.Name;
 
         if (_txtReqGold != null)
-            _txtReqGold.text = $"{data.ReqGold:N0}";
+            _txtReqGold.text = $"Goal: {data.ReqGold:N0}";
     }
 }

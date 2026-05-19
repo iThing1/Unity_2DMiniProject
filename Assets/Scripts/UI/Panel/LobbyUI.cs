@@ -73,7 +73,6 @@ public class LobbyUI : UIBase
     // =========================================================================
     private void HandleDataInitialized()
     {
-        Debug.Log("[LobbyUI] HandleDataInitialized 호출");
         LoadStageList();
         RefreshUI();
     }
@@ -91,8 +90,10 @@ public class LobbyUI : UIBase
         if (_stageList.Count == 0) return;
 
         StageData current = _stageList[_currentIndex];
-        GameEvents.RaiseStageSelected(current.Id);
+
         GameManager.Instance.ChangeState(GameState.GamePlay);
+        UIManager.Instance.OpenUI<StageStart>(UIId.Popup.StageStart);
+        GameEvents.RaiseStageSelected(current.Id);
     }
 
     private void OnClickLeft()
@@ -121,8 +122,6 @@ public class LobbyUI : UIBase
 
         _stageList.Sort(SortById);
         _currentIndex = 0;
-
-        Debug.Log($"[LobbyPanel] 스테이지 {_stageList.Count}개 로드 완료");
     }
 
     private int SortById(StageData a, StageData b)

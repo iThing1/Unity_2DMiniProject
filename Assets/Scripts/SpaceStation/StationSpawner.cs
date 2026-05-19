@@ -65,7 +65,6 @@ public class StationSpawner : MonoBehaviour
 
         _spawnedStation.Initialize();
         GameEvents.RaiseStationSpawned(instance.transform);
-        Debug.Log("[StationSpawner] 정거장 스폰 완료");
     }
 
     private void ActivateStation()
@@ -73,6 +72,5 @@ public class StationSpawner : MonoBehaviour
         _spawnedStation.gameObject.SetActive(true);
         _spawnedStation.Initialize();
         GameEvents.RaiseStationSpawned(_spawnedStation.transform);
-        Debug.Log("[StationSpawner] 정거장 재활성화");
     }
 }

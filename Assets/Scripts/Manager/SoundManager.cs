@@ -104,8 +104,6 @@ public class SoundManager : MonoBehaviour
             if (sound.Type == SoundType.BGM)
                 _bgmAddressMap[sound.Id] = sound.SoundPath;
         }
-
-        Debug.Log($"[SoundManager] BGM {_bgmAddressMap.Count}개 등록 완료");
     }
 
     private void PreloadSFXFromData()
@@ -118,8 +116,6 @@ public class SoundManager : MonoBehaviour
             var handle = Addressables.LoadAssetAsync<AudioClip>(sound.SoundPath);
             _sfxHandles[sound.SoundPath] = handle;
         }
-
-        Debug.Log($"[SoundManager] SFX {_sfxHandles.Count}개 프리로드 시작");
     }
 
     private void ApplyVolumeSettings()

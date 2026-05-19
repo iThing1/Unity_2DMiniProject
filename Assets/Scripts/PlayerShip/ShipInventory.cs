@@ -51,6 +51,12 @@ public class ShipInventory : MonoBehaviour
         GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
+
+        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
+        {
+            _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
+            RefreshCapacity();
+        }
     }
 
     private void OnDisable()
@@ -65,7 +71,7 @@ public class ShipInventory : MonoBehaviour
     // 초기화
     // =========================================================================
 
-    private void InitializeStats()
+    public void InitializeStats()
     {
         _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
         RefreshCapacity();

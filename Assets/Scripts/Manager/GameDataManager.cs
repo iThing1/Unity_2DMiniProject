@@ -79,7 +79,6 @@ public class GameDataManager : MonoBehaviour
         CacheConstants();
 
         IsInitialized = true;
-        Debug.Log("<color=cyan><b>[GameDataManager]</b> 데이터 로드 완료!</color>");
         GameEvents.RaiseDataInitialized();
     }
 
@@ -144,8 +143,6 @@ public class GameDataManager : MonoBehaviour
             OreToIngotRatio = Get("ORE_TO_INGOT_RATIO", 10f),
             StationDockingRange = Get("STATION_DOCKING_RANGE", 5f),
         };
-
-        Debug.Log("<color=cyan><b>[GameDataManager]</b> 상수 캐싱 완료</color>");
     }
 
     private async Task LoadTableAsync<T>(string address, Dictionary<string, T> dictionary) where T : IGameData

@@ -118,7 +118,6 @@ public class PlanetSimulator : MonoBehaviour
         _cycleCoroutine = StartCoroutine(ProsperityCycleRoutine());
         _productionCoroutine = StartCoroutine(RealTimeProductionRoutine());
 
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 초기화 완료. 인구: {Population:F0}, 번영도: {Prosperity:F1}");
     }
 
     // =========================================================================
@@ -178,7 +177,6 @@ public class PlanetSimulator : MonoBehaviour
         if (IsGameOverWarning)
             CancelGameOverWarning();
 
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 사이클. 충족도:{satisfaction:F2}, 번영도:{Prosperity:F1}, 인구:{Population:F0}");
     }
 
     // =========================================================================
@@ -266,8 +264,6 @@ public class PlanetSimulator : MonoBehaviour
 
         if (IsGameOverWarning && amount > 0)
             CancelGameOverWarning();
-
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 식량 수령 +{amount} / 보유: {StoredFood:F0}");
     }
 
     private void HandleOreCollected(string instanceId, int amount)
@@ -275,7 +271,6 @@ public class PlanetSimulator : MonoBehaviour
         if (instanceId != _instanceId) return;
 
         StoredOre = Mathf.Max(0f, StoredOre - amount);
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 광석 수거 -{amount} / 잔여: {StoredOre:F0}");
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)

@@ -41,7 +41,6 @@ public class StationController : InteractableBase
                 continue;
             }
             _zones[zone.ZoneType] = zone;
-            Debug.Log($"[StationController] 구역 등록: {zone.ZoneType} ← {zone.gameObject.name}");
         }
 
         if (_zones.Count == 0)
@@ -94,7 +93,6 @@ public class StationController : InteractableBase
     {
         _activeZone = zoneType;
         _isPlayerInside = true;
-        Debug.Log($"[StationController] 구역 진입: {zoneType}");
     }
 
     public void OnPlayerExitZone(StationZoneType zoneType)
@@ -109,7 +107,6 @@ public class StationController : InteractableBase
     // InteractableBase 구현
     // =========================================================================
 
-    // 정거장은 StationZone이 트리거를 대신하므로 OnTrigger 미사용
     protected override void OnTriggerEnter2D(Collider2D other) { }
     protected override void OnTriggerExit2D(Collider2D other) { }
 
@@ -217,7 +214,6 @@ public class StationController : InteractableBase
         int refund = _pendingFoodLoad - loaded;
         if (refund > 0)
             _simulator.RefundFood(refund);
-        Debug.Log($"[StationController] 식량 적재 완료: {loaded}개");
     }
 
     private void OnOreUnloadEach()
@@ -225,10 +221,7 @@ public class StationController : InteractableBase
         _simulator.AddOre(1f);
     }
 
-    private void OnOreUnloadComplete(int unloaded)
-    {
-        Debug.Log($"[StationController] 광석 하역 완료: {unloaded}개 → 저장소 총 {_simulator.StoredOre:F0}개");
-    }
+    private void OnOreUnloadComplete(int unloaded) { }
 
     private bool IsLoadingDone()
     {
@@ -256,15 +249,4 @@ public class StationController : InteractableBase
             _interactCoroutine = null;
         }
     }
-
-    // =========================================================================
-    // 디버그
-    // =========================================================================
-#if UNITY_EDITOR
-    [ContextMenu("디버그: 현재 상태 출력")]
-    private void Debug_PrintState()
-    {
-        Debug.Log($"[StationController] 식량:{StoredFood:F1} | 광석:{StoredOre:F1} | 주괴:{StoredIngot:F2}");
-    }
-#endif
 }

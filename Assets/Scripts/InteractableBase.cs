@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using GameData;
 
 // 우주선과 상호작용 가능한 오브젝트(행성, 정거장)의 공통 베이스 클래스.
 public abstract class InteractableBase : MonoBehaviour
@@ -17,6 +16,10 @@ public abstract class InteractableBase : MonoBehaviour
         GameEvents.OnShipSpawned += HandleShipSpawned;
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
+
+        ShipController ship = FindAnyObjectByType<ShipController>();
+        if (ship != null)
+            HandleShipSpawned(ship.transform);
     }
 
     protected virtual void OnDisable()
@@ -31,7 +34,6 @@ public abstract class InteractableBase : MonoBehaviour
         if (_shipController == null || !_isPlayerInside) return;
 
         bool speedOk = _shipController.IsInteractable;
-
         if (speedOk && !_isInteracting)
             TriggerActivate();
         else if (!speedOk && _isInteracting)

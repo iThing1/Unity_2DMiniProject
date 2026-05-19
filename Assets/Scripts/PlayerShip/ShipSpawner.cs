@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
 {
@@ -67,8 +68,13 @@ public class ShipSpawner : MonoBehaviour
 
         station.PlacePlayerAtSpawn(_spawnedShip.transform);
         shipController.Initialize();
+        StartCoroutine(RaiseShipSpawnedNextFrame());
+    }
+
+    private IEnumerator RaiseShipSpawnedNextFrame()
+    {
+        yield return null;
         GameEvents.RaiseShipSpawned(_spawnedShip.transform);
-        Debug.Log("[ShipSpawner] 우주선 스폰 완료");
     }
 
     private void ActivateShip(Transform stationTransform)
@@ -86,6 +92,5 @@ public class ShipSpawner : MonoBehaviour
 
         station.PlacePlayerAtSpawn(_spawnedShip.transform);
         GameEvents.RaiseShipSpawned(_spawnedShip.transform);
-        Debug.Log("[ShipSpawner] 우주선 재활성화");
     }
 }

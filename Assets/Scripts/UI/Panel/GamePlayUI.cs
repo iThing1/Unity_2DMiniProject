@@ -41,6 +41,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnIngotChanged += HandleIngotChanged;
         GameEvents.OnCargoDetailChanged += HandleCargoDetailChanged;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEvents.OnShipSpawned += HandleShipSpawned;
         GameEvents.OnDataInitialized += HandleDataInitialized;
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
@@ -55,6 +56,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnIngotChanged -= HandleIngotChanged;
         GameEvents.OnCargoDetailChanged -= HandleCargoDetailChanged;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEvents.OnShipSpawned -= HandleShipSpawned;
         GameEvents.OnDataInitialized -= HandleDataInitialized;
     }
 
@@ -69,7 +71,6 @@ public class GamePlayUI : UIBase
         base.Start();
         RefreshFuel(0f, 1f);
         RefreshBooster(false);
-        RefreshCargo(0, 0, 0, 1);
 
         if (_btnCargo != null)
             _btnCargo.onClick.AddListener(OnClickCargo);
@@ -81,11 +82,9 @@ public class GamePlayUI : UIBase
     // 이벤트 핸들러
     // =========================================================================
 
-    private void HandleFuelChanged(float current, float max)
-        => RefreshFuel(current, max);
+    private void HandleFuelChanged(float current, float max) => RefreshFuel(current, max);
 
-    private void HandleBoosterChanged(bool isOn)
-        => RefreshBooster(isOn);
+    private void HandleBoosterChanged(bool isOn )=> RefreshBooster(isOn);
 
     private void HandleOverheatChanged(bool isOverheat)
     {
@@ -104,6 +103,13 @@ public class GamePlayUI : UIBase
         var ctx = GameManager.Instance.Context;
         RefreshGold(ctx.CurrentGold);
         RefreshIngot(ctx.CurrentIngot);
+    }
+
+    private void HandleShipSpawned(Transform shipTransform)
+    {
+        ShipController ship = shipTransform.GetComponent<ShipController>();
+        if (ship != null)
+            RefreshFuel(ship.CurrentFuel, ship.MaxFuel);
     }
 
     private void HandleDataInitialized()

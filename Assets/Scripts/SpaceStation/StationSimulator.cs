@@ -234,29 +234,5 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // 브로드캐스트
     // =========================================================================
-    public void BroadcastStorage()
-        => GameEvents.RaiseStationStorageChanged(StoredFood, StoredOre, StoredIngot);
-
-    // =========================================================================
-    // 디버그
-    // =========================================================================
-#if UNITY_EDITOR
-    [ContextMenu("디버그: 식량 100 추가")]
-    private void Debug_AddFood() { StoredFood += 100f; BroadcastStorage(); }
-
-    [ContextMenu("디버그: 광석 50 추가")]
-    private void Debug_AddOre() { StoredOre += 50f; BroadcastStorage(); }
-
-    [ContextMenu("디버그: 주괴 10 추가")]
-    private void Debug_AddIngot() { StoredIngot += 10f; BroadcastStorage(); }
-
-    [ContextMenu("디버그: 주괴 전량 판매")]
-    private void Debug_SellIngot() { HandleIngotSellRequested(); }
-
-    [ContextMenu("디버그: 현재 상태 출력")]
-    private void Debug_PrintState()
-    {
-        Debug.Log($"[StationSimulator] 식량:{StoredFood:F1} | 광석:{StoredOre:F1} | 주괴:{StoredIngot:F2} | 농장:{_farmRate:F2}/s | 제련:{_refineRate:F2}/s");
-    }
-#endif
+    public void BroadcastStorage() => GameEvents.RaiseStationStorageChanged(StoredFood, StoredOre, StoredIngot);
 }

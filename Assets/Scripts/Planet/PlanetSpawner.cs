@@ -50,11 +50,8 @@ public class PlanetSpawner : MonoBehaviour
 
         if (_currentStageData == null)
             Debug.LogError($"[PlanetSpawner] 스테이지 데이터를 찾지 못했습니다: {stageId}");
-        else
-            Debug.Log($"[PlanetSpawner] 스테이지 선택: {_currentStageData.Name}");
 
         ResourceManager.Instance.LoadAsset<GameObject>(_planetPrefabAddress, OnPrefabLoaded);
-        Debug.Log($"[PlanetSpawner] 스테이지 선택: {_currentStageData.Name}");
     }
 
     private void OnPrefabLoaded(GameObject prefab)
@@ -69,8 +66,6 @@ public class PlanetSpawner : MonoBehaviour
 
         Collider2D col = _planetPrefab.GetComponent<Collider2D>();
         _prefabColliderRadius = col != null ? col.bounds.extents.magnitude : 1f;
-
-        Debug.Log($"[PlanetSpawner] 행성 프리팹 로드 완료");
     }
 
     private void HandleStageStartRequested()
@@ -176,8 +171,6 @@ public class PlanetSpawner : MonoBehaviour
 
         _spawnedPlanets.Add(planet);
         GameEvents.RaisePlanetSpawned(instance.transform);
-
-        Debug.Log($"[PlanetSpawner] 행성 스폰: {data.Name} / 위치: {spawnPosition} / 현재 행성 수: {_spawnedPlanets.Count}");
     }
 
     // =========================================================================
@@ -238,6 +231,5 @@ public class PlanetSpawner : MonoBehaviour
         }
 
         _spawnedPlanets.Clear();
-        Debug.Log("[PlanetSpawner] 행성 전체 제거 완료");
     }
 }

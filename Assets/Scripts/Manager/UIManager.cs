@@ -145,8 +145,6 @@ public class UIManager : MonoBehaviour
 
         _createdUIDic[uiId] = instance;
         _openedUISet.Add(uiId);
-
-        Debug.Log($"[UIManager] UI 스폰 완료: {uiId}");
     }
 
     // =========================================================================
