@@ -28,23 +28,26 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private async void Start()
+    private void OnEnable()
     {
-        await InitializeAsync();
+        GameEvents.OnStageClear += HandleStageClear;
+        GameEvents.OnStageFailed += HandleStageFailed;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameEvents.OnStageClear -= HandleStageClear;
         GameEvents.OnStageFailed -= HandleStageFailed;
     }
 
+    private async void Start()
+    {
+        await InitializeAsync();
+    }
+
     private async Task InitializeAsync()
     {
         Debug.Log("<color=cyan>[GameManager] 초기화 시작</color>");
-
-        GameEvents.OnStageClear += HandleStageClear;
-        GameEvents.OnStageFailed += HandleStageFailed;
 
         await GameDataManager.Instance.RegisterAllTables(
             (Addr.Sound, typeof(SoundData)),

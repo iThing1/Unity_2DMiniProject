@@ -65,6 +65,12 @@ public class ShipInventory : MonoBehaviour
     // 초기화
     // =========================================================================
 
+    private void InitializeStats()
+    {
+        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
+        RefreshCapacity();
+        BroadcastState();
+    }
 
     private void RefreshCapacity()
     {
@@ -202,10 +208,7 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     private void HandleDataInitialized()
     {
-        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-
-        RefreshCapacity();
-        BroadcastState();
+        InitializeStats();
         Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
     }
 
@@ -225,9 +228,7 @@ public class ShipInventory : MonoBehaviour
 
     private void HandleShipSpawned(Transform shipTransform)
     {
-        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-        RefreshCapacity();
-        BroadcastState();
+        InitializeStats();
         Debug.Log($"[ShipInventory] 스폰 후 초기화 완료. 용량: {Capacity}");
     }
 

@@ -18,10 +18,7 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // 상수
     // =========================================================================
-    private const float CYCLE_DURATION = 10f;
-    private const float GAMEOVER_WARNING_TIME = 10f;
 
-    private const float PROSPERITY_MAX = 100f;
     private const float PROSPERITY_VERY_HIGH = 80f;
     private const float PROSPERITY_HIGH = 60f;
     private const float PROSPERITY_NEUTRAL = 40f;
@@ -48,11 +45,16 @@ public class PlanetSimulator : MonoBehaviour
     private string _planetName;
     private float _basePop;
 
+    private float _prosperityMax;
     private float _prosperityChangeRate;
     private float _prosperityIncreaseMax;
+
     private float _populationChangeRate;
     private float _populationIncreaseMax;
 
+    private float _cycleDuration;
+    private float _gameoverWarningTime;
+    
     private float _foodCycleStart;
     private float _foodDeliveredThisCycle;
     private float _oreProducedThisCycle;
@@ -101,11 +103,14 @@ public class PlanetSimulator : MonoBehaviour
 
         var c = GameDataManager.Instance.Constants;
 
+        _prosperityMax = c.PlanetProsperityMax;
         _prosperityChangeRate = c.ProsperityChangeRate;
         _prosperityIncreaseMax = c.ProsperityIncreaseMax;
         _populationChangeRate = c.PopulationChangeRate;
         _populationIncreaseMax = c.PopulationIncreaseMax;
-
+        _cycleDuration = c.PlanetConsumeInterval;
+        _gameoverWarningTime = c.PlanetGameoverTime;
+       
         State = CalcPlanetState(Prosperity);
         GameEvents.RaisePlanetStateChanged(_instanceId, State);
 
@@ -126,10 +131,10 @@ public class PlanetSimulator : MonoBehaviour
             _foodCycleStart = StoredFood;
             float elapsed = 0f;
 
-            while (elapsed < CYCLE_DURATION)
+            while (elapsed < _cycleDuration)
             {
                 elapsed += Time.deltaTime;
-                GameEvents.RaisePlanetCycleProgress(_instanceId, elapsed / CYCLE_DURATION);
+                GameEvents.RaisePlanetCycleProgress(_instanceId, elapsed / _cycleDuration);
                 yield return null;
             }
 
@@ -143,9 +148,9 @@ public class PlanetSimulator : MonoBehaviour
         float satisfaction = (_foodCycleStart + _foodDeliveredThisCycle) / Mathf.Max(1f, foodRequired);
 
         // 번영도 갱신
-        float prosperityDelta = (PROSPERITY_MAX * satisfaction - PROSPERITY_MAX) * _prosperityChangeRate;
+        float prosperityDelta = (_prosperityMax * satisfaction - _prosperityMax) * _prosperityChangeRate;
         prosperityDelta = Mathf.Min(prosperityDelta, _prosperityIncreaseMax);
-        Prosperity = Mathf.Clamp(Prosperity + prosperityDelta, 0f, PROSPERITY_MAX);
+        Prosperity = Mathf.Clamp(Prosperity + prosperityDelta, 0f, _prosperityMax);
 
         // 인구 갱신
         float populationDelta = (_basePop * satisfaction - _basePop) * _populationChangeRate;
@@ -209,12 +214,12 @@ public class PlanetSimulator : MonoBehaviour
             StopCoroutine(_gameOverCoroutine);
 
         _gameOverCoroutine = StartCoroutine(GameOverCountdownRoutine());
-        Debug.LogWarning($"[PlanetSimulator] '{_planetName}' 멸망 위기! {GAMEOVER_WARNING_TIME}초 유예 시작");
+        Debug.LogWarning($"[PlanetSimulator] '{_planetName}' 멸망 위기! {_gameoverWarningTime}초 유예 시작");
     }
 
     private IEnumerator GameOverCountdownRoutine()
     {
-        yield return new WaitForSeconds(GAMEOVER_WARNING_TIME);
+        yield return new WaitForSeconds(_gameoverWarningTime);
 
         if (Prosperity <= 0f)
         {
@@ -286,7 +291,7 @@ public class PlanetSimulator : MonoBehaviour
     // 계산 유틸
     // =========================================================================
     private float CalcFoodConsumePerSec() => Population / 10000f;
-    private float CalcFoodRequired() => CalcFoodConsumePerSec() * CYCLE_DURATION;
+    private float CalcFoodRequired() => CalcFoodConsumePerSec() * _cycleDuration;
     private float CalcOreProductionPerSec() => 1f + (Population / 20000f);
 
     private PlanetState CalcPlanetState(float prosperity)

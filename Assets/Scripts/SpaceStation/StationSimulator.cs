@@ -29,7 +29,9 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // 내부 상태
     // =========================================================================
-    private Coroutine _idleCoroutine;
+
+    private Coroutine _farmCoroutine;
+    private Coroutine _refineCoroutine;
 
     // =========================================================================
     // Unity 생명주기
@@ -55,13 +57,14 @@ public class StationSimulator : MonoBehaviour
     {
         LoadStats();
         ResetTempUpgrades();
-        StartIdleProduction();
+        StartProduction();
         BroadcastStorage();
     }
 
     public void StopProduction()
     {
-        StopIdleProduction();
+        StopFarm();
+        StopRefine();
     }
 
     // =========================================================================
@@ -83,30 +86,43 @@ public class StationSimulator : MonoBehaviour
     }
 
     public void RefundFood(int amount)
-    {   
+    {
         StoredFood += amount;
         BroadcastStorage();
     }
 
     // =========================================================================
-    // Idle 생산 루프
+    // 생산 루프: 농장
     // =========================================================================
-    private IEnumerator IdleProductionRoutine()
+    private IEnumerator FarmRoutine()
     {
         while (true)
         {
-            float dt = Time.deltaTime;
-            StoredFood += _farmRate * dt;
+            StoredFood += _farmRate * Time.deltaTime;
+            BroadcastStorage();
+            yield return null;
+        }
+    }
 
+    // =========================================================================
+    // 생산 루프: 제련
+    // =========================================================================
+    private IEnumerator RefineRoutine()
+    {
+        while (true)
+        {
             if (StoredOre >= 10f)
             {
-                float refineAmount = Mathf.Min(_refineRate * dt, StoredOre);
+                float refineAmount = Mathf.Min(_refineRate * Time.deltaTime, StoredOre);
                 StoredOre -= refineAmount;
-                StoredIngot += refineAmount / _oreToIngotRatio;
-                GameManager.Instance.Context.CurrentIngot += StoredIngot;
+
+                float ingotGain = refineAmount / _oreToIngotRatio;
+                StoredIngot += ingotGain;
+                GameManager.Instance.AddIngot(ingotGain);
+
+                BroadcastStorage();
             }
 
-            BroadcastStorage();
             yield return null;
         }
     }
@@ -126,6 +142,7 @@ public class StationSimulator : MonoBehaviour
         float goldEarned = ingotToSell * 10f;   // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
 
         StoredIngot -= ingotToSell;
+        GameManager.Instance.TrySpendIngot(ingotToSell);
         GameManager.Instance.AddGold(goldEarned);
         BroadcastStorage();
 
@@ -153,7 +170,7 @@ public class StationSimulator : MonoBehaviour
     private void LoadStats()
     {
         _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
-        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);  
+        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);
         _refineRate = GameManager.Instance.GetUpgradeStat(UPGRADE_REFINE);
 
         Debug.Log($"[StationSimulator] 스탯 로드 - 농장:{_farmRate:F2}/s, 제련:{_refineRate:F2}/s, 비율:1:{_oreToIngotRatio}");
@@ -186,20 +203,31 @@ public class StationSimulator : MonoBehaviour
     }
 
     // =========================================================================
-    // Idle 루프 제어
+    // 루프 제어
     // =========================================================================
-    private void StartIdleProduction()
+    private void StartProduction()
     {
-        StopIdleProduction();
-        _idleCoroutine = StartCoroutine(IdleProductionRoutine());
+        StopFarm();
+        StopRefine();
+        _farmCoroutine = StartCoroutine(FarmRoutine());
+        _refineCoroutine = StartCoroutine(RefineRoutine());
     }
 
-    private void StopIdleProduction()
+    private void StopFarm()
     {
-        if (_idleCoroutine != null)
+        if (_farmCoroutine != null)
         {
-            StopCoroutine(_idleCoroutine);
-            _idleCoroutine = null;
+            StopCoroutine(_farmCoroutine);
+            _farmCoroutine = null;
+        }
+    }
+
+    private void StopRefine()
+    {
+        if (_refineCoroutine != null)
+        {
+            StopCoroutine(_refineCoroutine);
+            _refineCoroutine = null;
         }
     }
 
@@ -223,7 +251,7 @@ public class StationSimulator : MonoBehaviour
     private void Debug_AddIngot() { StoredIngot += 10f; BroadcastStorage(); }
 
     [ContextMenu("디버그: 주괴 전량 판매")]
-    private void Debug_SellIngot() => HandleIngotSellRequested();
+    private void Debug_SellIngot() { HandleIngotSellRequested(); }
 
     [ContextMenu("디버그: 현재 상태 출력")]
     private void Debug_PrintState()
