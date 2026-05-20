@@ -2,14 +2,13 @@
 using UnityEngine.UI;
 using GameData;
 
-public class MainMenuUI : UIBase
+public class StageFailed : UIBase
 {
     // =========================================================================
     // Inspector 연결
     // =========================================================================
     [Header("버튼")]
-    [SerializeField] private Button _btnNewGame;
-    [SerializeField] private Button _btnQuit;
+    [SerializeField] private Button _btnGoLobby;
 
     // =========================================================================
     // Unity 생명주기
@@ -18,34 +17,23 @@ public class MainMenuUI : UIBase
     {
         base.Start();
 
-        if (_btnNewGame != null)
-            _btnNewGame.onClick.AddListener(OnClickNewGame);
-        if (_btnQuit != null)
-            _btnQuit.onClick.AddListener(OnClickQuit);
+        if (_btnGoLobby != null)
+            _btnGoLobby.onClick.AddListener(OnClickGoLobby);
     }
 
     private void OnDestroy()
     {
-        if (_btnNewGame != null)
-            _btnNewGame.onClick.RemoveListener(OnClickNewGame);
-        if (_btnQuit != null)
-            _btnQuit.onClick.RemoveListener(OnClickQuit);
+        if (_btnGoLobby != null)
+            _btnGoLobby.onClick.RemoveListener(OnClickGoLobby);
     }
 
     // =========================================================================
     // 버튼 핸들러
     // =========================================================================
-    private void OnClickNewGame()
+    private void OnClickGoLobby()
     {
+        Time.timeScale = 1f;
+        UIManager.Instance.CloseUI(UIId.Popup.StageFailed);
         GameManager.Instance.ChangeState(GameState.Lobby);
-    }
-
-    private void OnClickQuit()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
     }
 }

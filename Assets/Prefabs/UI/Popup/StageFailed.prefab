@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 6569797337018855146}
   - component: {fileID: 5425987339573149940}
   m_Layer: 5
-  m_Name: txt_stageClear
+  m_Name: txt_stageFailed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Stage Clear
+  m_text: Stage Failed..
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -408,7 +408,7 @@ GameObject:
   - component: {fileID: 597194178604531138}
   - component: {fileID: 3004804508149539609}
   m_Layer: 5
-  m_Name: StageClear
+  m_Name: StageFailed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 308e9a3e134a867468a072fd2a772b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageClearUI
-  _uiId: UI_Popup_03
+  _uiId: UI_Popup_04
   _btnClose: {fileID: 0}
   _btnGoLobby: {fileID: 7041541030468461843}
 --- !u!222 &597194178604531138

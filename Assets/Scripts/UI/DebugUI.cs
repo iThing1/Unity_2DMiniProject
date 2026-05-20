@@ -1,0 +1,84 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using GameData;
+
+// 개발용 디버그 메뉴 - 빌드 시 비활성화
+public class DebugUI : MonoBehaviour
+{
+#if UNITY_EDITOR
+    // =========================================================================
+    // Inspector 연결
+    // =========================================================================
+    [Header("디버그 버튼")]
+    [SerializeField] private Button _btnForceClear;
+    [SerializeField] private Button _btnForceFail;
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    private void Start()
+    {
+        if (_btnForceClear != null)
+            _btnForceClear.onClick.AddListener(OnClickForceClear);
+        if (_btnForceFail != null)
+            _btnForceFail.onClick.AddListener(OnClickForceFail);
+    }
+
+    private void OnDestroy()
+    {
+        if (_btnForceClear != null)
+            _btnForceClear.onClick.RemoveListener(OnClickForceClear);
+        if (_btnForceFail != null)
+            _btnForceFail.onClick.RemoveListener(OnClickForceFail);
+    }
+
+    private void OnEnable()
+    {
+        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+
+    // GamePlay 상태일 때만 활성화
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        gameObject.SetActive(next == GameState.GamePlay);
+    }
+
+    // =========================================================================
+    // 버튼 핸들러
+    // =========================================================================
+    private void OnClickForceClear()
+    {
+        string stageId = GameManager.Instance.Context.LastSelectedStageId;
+        if (string.IsNullOrEmpty(stageId))
+        {
+            Debug.LogWarning("[DebugUI] LastSelectedStageId가 없습니다.");
+            return;
+        }
+
+        Debug.Log($"[DebugUI] 강제 스테이지 클리어: {stageId}");
+        GameEvents.RaiseStageClear(stageId);
+    }
+
+    private void OnClickForceFail()
+    {
+        string stageId = GameManager.Instance.Context.LastSelectedStageId;
+        if (string.IsNullOrEmpty(stageId))
+        {
+            Debug.LogWarning("[DebugUI] LastSelectedStageId가 없습니다.");
+            return;
+        }
+
+        Debug.Log($"[DebugUI] 강제 스테이지 실패: {stageId}");
+        GameEvents.RaisePlanetDestroyed($"debug_{stageId}");
+    }
+#endif
+}

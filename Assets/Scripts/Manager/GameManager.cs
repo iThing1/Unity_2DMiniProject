@@ -32,12 +32,14 @@ public class GameManager : MonoBehaviour
     {
         GameEvents.OnStageClear += HandleStageClear;
         GameEvents.OnStageFailed += HandleStageFailed;
+        GameEvents.OnStageSelected += HandleStageSelected;
     }
 
     private void OnDisable()
     {
         GameEvents.OnStageClear -= HandleStageClear;
         GameEvents.OnStageFailed -= HandleStageFailed;
+        GameEvents.OnStageSelected -= HandleStageSelected;
     }
 
     private async void Start()
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.MainMenu);
 
-        Context.CurrentGold = 1000f; // [DEBUG] 초기 골드
+        Context.CurrentGold = 100f; // [DEBUG] 초기 골드
         Context.CurrentIngot = 100f;  // [DEBUG] 초기 주괴
     }
 
@@ -76,6 +78,11 @@ public class GameManager : MonoBehaviour
 
     public void StartGamePlay() => ChangeState(GameState.GamePlay);
     public void ReturnToLobby() => ChangeState(GameState.Lobby);
+
+    private void HandleStageSelected(string stageId)
+    {
+        Context.LastSelectedStageId = stageId;
+    }
 
     private void HandleStageClear(string stageId)
     {

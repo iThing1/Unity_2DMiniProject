@@ -44,7 +44,7 @@ public class PlanetInfo : UIBase
         {
             _lastPop = _target.Population;
             if (_txtPop != null)
-                _txtPop.text = _lastPop.ToAbbreviatedString(0);
+                _txtPop.text = _lastPop.ToAbbreviatedString(2);
         }
     }
 

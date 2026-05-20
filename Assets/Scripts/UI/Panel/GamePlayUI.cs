@@ -62,6 +62,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetHovered += HandlePlanetHovered;
         GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
+        GameEvents.OnStageClear += HandleStageClear;
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
@@ -77,6 +78,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetHovered -= HandlePlanetHovered;
         GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
+        GameEvents.OnStageClear -= HandleStageClear;
     }
 
     private void OnDestroy()
@@ -193,6 +195,17 @@ public class GamePlayUI : UIBase
         }
 
         _planetMap.Remove(instanceId);
+
+        string stageId = GameManager.Instance.Context.LastSelectedStageId;
+        GameEvents.RaiseStageFailed(stageId);
+        Time.timeScale = 0f;
+        UIManager.Instance.OpenUI<StageFailed>(UIId.Popup.StageFailed);
+    }
+
+    private void HandleStageClear(string stageId)
+    {
+        Time.timeScale = 0f;
+        UIManager.Instance.OpenUI<StageClear>(UIId.Popup.StageClear);
     }
 
     private void HandlePlanetHovered(string instanceId, bool isHover)
@@ -247,14 +260,14 @@ public class GamePlayUI : UIBase
 
     private PlanetController FindPlanetById(string instanceId)
     {
-        PlanetController[] planets = FindObjectsByType<PlanetController>(FindObjectsSortMode.None);
-        foreach (PlanetController planet in planets)
+        if (string.IsNullOrEmpty(instanceId)) return null;
+
+        if (_planetMap.TryGetValue(instanceId, out PlanetController planet))
         {
-            if (planet.InstanceId == instanceId)
-                return planet;
+            return planet;
         }
 
-        Debug.LogWarning($"[GamePlayUI] 행성을 찾지 못했습니다: {instanceId}");
+        Debug.LogWarning($"[GamePlayUI] 딕셔너리에서 행성을 찾지 못했습니다: {instanceId}");
         return null;
     }
 

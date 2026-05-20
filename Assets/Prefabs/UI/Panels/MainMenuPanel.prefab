@@ -693,6 +693,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuUI
   _uiId: UI_Panel_01
   _btnClose: {fileID: 0}
+  _btnNewGame: {fileID: 774594111550342746}
+  _btnQuit: {fileID: 8926369707330071075}
 --- !u!222 &184242332252362603
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -917,7 +919,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: quit
+  m_text: Quit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
