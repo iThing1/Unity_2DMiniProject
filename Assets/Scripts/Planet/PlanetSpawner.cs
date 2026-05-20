@@ -15,6 +15,7 @@ public class PlanetSpawner : MonoBehaviour
     [SerializeField] private float _minSpawnDistance = 10f;
     [SerializeField] private int _maxSpawnAttempts = 10;
     [SerializeField] private float _spawnPadding = 2f;
+    [SerializeField] private float _stationExclusionRange = 5f;
 
     private const int MAX_GRADE = 7;    // TODO: 상수로 관리, 스테이지 데이터에서 최대 등급을 가져오는 방식으로 변경 고려
     // =========================================================================
@@ -26,6 +27,7 @@ public class PlanetSpawner : MonoBehaviour
     private GameObject _planetPrefab;
     private float _prefabColliderRadius;
     private CameraController _cameraController;
+    private Collider2D _stationCollider;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -41,6 +43,7 @@ public class PlanetSpawner : MonoBehaviour
         GameEvents.OnStageSelected += HandleStageSelected;
         GameEvents.OnStageStartRequested += HandleStageStartRequested;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEvents.OnStationSpawned += HandleStationSpawned;
     }
 
     private void OnDisable()
@@ -48,6 +51,7 @@ public class PlanetSpawner : MonoBehaviour
         GameEvents.OnStageSelected -= HandleStageSelected;
         GameEvents.OnStageStartRequested -= HandleStageStartRequested;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEvents.OnStationSpawned -= HandleStationSpawned;
     }
 
     // =========================================================================
@@ -61,6 +65,11 @@ public class PlanetSpawner : MonoBehaviour
             Debug.LogError($"[PlanetSpawner] 스테이지 데이터를 찾지 못했습니다: {stageId}");
 
         ResourceManager.Instance.LoadAsset<GameObject>(_planetPrefabAddress, OnPrefabLoaded);
+    }
+
+    private void HandleStationSpawned(Transform stationTransform)
+    {
+        _stationCollider = stationTransform.GetComponentInChildren<Collider2D>();
     }
 
     private void OnPrefabLoaded(GameObject prefab)
@@ -237,6 +246,16 @@ public class PlanetSpawner : MonoBehaviour
             if (Vector3.Distance(candidate, planet.transform.position) < minDist)
                 return true;
         }
+
+        if (_stationCollider != null)
+        {
+            float stationRadius = _stationCollider.bounds.extents.magnitude;
+            float minDist = colliderRadius + stationRadius + _stationExclusionRange;
+
+            if (Vector3.Distance(candidate, _stationCollider.transform.position) < minDist)
+                return true;
+        }
+
         return false;
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GameData;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryVisualize : MonoBehaviour
@@ -43,6 +44,16 @@ public class InventoryVisualize : MonoBehaviour
         PreloadPool();
     }
 
+    private void OnEnable()
+    {
+        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+    }
+
     private void Start()
     {
         SetActiveBoxCount(0);
@@ -81,24 +92,28 @@ public class InventoryVisualize : MonoBehaviour
             box.name = $"CargoBox_{i}";
             box.SetActive(false);
 
-            var rigidbody = box.GetComponent<Rigidbody2D>();
-            if (rigidbody == null) rigidbody = box.AddComponent<Rigidbody2D>();
-            rigidbody.gravityScale = 0f;
-            rigidbody.mass = _boxMass;
-            rigidbody.linearDamping = _boxLinearDrag;
-            rigidbody.angularDamping = _boxAngularDrag;
-
-            var joint = box.GetComponent<SpringJoint2D>();
-            if (joint == null) joint = box.AddComponent<SpringJoint2D>();
-            joint.autoConfigureDistance = false;
-            joint.distance = _boxSpacing;
-            joint.frequency = _springFrequency;
-            joint.dampingRatio = _springDampingRatio;
-            joint.enableCollision = false;
+            Rigidbody2D rigidbody = SetupRigidbody(box); 
+            SpringJoint2D joint = SetupJoint(box);
 
             _boxObjects.Add(box);
             _boxRigidbodies.Add(rigidbody);
             _boxJoints.Add(joint);
+
+            _boxObjects.Add(box);
+            _boxRigidbodies.Add(rigidbody);
+            _boxJoints.Add(joint);
+        }
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        if (prev == GameState.GamePlay)
+        {
+            _lastCargoCount = -1;
+            SetActiveBoxCount(0);
         }
     }
 
@@ -136,4 +151,32 @@ public class InventoryVisualize : MonoBehaviour
         Vector2 shipBack = -transform.up;
         return transform.position + (Vector3)(shipBack * _boxSpacing * (index + 1));
     }
+
+    private Rigidbody2D SetupRigidbody(GameObject box)
+    {
+        Rigidbody2D rigidbody = box.GetComponent<Rigidbody2D>();
+        if (rigidbody == null) rigidbody = box.AddComponent<Rigidbody2D>();
+
+        rigidbody.gravityScale = 0f;
+        rigidbody.mass = _boxMass;
+        rigidbody.linearDamping = _boxLinearDrag;
+        rigidbody.angularDamping = _boxAngularDrag;
+
+        return rigidbody;
+    }
+
+    private SpringJoint2D SetupJoint(GameObject box)
+    {
+        SpringJoint2D joint = box.GetComponent<SpringJoint2D>();
+        if (joint == null) joint = box.AddComponent<SpringJoint2D>();
+
+        joint.autoConfigureDistance = false;
+        joint.distance = _boxSpacing;
+        joint.frequency = _springFrequency;
+        joint.dampingRatio = _springDampingRatio;
+        joint.enableCollision = false;
+
+        return joint;
+    }
+
 }

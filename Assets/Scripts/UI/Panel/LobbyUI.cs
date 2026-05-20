@@ -35,16 +35,14 @@ public class LobbyUI : UIBase
     private void OnEnable()
     {
         GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnGoldChanged += HandleGoldChanged;
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-           HandleDataInitialized();
+            HandleDataInitialized();
     }
 
     private void OnDisable()
     {
         GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnGoldChanged -= HandleGoldChanged;
     }
 
     protected override void Start()
@@ -75,11 +73,6 @@ public class LobbyUI : UIBase
     {
         LoadStageList();
         RefreshUI();
-    }
-
-    private void HandleGoldChanged(float gold)
-    {
-        RefreshStartButton();
     }
 
     // =========================================================================

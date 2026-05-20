@@ -60,13 +60,6 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
 
-        StationController station = stationTransform.GetComponent<StationController>();
-        if (station == null)
-        {
-            Debug.LogError("[ShipSpawner] StationController 컴포넌트를 찾을 수 없습니다.");
-            return;
-        }
-
         _spawnedShip = Instantiate(_shipPrefab);
 
         ShipController shipController = _spawnedShip.GetComponent<ShipController>();
@@ -77,18 +70,18 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
 
-        station.PlacePlayerAtSpawn(_spawnedShip.transform);
-        shipController.Initialize();
+        SetupShip(stationTransform);
         StartCoroutine(RaiseShipSpawnedNextFrame());
     }
 
-    private IEnumerator RaiseShipSpawnedNextFrame()
+    private void ActivateShip(Transform stationTransform)
     {
-        yield return null;
+        _spawnedShip.SetActive(true);
+        SetupShip(stationTransform);
         GameEvents.RaiseShipSpawned(_spawnedShip.transform);
     }
 
-    private void ActivateShip(Transform stationTransform)
+    private void SetupShip(Transform stationTransform)
     {
         StationController station = stationTransform.GetComponent<StationController>();
         if (station == null)
@@ -97,11 +90,14 @@ public class ShipSpawner : MonoBehaviour
             return;
         }
 
-        _spawnedShip.SetActive(true);
         ShipController shipController = _spawnedShip.GetComponent<ShipController>();
-        shipController.Initialize();
-
         station.PlacePlayerAtSpawn(_spawnedShip.transform);
-        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+        shipController.Initialize();
     }
+
+    private IEnumerator RaiseShipSpawnedNextFrame()
+    {
+        yield return null;
+        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+    }  
 }

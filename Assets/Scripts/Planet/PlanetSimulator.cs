@@ -63,8 +63,6 @@ public class PlanetSimulator : MonoBehaviour
     private float _foodDeliveredThisCycle;
     private float _oreProducedThisCycle;
 
-    private Coroutine _cycleCoroutine;
-    private Coroutine _productionCoroutine;
     private Coroutine _gameOverCoroutine;
 
     // =========================================================================
@@ -102,26 +100,13 @@ public class PlanetSimulator : MonoBehaviour
         _foodDeliveredThisCycle = 0f;
         CycleProgress = 0f;
 
-        var c = GameDataManager.Instance.Constants;
-
-        _prosperityMax = c.PlanetProsperityMax;
-        _prosperityChangeRate = c.ProsperityChangeRate;
-        _prosperityIncreaseMax = c.ProsperityIncreaseMax;
-        _populationChangeRate = c.PopulationChangeRate;
-        _populationIncreaseMax = c.PopulationIncreaseMax;
-        _cycleDuration = c.PlanetConsumeInterval;
-        _gameoverWarningTime = c.PlanetGameoverTime;
-
-        _foodConsumeBase = c.FoodConsumeBase;
-        _foodConsumeRate = c.FoodConsumeRate;
-        _oreProduceBase = c.OreProdBase;
-        _oreProduceRate = c.OreProdRate;
+        LoadConstants();
 
         State = CalcPlanetState(Prosperity);
 
         IsRunning = true;
-        _cycleCoroutine = StartCoroutine(ProsperityCycleRoutine());
-        _productionCoroutine = StartCoroutine(RealTimeProductionRoutine());
+        StartCoroutine(ProsperityCycleRoutine());
+        StartCoroutine(RealTimeProductionRoutine());
     }
 
     // =========================================================================
@@ -308,5 +293,22 @@ public class PlanetSimulator : MonoBehaviour
             case PlanetState.Critical: return ORE_MULTIPLIERS[4];
             default: return 0f;
         }
+    }
+
+    private void LoadConstants()
+    {
+        var c = GameDataManager.Instance.Constants;
+
+        _prosperityMax = c.PlanetProsperityMax;
+        _prosperityChangeRate = c.ProsperityChangeRate;
+        _prosperityIncreaseMax = c.ProsperityIncreaseMax;
+        _populationChangeRate = c.PopulationChangeRate;
+        _populationIncreaseMax = c.PopulationIncreaseMax;
+        _cycleDuration = c.PlanetConsumeInterval;
+        _gameoverWarningTime = c.PlanetGameoverTime;
+        _foodConsumeBase = c.FoodConsumeBase;
+        _foodConsumeRate = c.FoodConsumeRate;
+        _oreProduceBase = c.OreProdBase;
+        _oreProduceRate = c.OreProdRate;
     }
 }

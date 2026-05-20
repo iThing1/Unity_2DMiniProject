@@ -7,48 +7,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using GameData;
 using Newtonsoft.Json;
 
-// =========================================================================
-// 게임 상수 전용 구조체
-// =========================================================================
-public struct GameConstants
-{
-    // 우주선
-    public float FuelConsumeRate;
-    public float FuelRegenRate;
-    public float OverheatDuration;
-    public float ShipAcceleration;
-    public float ShipBoostAccel;
-    public float DockingSpeed;
-
-    // 행성
-    public float ProsperityChangeRate;
-    public float ProsperityIncreaseMax;
-    public float PopulationChangeRate;
-    public float PopulationIncreaseMax;
-    public float PlanetGameoverTime;
-    public float PlanetConsumeInterval;
-    public float PlanetProsperityMax;
-
-    // 정거장 / 화물
-    public float CargoTransferInterval;
-    public float OreToIngotRatio;
-    public float StationDockingRange;
-
-    // 행성 생산/소비 계수
-    public float FoodConsumeBase;
-    public float FoodConsumeRate;
-    public float OreProdBase;
-    public float OreProdRate;
-}
-
-public struct GameSetting
-{
-    public float CameraHeightDefault;
-    public float CameraShakePower;
-    public float SoundBackgroundVolume;
-    public float SoundEffectVolume;
-}
-
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
@@ -79,19 +37,20 @@ public class GameDataManager : MonoBehaviour
         _tables[typeof(T)] = table;
     }
 
-    public async Task RegisterAllTables(params (string address, Type type)[] entries)
+    public async Task RegisterAllTables()
     {
-        var tasks = new List<Task>();
         _loadingHandles.Clear();
 
-        foreach (var (address, type) in entries)
+        var tasks = new List<Task>
         {
-            var method = typeof(GameDataManager)
-                .GetMethod(nameof(RegisterTable))
-                .MakeGenericMethod(type);
-
-            tasks.Add((Task)method.Invoke(this, new object[] { address }));
-        }
+            RegisterTable<GameConstantData>("Data/GameConstant"),
+            RegisterTable<GameSettingData>("Data/GameSettings"),
+            RegisterTable<PlanetData>("Data/Planet"),
+            RegisterTable<StageData>("Data/Stage"),
+            RegisterTable<UpgradeData>("Data/Upgrade"),
+            RegisterTable<SoundData>("Data/Sound"),
+            RegisterTable<UIData>("Data/UI")
+        };
 
         while (!AllTasksDone(tasks))
         {

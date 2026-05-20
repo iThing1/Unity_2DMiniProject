@@ -43,7 +43,10 @@ public class StationSpawner : MonoBehaviour
         }
 
         if (_spawnedStation != null)
+        {
             _spawnedStation.StopSimulation();
+            _spawnedStation.gameObject.SetActive(false);
+        } 
     }
 
     // =========================================================================

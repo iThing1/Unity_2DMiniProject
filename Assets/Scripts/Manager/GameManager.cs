@@ -11,18 +11,6 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
-    private static class Addr
-    {
-        public const string Sound = "Data/Sound";
-        public const string Planet = "Data/Planet";
-        public const string GameConstant = "Data/GameConstant";
-        public const string Upgrade = "Data/Upgrade";
-        public const string GameSettings = "Data/GameSettings";
-        public const string Stage = "Data/Stage";
-        public const string UI = "Data/UI";
-        public const string PlanetSprites = "Planet";
-    }
-
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -51,15 +39,7 @@ public class GameManager : MonoBehaviour
 
     private async Task InitializeAsync()
     {
-        await GameDataManager.Instance.RegisterAllTables(
-            (Addr.Sound, typeof(SoundData)),
-            (Addr.Planet, typeof(PlanetData)),
-            (Addr.GameConstant, typeof(GameConstantData)),
-            (Addr.Upgrade, typeof(UpgradeData)),
-            (Addr.GameSettings, typeof(GameSettingData)),
-            (Addr.Stage, typeof(StageData)),
-            (Addr.UI, typeof(UIData))
-        );
+        await GameDataManager.Instance.RegisterAllTables();
 
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();

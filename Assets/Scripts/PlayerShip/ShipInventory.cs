@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipInventory : MonoBehaviour
@@ -80,7 +79,10 @@ public class ShipInventory : MonoBehaviour
     private void RefreshCapacity()
     {
         float stat = GameManager.Instance.GetUpgradeStat(UPGRADE_CARGO);
-        Capacity = stat > 0f ? Mathf.RoundToInt(stat) : 10;
+        Capacity = Mathf.RoundToInt(stat);
+
+        if (Capacity <= 0)
+            Debug.LogWarning($"[ShipInventory] Capacity가 0 이하입니다. 데이터 확인 필요: {UPGRADE_CARGO}");
     }
 
     // =========================================================================
@@ -226,7 +228,11 @@ public class ShipInventory : MonoBehaviour
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         if (prev == GameState.GamePlay)
+        {
             StopTransfer();
+            _cargo.Clear();
+        }
+            
     }
 
     private void HandleShipSpawned(Transform shipTransform)
