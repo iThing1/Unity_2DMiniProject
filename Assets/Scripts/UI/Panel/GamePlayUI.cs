@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using GameData;
+using System.Collections.Generic;
 using TMPro;
-using GameData;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayUI : UIBase
 {
@@ -27,11 +28,16 @@ public class GamePlayUI : UIBase
     [SerializeField] private Button _btnCargo;
     [SerializeField] private GameObject _cargoPanel;
 
+    [Header("행성 정보 팝업")]
+    [SerializeField] private GameObject _planetInfoPrefab;
     // =========================================================================
     // 직접 참조
     // =========================================================================
     private ShipController _controller;
     private ShipInventory _cargo;
+    private PlanetInfo _planetInfo;
+    private PlanetController _hoveredPlanet;
+    private readonly Dictionary<string, PlanetController> _planetMap = new Dictionary<string, PlanetController>();
 
     // =========================================================================
     // 이전 값 캐싱 (변경 시에만 갱신)
@@ -53,6 +59,9 @@ public class GamePlayUI : UIBase
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
         GameEvents.OnDataInitialized += HandleDataInitialized;
+        GameEvents.OnPlanetHovered += HandlePlanetHovered;
+        GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
+        GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
@@ -65,6 +74,9 @@ public class GamePlayUI : UIBase
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnShipSpawned -= HandleShipSpawned;
         GameEvents.OnDataInitialized -= HandleDataInitialized;
+        GameEvents.OnPlanetHovered -= HandlePlanetHovered;
+        GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
+        GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
     }
 
     private void OnDestroy()
@@ -84,6 +96,7 @@ public class GamePlayUI : UIBase
             _btnCargo.onClick.AddListener(OnClickCargo);
 
         SetCargoPanel(false);
+        SpawnPlanetInfo();
     }
 
     private void Update()
@@ -132,11 +145,17 @@ public class GamePlayUI : UIBase
 
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
-        if (next != GameState.GamePlay) return;
+        if (next == GameState.GamePlay)
+        {
+            var ctx = GameManager.Instance.Context;
+            RefreshGold(ctx.CurrentGold);
+            RefreshIngot(ctx.CurrentIngot);
+            return;
+        }
 
-        var ctx = GameManager.Instance.Context;
-        RefreshGold(ctx.CurrentGold);
-        RefreshIngot(ctx.CurrentIngot);
+        _planetMap.Clear();
+        _planetInfo?.Hide();
+        _hoveredPlanet = null;
     }
 
     private void HandleShipSpawned(Transform shipTransform)
@@ -157,7 +176,40 @@ public class GamePlayUI : UIBase
         RefreshGold(ctx.CurrentGold);
         RefreshIngot(ctx.CurrentIngot);
     }
+    private void HandlePlanetSpawned(Transform planetTransform)
+    {
+        PlanetController planet = planetTransform.GetComponent<PlanetController>();
+        if (planet == null) return;
 
+        _planetMap[planet.InstanceId] = planet;
+    }
+
+    private void HandlePlanetDestroyed(string instanceId)
+    {
+        if (_hoveredPlanet != null && _hoveredPlanet.InstanceId == instanceId)
+        {
+            _planetInfo?.Hide();
+            _hoveredPlanet = null;
+        }
+
+        _planetMap.Remove(instanceId);
+    }
+
+    private void HandlePlanetHovered(string instanceId, bool isHover)
+    {
+        if (!isHover)
+        {
+            _planetInfo?.Hide();
+            _hoveredPlanet = null;
+            return;
+        }
+
+        PlanetController planet = FindPlanetById(instanceId);
+        if (planet == null) return;
+
+        _hoveredPlanet = planet;
+        _planetInfo?.Show(_hoveredPlanet);
+    }
     // =========================================================================
     // 버튼 핸들러
     // =========================================================================
@@ -171,6 +223,39 @@ public class GamePlayUI : UIBase
     {
         if (_cargoPanel != null)
             _cargoPanel.SetActive(isOpen);
+    }
+
+    private void SpawnPlanetInfo()
+    {
+        if (_planetInfoPrefab == null)
+        {
+            Debug.LogWarning("[GamePlayUI] PlanetInfoPrefab이 연결되지 않았습니다.");
+            return;
+        }
+
+        GameObject instance = Instantiate(_planetInfoPrefab, transform);
+        _planetInfo = instance.GetComponent<PlanetInfo>();
+
+        if (_planetInfo == null)
+        {
+            Debug.LogError("[GamePlayUI] PlanetInfoPopup 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+
+        _planetInfo.Hide();
+    }
+
+    private PlanetController FindPlanetById(string instanceId)
+    {
+        PlanetController[] planets = FindObjectsByType<PlanetController>(FindObjectsSortMode.None);
+        foreach (PlanetController planet in planets)
+        {
+            if (planet.InstanceId == instanceId)
+                return planet;
+        }
+
+        Debug.LogWarning($"[GamePlayUI] 행성을 찾지 못했습니다: {instanceId}");
+        return null;
     }
 
     // =========================================================================

@@ -1225,6 +1225,7 @@ MonoBehaviour:
   _txtOre: {fileID: 8092876626129539958}
   _btnCargo: {fileID: 4383488460583811782}
   _cargoPanel: {fileID: 4917021736466809538}
+  _planetInfoPrefab: {fileID: 6868254862704934756, guid: 66f627dc8f6d4ae4f966d057de95cbfb, type: 3}
 --- !u!222 &184242332252362603
 CanvasRenderer:
   m_ObjectHideFlags: 0

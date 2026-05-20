@@ -29,6 +29,7 @@ public static class GameEvents
     // 행성
     public static event Action<string, bool> OnPlanetGameOverWarning;
     public static event Action<string> OnPlanetDestroyed;
+    public static event Action<string, bool> OnPlanetHovered;
 
     // 우주 정거장
     public static event Action<StationZoneType, bool> OnStationInteractionChanged;
@@ -58,6 +59,7 @@ public static class GameEvents
 
     public static void RaisePlanetGameOverWarning(string instanceId, bool isWarning) => OnPlanetGameOverWarning?.Invoke(instanceId, isWarning);
     public static void RaisePlanetDestroyed(string instanceId) => OnPlanetDestroyed?.Invoke(instanceId);
+    public static void RaisePlanetHovered(string instanceId, bool isHovered) => OnPlanetHovered?.Invoke(instanceId, isHovered);
 
     public static void RaiseStationInteractionChanged(StationZoneType zoneType, bool isActive) => OnStationInteractionChanged?.Invoke(zoneType, isActive);
 
@@ -85,6 +87,7 @@ public static class GameEvents
 
         OnPlanetGameOverWarning = null;
         OnPlanetDestroyed = null;
+        OnPlanetHovered = null;
 
         OnStationInteractionChanged = null;
 

@@ -26,13 +26,14 @@ public class PlanetController : InteractableBase
     // =========================================================================
     private PlanetSimulator _simulator;
     private Coroutine _interactCoroutine;
-
+    private PlanetProgressBar _progressBar;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
     private void Awake()
     {
         _simulator = GetComponent<PlanetSimulator>();
+        _progressBar = GetComponentInChildren<PlanetProgressBar>();
     }
 
     protected override void OnEnable()
@@ -55,6 +56,20 @@ public class PlanetController : InteractableBase
         Size = data.Size;
 
         _simulator.Initialize(data, instanceId);
+        _progressBar.Initialize(_simulator);
+    }
+
+    // =========================================================================
+    // 마우스 오버 (추가)
+    // =========================================================================
+    private void OnMouseEnter()
+    {
+        GameEvents.RaisePlanetHovered(InstanceId, true);
+    }
+
+    private void OnMouseExit()
+    {
+        GameEvents.RaisePlanetHovered(InstanceId, false);
     }
 
     // =========================================================================
