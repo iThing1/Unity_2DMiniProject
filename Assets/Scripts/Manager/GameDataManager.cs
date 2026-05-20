@@ -52,6 +52,9 @@ public class GameDataManager : MonoBehaviour
     public GameConstants Constants { get; private set; }
     public GameSetting Settings {  get; private set; }
 
+    public float LoadingProgress { get; private set; }
+    private readonly List<AsyncOperationHandle> _loadingHandles = new List<AsyncOperationHandle>();
+
     private void Awake()
     {
         if (Instance != null)
@@ -73,6 +76,7 @@ public class GameDataManager : MonoBehaviour
     public async Task RegisterAllTables(params (string address, Type type)[] entries)
     {
         var tasks = new List<Task>();
+        _loadingHandles.Clear();
 
         foreach (var (address, type) in entries)
         {
@@ -83,8 +87,15 @@ public class GameDataManager : MonoBehaviour
             tasks.Add((Task)method.Invoke(this, new object[] { address }));
         }
 
+        while (!AllTasksDone(tasks))
+        {
+            UpdateLoadingProgress();
+            await Task.Yield();
+        }
+
         await Task.WhenAll(tasks);
 
+        LoadingProgress = 1f;
         CacheConstants();
         CacheSetting();
 
@@ -177,6 +188,7 @@ public class GameDataManager : MonoBehaviour
     private async Task LoadTableAsync<T>(string address, Dictionary<string, T> dictionary) where T : IGameData
     {
         AsyncOperationHandle<TextAsset> handle = Addressables.LoadAssetAsync<TextAsset>(address);
+        _loadingHandles.Add(handle);
         await handle.Task;
 
         if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -200,6 +212,27 @@ public class GameDataManager : MonoBehaviour
             Debug.LogError($"[GameDataManager] 로드 실패: {address}");
         }
     }
+
+    private bool AllTasksDone(List<Task> tasks)
+    {
+        foreach (Task task in tasks)
+        {
+            if (!task.IsCompleted) return false;
+        }
+        return true;
+    }
+
+    private void UpdateLoadingProgress()
+    {
+        if (_loadingHandles.Count == 0) return;
+
+        float total = 0f;
+        foreach (AsyncOperationHandle handle in _loadingHandles)
+            total += handle.PercentComplete;
+
+        LoadingProgress = total / _loadingHandles.Count;
+    }
+
 }
 
 // =========================================================================

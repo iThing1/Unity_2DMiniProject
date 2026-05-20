@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             (Addr.UI, typeof(UIData))
         );
 
-        ChangeState(GameState.Lobby);
+        ChangeState(GameState.MainMenu);
 
         Context.CurrentGold = 1000f; // [DEBUG] 초기 골드
         Context.CurrentIngot = 100f;  // [DEBUG] 초기 주괴

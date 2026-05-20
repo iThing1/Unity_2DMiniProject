@@ -38,6 +38,7 @@ public class UIManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         RegisterPrefab();
+        SpawnLoadingUI();
     }
 
     private void OnEnable()
@@ -145,6 +146,21 @@ public class UIManager : MonoBehaviour
 
         _createdUIDic[uiId] = instance;
         _openedUISet.Add(uiId);
+    }
+
+    private void SpawnLoadingUI()
+    {
+        string loadingId = UIId.VeryFront.Loading;
+
+        if (!_prefabMap.TryGetValue(loadingId, out GameObject prefab) || prefab == null)
+        {
+            Debug.LogWarning("[UIManager] LoadingPanel 프리팹이 등록되지 않았습니다.");
+            return;
+        }
+
+        GameObject instance = Instantiate(prefab, _veryFrontRoot);
+        _createdUIDic[loadingId] = instance;
+        _openedUISet.Add(loadingId);
     }
 
     // =========================================================================
