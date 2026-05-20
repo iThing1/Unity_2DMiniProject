@@ -11,6 +11,7 @@ public class PlanetController : InteractableBase
     // =========================================================================
     public string InstanceId { get; private set; }
     public string PlanetName { get; private set; }
+    public string PlanetSprite { get; private set; }
     public PlanetSize Size { get; private set; }
 
     public float Prosperity => _simulator.Prosperity;
@@ -27,6 +28,7 @@ public class PlanetController : InteractableBase
     private PlanetSimulator _simulator;
     private Coroutine _interactCoroutine;
     private PlanetProgressBar _progressBar;
+    private SpriteRenderer _spriteRenderer;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -34,6 +36,7 @@ public class PlanetController : InteractableBase
     {
         _simulator = GetComponent<PlanetSimulator>();
         _progressBar = GetComponentInChildren<PlanetProgressBar>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     protected override void OnEnable()
@@ -53,10 +56,29 @@ public class PlanetController : InteractableBase
     {
         InstanceId = instanceId;
         PlanetName = data.Name;
+        PlanetSprite = data.PlanetSprite;
         Size = data.Size;
 
         _simulator.Initialize(data, instanceId);
         _progressBar.Initialize(_simulator);
+
+        string[] parts = data.PlanetSprite.Split('/');
+        if (parts.Length == 2)
+            ResourceManager.Instance.LoadSpriteFromSheet(parts[0], parts[1], OnSpriteLoaded);
+        else
+            Debug.LogWarning($"[PlanetController] PlanetSprite 경로 형식이 올바르지 않습니다: {data.PlanetSprite}");
+    }
+
+    private void OnSpriteLoaded(Sprite sprite)
+    {
+        if (_spriteRenderer == null) return;
+        if (sprite == null)
+        {
+            Debug.LogWarning($"[PlanetController] 스프라이트 로드 실패: {PlanetSprite}");
+            return;
+        }
+
+        _spriteRenderer.sprite = sprite;
     }
 
     // =========================================================================

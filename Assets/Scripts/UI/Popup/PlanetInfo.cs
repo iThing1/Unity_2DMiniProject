@@ -28,7 +28,7 @@ public class PlanetInfo : UIBase
         {
             _lastFood = _target.StoredFood;
             if (_txtFood != null)
-                _txtFood.text = _lastFood.ToAbbreviatedString();
+                _txtFood.text = _lastFood.ToAbbreviatedString(0);
         }
 
         // 광석
@@ -36,7 +36,7 @@ public class PlanetInfo : UIBase
         {
             _lastOre = _target.StoredOre;
             if (_txtOre != null)
-                _txtOre.text = _lastOre.ToAbbreviatedString();
+                _txtOre.text = _lastOre.ToAbbreviatedString(0);
         }
 
         // 인구
@@ -44,7 +44,7 @@ public class PlanetInfo : UIBase
         {
             _lastPop = _target.Population;
             if (_txtPop != null)
-                _txtPop.text = _lastPop.ToAbbreviatedString();
+                _txtPop.text = _lastPop.ToAbbreviatedString(0);
         }
     }
 
@@ -71,6 +71,15 @@ public class PlanetInfo : UIBase
 
         if (_txtName != null)
             _txtName.text = _target.PlanetName;
+
+        string[] parts = _target.PlanetSprite.Split('/');
+        ResourceManager.Instance.LoadSpriteFromSheet(parts[0], parts[1], OnSpriteLoaded);
+    }
+
+    private void OnSpriteLoaded(Sprite sprite)
+    {
+        if (_imgPlanet != null)
+            _imgPlanet.sprite = sprite;
     }
 
     private void RefreshCache()
