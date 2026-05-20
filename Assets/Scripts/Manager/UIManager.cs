@@ -17,12 +17,16 @@ public class UIManager : MonoBehaviour
 
     [Header("UI 프리팹")]
     [SerializeField] private GameObject[] _uiPrefabs;
+    
+    [Header("HUD")]
+    [SerializeField] private GameObject _currencyUIPrefab;
     // =========================================================================
     // 내부 상태
     // =========================================================================
     private readonly Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     private readonly Dictionary<string, GameObject> _createdUIDic = new Dictionary<string, GameObject>();
     private readonly HashSet<string> _openedUISet = new HashSet<string>();
+    private GameObject _currencyUIInstance;
 
     // =========================================================================
     // Unity 생명주기
@@ -39,6 +43,7 @@ public class UIManager : MonoBehaviour
 
         RegisterPrefab();
         SpawnLoadingUI();
+        SpawnCurrencyUI();
     }
 
     private void OnEnable()
@@ -82,6 +87,7 @@ public class UIManager : MonoBehaviour
     {
         ProcessUIForState(prev, false);
         SpawnAutoUI(next);
+        RefreshCurrencyUI(next);
     }
 
     // =========================================================================
@@ -146,6 +152,29 @@ public class UIManager : MonoBehaviour
 
         _createdUIDic[uiId] = instance;
         _openedUISet.Add(uiId);
+    }
+
+    private void SpawnCurrencyUI()
+    {
+        if (_currencyUIPrefab == null)
+        {
+            Debug.LogWarning("[UIManager] CurrencyUIPrefab이 연결되지 않았습니다.");
+            return;
+        }
+
+        _currencyUIInstance = Instantiate(_currencyUIPrefab, _mainRoot);
+        _currencyUIInstance.SetActive(false);
+    }
+
+    private void RefreshCurrencyUI(GameState state)
+    {
+        if (_currencyUIInstance == null) return;
+
+        bool isVisible = state == GameState.Lobby || state == GameState.GamePlay;
+        _currencyUIInstance.SetActive(isVisible);
+
+        if (isVisible)
+            _currencyUIInstance.transform.SetAsLastSibling();
     }
 
     private void SpawnLoadingUI()

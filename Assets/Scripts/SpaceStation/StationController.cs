@@ -185,7 +185,7 @@ public class StationController : InteractableBase
         _pendingFoodLoad = toLoad;
         _simulator.TryConsumeFood(toLoad);
 
-        _shipInventory.StartLoading(ShipInventory.CargoType.Food, toLoad, OnFoodLoadComplete);
+        _shipInventory.StartLoading(ShipInventory.CargoType.Food, toLoad, null, OnFoodLoadComplete);
 
         yield return new WaitUntil(IsLoadingDone);
         _interactCoroutine = null;

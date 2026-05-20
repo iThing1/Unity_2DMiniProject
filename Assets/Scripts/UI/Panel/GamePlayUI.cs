@@ -17,10 +17,6 @@ public class GamePlayUI : UIBase
     [SerializeField] private Sprite _boostOnSprite;
     [SerializeField] private Sprite _boostOffSprite;
 
-    [Header("재화")]
-    [SerializeField] private TMP_Text _txtGold;
-    [SerializeField] private TMP_Text _txtIngot;
-
     [Header("화물")]
     [SerializeField] private TMP_Text _txtCargoInfo;
     [SerializeField] private TMP_Text _txtFood;
@@ -54,27 +50,18 @@ public class GamePlayUI : UIBase
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnGoldChanged += HandleGoldChanged;
-        GameEvents.OnIngotChanged += HandleIngotChanged;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
-        GameEvents.OnDataInitialized += HandleDataInitialized;
         GameEvents.OnPlanetHovered += HandlePlanetHovered;
         GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
         GameEvents.OnStageClear += HandleStageClear;
-
-        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-            HandleDataInitialized();
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGoldChanged -= HandleGoldChanged;
-        GameEvents.OnIngotChanged -= HandleIngotChanged;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnShipSpawned -= HandleShipSpawned;
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
         GameEvents.OnPlanetHovered -= HandlePlanetHovered;
         GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
@@ -142,18 +129,9 @@ public class GamePlayUI : UIBase
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleGoldChanged(float gold) => RefreshGold(gold);
-    private void HandleIngotChanged(float ingot) => RefreshIngot(ingot);
-
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
-        if (next == GameState.GamePlay)
-        {
-            var ctx = GameManager.Instance.Context;
-            RefreshGold(ctx.CurrentGold);
-            RefreshIngot(ctx.CurrentIngot);
-            return;
-        }
+        if (next == GameState.GamePlay) return;
 
         _planetMap.Clear();
         _planetInfo?.Hide();
@@ -172,12 +150,6 @@ public class GamePlayUI : UIBase
         _lastCargoCapacity = -1;
     }
 
-    private void HandleDataInitialized()
-    {
-        var ctx = GameManager.Instance.Context;
-        RefreshGold(ctx.CurrentGold);
-        RefreshIngot(ctx.CurrentIngot);
-    }
     private void HandlePlanetSpawned(Transform planetTransform)
     {
         PlanetController planet = planetTransform.GetComponent<PlanetController>();
@@ -286,18 +258,6 @@ public class GamePlayUI : UIBase
         Sprite target = isOn ? _boostOnSprite : _boostOffSprite;
         if (target != null)
             _boostIcon.sprite = target;
-    }
-
-    private void RefreshGold(float gold)
-    {
-        if (_txtGold == null) return;
-        _txtGold.text = Mathf.FloorToInt(gold).ToString("N0");
-    }
-
-    private void RefreshIngot(float ingot)
-    {
-        if (_txtIngot == null) return;
-        _txtIngot.text = Mathf.FloorToInt(ingot).ToString("N0");
     }
 
     private void RefreshCargo(int food, int ore, int total, int capacity)

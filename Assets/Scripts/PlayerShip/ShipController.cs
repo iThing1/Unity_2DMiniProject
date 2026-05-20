@@ -223,14 +223,4 @@ public class ShipController : MonoBehaviour
     // 외부 제어 API
     // =========================================================================
     public bool IsInteractable => _rigidbody2D.linearVelocity.magnitude <= _stats.DockingSpeedThreshold;
-
-    public void RefillFuel(float amount)
-    {
-        CurrentFuel = Mathf.Min(MaxFuel, CurrentFuel + amount);
-    }
-
-    public void RefillFuelFull()
-    {
-        CurrentFuel = MaxFuel;
-    }
 }

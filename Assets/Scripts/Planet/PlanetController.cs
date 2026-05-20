@@ -129,7 +129,7 @@ public class PlanetController : InteractableBase
         int foodCount = _shipInventory.CountOf(ShipInventory.CargoType.Food);
         if (foodCount > 0)
         {
-            _shipInventory.StartUnloading(ShipInventory.CargoType.Food, OnFoodUnloadEach, OnFoodUnloadComplete);
+            _shipInventory.StartUnloading(ShipInventory.CargoType.Food, OnFoodUnloadEach, null);
         }
 
         int oreToLoad = Mathf.Min(
@@ -138,7 +138,7 @@ public class PlanetController : InteractableBase
         );
         if (oreToLoad > 0)
         {
-            _shipInventory.StartLoading(ShipInventory.CargoType.Ore, oreToLoad, OnOreLoadComplete);
+            _shipInventory.StartLoading(ShipInventory.CargoType.Ore, oreToLoad, OnOreLoadEach, null);
         }
 
         yield return new WaitUntil(IsLoadingDone);
@@ -155,11 +155,9 @@ public class PlanetController : InteractableBase
         _simulator.DeliverFood(1);
     }
 
-    private void OnFoodUnloadComplete(int n) { }
-
-    private void OnOreLoadComplete(int loaded)
+    private void OnOreLoadEach()
     {
-        _simulator.CollectOre(loaded);
+        _simulator.CollectOre(1);
     }
 
     private bool IsLoadingDone()

@@ -926,6 +926,7 @@ MonoBehaviour:
   - {fileID: 6868254862704934756, guid: c4980d392c9515146846ad0bf96faf1e, type: 3}
   - {fileID: 6868254862704934756, guid: 053c4d2a560980144b2a0a42039be4a9, type: 3}
   - {fileID: 6868254862704934756, guid: cca07c7d561f29a408a8e560e0809fcb, type: 3}
+  _currencyUIPrefab: {fileID: 1980468809077043724, guid: 49f2d438c9ee8fd4ba6663c871fa6df3, type: 3}
 --- !u!4 &1307725867
 Transform:
   m_ObjectHideFlags: 0

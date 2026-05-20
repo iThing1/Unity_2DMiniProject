@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GameData;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using GameData;
 
 public class ShipInventory : MonoBehaviour
 {
@@ -90,11 +91,10 @@ public class ShipInventory : MonoBehaviour
         if (IsFull) return false;
 
         _cargo.Add(new Cargo(type));
-        // 삭제: BroadcastState()
         return true;
     }
 
-    public bool TryRemove(CargoType type)
+    public bool TryRemove(CargoType type)   
     {
         int idx = -1;
         for (int i = _cargo.Count - 1; i >= 0; i--)
@@ -124,10 +124,10 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 외부 API: 코루틴 적재 / 하역
     // =========================================================================
-    public void StartLoading(CargoType type, int totalAmount, Action<int> onComplete = null)
+    public void StartLoading(CargoType type, int totalAmount, Action onEach, Action<int> onComplete = null)
     {
         StopLoading();
-        _loadCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onComplete));
+        _loadCoroutine = StartCoroutine(LoadRoutine(type, totalAmount, onEach, onComplete));
     }
 
     public void StartUnloading(CargoType type, Action onEach = null, Action<int> onComplete = null)
@@ -163,7 +163,7 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 코루틴 구현
     // =========================================================================
-    private IEnumerator LoadRoutine(CargoType type, int totalAmount, Action<int> onComplete)
+    private IEnumerator LoadRoutine(CargoType type, int totalAmount, Action onEach, Action<int> onComplete)
     {
         int loaded = 0;
         var wait = new WaitForSeconds(_transferInterval);
@@ -171,7 +171,10 @@ public class ShipInventory : MonoBehaviour
         while (loaded < totalAmount && !IsFull)
         {
             if (TryAdd(type))
+            {
                 loaded++;
+                onEach?.Invoke();
+            }
 
             yield return wait;
         }

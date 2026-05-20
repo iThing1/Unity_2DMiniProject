@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using GameData;
 
 public class ShipSpawner : MonoBehaviour
 {
@@ -20,11 +21,13 @@ public class ShipSpawner : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnStationSpawned += HandleStationSpawned;
+        GameEvents.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.OnStationSpawned -= HandleStationSpawned;
+        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
     }
 
     // =========================================================================
@@ -36,6 +39,14 @@ public class ShipSpawner : MonoBehaviour
             SpawnShip(stationTransform);
         else
             ActivateShip(stationTransform);
+    }
+
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        if (next == GameState.GamePlay) return;
+        if (_spawnedShip == null) return;
+
+        _spawnedShip.SetActive(false);
     }
 
     // =========================================================================

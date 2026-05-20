@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using GameData;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
         public const string GameSettings = "Data/GameSettings";
         public const string Stage = "Data/Stage";
         public const string UI = "Data/UI";
+        public const string PlanetSprites = "Planet";
     }
 
     private void Awake()
@@ -60,9 +62,22 @@ public class GameManager : MonoBehaviour
         );
 
         ChangeState(GameState.MainMenu);
+        PreloadPlanetSprites();
 
         Context.CurrentGold = 100f; // [DEBUG] 초기 골드
         Context.CurrentIngot = 100f;  // [DEBUG] 초기 주괴
+    }
+
+    private void PreloadPlanetSprites()
+    {
+        ResourceManager.Instance.LoadSpriteFromSheet("Planet", "Planet_0", OnPlanetSpritesLoaded);
+    }
+
+    // Debug 로그용 콜백 메서드
+    private void OnPlanetSpritesLoaded(Sprite sprite)
+    {
+        if (sprite == null)
+            Debug.LogWarning("[GameManager] Sprite Sheet 프리로드 실패");
     }
 
     public void ChangeState(GameState newState)
