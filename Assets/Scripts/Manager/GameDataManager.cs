@@ -8,7 +8,7 @@ using GameData;
 using Newtonsoft.Json;
 
 // =========================================================================
-// 추가: 게임 상수 전용 구조체
+// 게임 상수 전용 구조체
 // =========================================================================
 public struct GameConstants
 {
@@ -35,6 +35,14 @@ public struct GameConstants
     public float StationDockingRange;
 }
 
+public struct GameSetting
+{
+    public float CameraHeightDefault;
+    public float CameraShakePower;
+    public float SoundBackgroundVolume;
+    public float SoundEffectVolume;
+}
+
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance { get; private set; }
@@ -42,6 +50,7 @@ public class GameDataManager : MonoBehaviour
 
     public bool IsInitialized { get; private set; } = false;
     public GameConstants Constants { get; private set; }
+    public GameSetting Settings {  get; private set; }
 
     private void Awake()
     {
@@ -77,6 +86,7 @@ public class GameDataManager : MonoBehaviour
         await Task.WhenAll(tasks);
 
         CacheConstants();
+        CacheSetting();
 
         IsInitialized = true;
         GameEvents.RaiseDataInitialized();
@@ -142,6 +152,25 @@ public class GameDataManager : MonoBehaviour
             CargoTransferInterval = Get("CARGO_TRANSFER_INTERVAL", 0.2f),
             OreToIngotRatio = Get("ORE_TO_INGOT_RATIO", 10f),
             StationDockingRange = Get("STATION_DOCKING_RANGE", 5f),
+        };
+    }
+
+    private void CacheSetting()
+    {
+        float Get(string id, float fallback)
+        {
+            var Settings = Get<GameSettingData>(id);
+            if (Settings == null)
+                Debug.LogWarning($"[GameSettingData] 상수 키 없음: '{id}' → 기본값 {fallback} 사용");
+            return Settings?.DefaultValue ?? fallback;
+        }
+
+        Settings = new GameSetting
+        {
+            CameraHeightDefault = Get("CAM_HEIGHT_DEFAULT", 20f),
+            CameraShakePower = Get("CAM_SHAKE_PWR", 0.2f),
+            SoundBackgroundVolume = Get("SOUND_BACKGROUND_VOLUME", 100),
+            SoundEffectVolume = Get("SOUND_EFFECT_VOLUME", 100),
         };
     }
 

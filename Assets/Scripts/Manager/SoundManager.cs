@@ -121,10 +121,10 @@ public class SoundManager : MonoBehaviour
     private void ApplyVolumeSettings()
     {
         var bgmVol = GameDataManager.Instance.Get<GameSettingData>("SOUND_BACKGROUND_VOLUME");
-        if (bgmVol != null) SetBGMVolume(bgmVol.Value / 100f);
+        if (bgmVol != null) SetBGMVolume(bgmVol.DefaultValue / 100f);
 
         var sfxVol = GameDataManager.Instance.Get<GameSettingData>("SOUND_EFFECT_VOLUME");
-        if (sfxVol != null) SetSFXVolume(sfxVol.Value / 100f);
+        if (sfxVol != null) SetSFXVolume(sfxVol.DefaultValue / 100f);
     }
 
     // =========================================================================

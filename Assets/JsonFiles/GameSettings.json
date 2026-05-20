@@ -1,8 +1,8 @@
 [
   {
-    "Id": "CAM_HEIGHT",
-    "DefaultValue": 25,
-    "Desc": "행성들이 한눈에 얼마나 들어올지 결정"
+    "Id": "CAM_HEIGHT_DEFAULT",
+    "DefaultValue": 20,
+    "Desc": "카메라 초기값"
   },
   {
     "Id": "CAM_SHAKE_PWR",
@@ -11,12 +11,12 @@
   },
   {
     "Id": "SOUND_BACKGROUND_VOLUME",
-    "DefaultValue": 100,
+    "DefaultValue": 10,
     "Desc": "배경음악 소리 크기"
   },
   {
     "Id": "SOUND_EFFECT_VOLUME",
-    "DefaultValue": 100,
+    "DefaultValue": 10,
     "Desc": "효과음 소리 크기"
   }
 ]

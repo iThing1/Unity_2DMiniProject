@@ -14,6 +14,7 @@ public class PlanetSpawner : MonoBehaviour
     [Header("스폰 거리 설정")]
     [SerializeField] private float _minSpawnDistance = 10f;
     [SerializeField] private int _maxSpawnAttempts = 10;
+    [SerializeField] private float _spawnPadding = 2f;
 
     private const int MAX_GRADE = 7;    // TODO: 상수로 관리, 스테이지 데이터에서 최대 등급을 가져오는 방식으로 변경 고려
     // =========================================================================
@@ -24,9 +25,17 @@ public class PlanetSpawner : MonoBehaviour
     private Coroutine _spawnCoroutine;
     private GameObject _planetPrefab;
     private float _prefabColliderRadius;
+    private CameraController _cameraController;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+    private void Awake()
+    {
+        _cameraController = Camera.main?.GetComponent<CameraController>();
+        if (_cameraController == null)
+            Debug.LogWarning("[PlanetSpawner] CameraController를 찾지 못했습니다.");
+    }
+
     private void OnEnable()
     {
         GameEvents.OnStageSelected += HandleStageSelected;
@@ -178,7 +187,9 @@ public class PlanetSpawner : MonoBehaviour
     // =========================================================================
     private Vector3 GetSpawnPosition(int grade, float colliderRadius)
     {
-        float maxDistance = _minSpawnDistance + (_minSpawnDistance * MAX_GRADE); // 전체 스폰 범위
+        float maxDistance = GetSpawnRange(colliderRadius);
+        float minDistance = Mathf.Min(_minSpawnDistance, maxDistance * 0.2f);
+
 
         for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++) // 겹침 방지 루프
         {
@@ -200,6 +211,16 @@ public class PlanetSpawner : MonoBehaviour
         Vector3 position = new Vector3(Mathf.Cos(fallbackAngle) * fallbackDistance, Mathf.Sin(fallbackAngle) * fallbackDistance, 0f);
         return position;
     }
+
+    private float GetSpawnRange(float colliderRadius)
+    {
+        if (_cameraController != null)
+            return Mathf.Min(_cameraController.ViewHalfWidth, _cameraController.ViewHalfHeight) - colliderRadius - _spawnPadding;
+
+        float defaultSize = GameDataManager.Instance.Settings.CameraHeightDefault;
+        return defaultSize - colliderRadius - _spawnPadding;
+    }
+
 
     private bool IsOverlapping(Vector3 candidate, float colliderRadius)
     {

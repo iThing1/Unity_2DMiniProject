@@ -57,7 +57,7 @@ namespace GameData
     public class GameSettingData : IGameData
     {
         public string Id;
-        public float Value;
+        public float DefaultValue;
         public string Desc;
 
         string IGameData.Id => Id;
