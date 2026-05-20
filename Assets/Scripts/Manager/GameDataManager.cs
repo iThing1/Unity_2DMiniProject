@@ -33,6 +33,12 @@ public struct GameConstants
     public float CargoTransferInterval;
     public float OreToIngotRatio;
     public float StationDockingRange;
+
+    // 행성 생산/소비 계수
+    public float FoodConsumeBase;
+    public float FoodConsumeRate;
+    public float OreProdBase;
+    public float OreProdRate;
 }
 
 public struct GameSetting
@@ -163,6 +169,11 @@ public class GameDataManager : MonoBehaviour
             CargoTransferInterval = Get("CARGO_TRANSFER_INTERVAL", 0.2f),
             OreToIngotRatio = Get("ORE_TO_INGOT_RATIO", 10f),
             StationDockingRange = Get("STATION_DOCKING_RANGE", 5f),
+
+            FoodConsumeBase = Get("FOOD_CONSUME_BASE", 0f),
+            FoodConsumeRate = Get("FOOD_CONSUME_RATE", 0.0001f),
+            OreProdBase = Get("ORE_PRODUCE_BASE", 3f),
+            OreProdRate = Get("ORE_PRODUCE_RATE", 0.00005f),
         };
     }
 

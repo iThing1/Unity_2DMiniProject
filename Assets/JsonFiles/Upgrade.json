@@ -89,8 +89,8 @@
     "CostIncrease": 1000,
     "BaseIngotCost": 10,
     "IngotIncrease": 10,
-    "BaseStats": 1,
-    "UpgradeValue": 2,
+    "BaseStats": 2,
+    "UpgradeValue": 30,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/Hydroponics",
     "Description": "Upgrade Food ValueChain"

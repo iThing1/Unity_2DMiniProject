@@ -54,6 +54,10 @@ public class PlanetSimulator : MonoBehaviour
 
     private float _cycleDuration;
     private float _gameoverWarningTime;
+    private float _foodConsumeBase;
+    private float _foodConsumeRate;
+    private float _oreProduceBase;
+    private float _oreProduceRate;
 
     private float _foodCycleStart;
     private float _foodDeliveredThisCycle;
@@ -107,6 +111,11 @@ public class PlanetSimulator : MonoBehaviour
         _populationIncreaseMax = c.PopulationIncreaseMax;
         _cycleDuration = c.PlanetConsumeInterval;
         _gameoverWarningTime = c.PlanetGameoverTime;
+
+        _foodConsumeBase = c.FoodConsumeBase;
+        _foodConsumeRate = c.FoodConsumeRate;
+        _oreProduceBase = c.OreProdBase;
+        _oreProduceRate = c.OreProdRate;
 
         State = CalcPlanetState(Prosperity);
 
@@ -274,9 +283,9 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // 계산 유틸
     // =========================================================================
-    private float CalcFoodConsumePerSec() => Population / 10000f;
+    private float CalcFoodConsumePerSec() => _foodConsumeBase + (Population * _foodConsumeRate);
     private float CalcFoodRequired() => CalcFoodConsumePerSec() * _cycleDuration;
-    private float CalcOreProductionPerSec() => 1f + (Population / 20000f);
+    private float CalcOreProductionPerSec() => _oreProduceBase + (Population * _oreProduceRate);
 
     private PlanetState CalcPlanetState(float prosperity)
     {
