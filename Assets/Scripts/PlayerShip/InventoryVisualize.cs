@@ -12,7 +12,7 @@ public class InventoryVisualize : MonoBehaviour
     [SerializeField] private float _boxSpacing = 1.2f;
     [SerializeField] private float _springFrequency = 2f;
     [SerializeField] private float _springDampingRatio = 0.3f;
-    [SerializeField] private float _boxMass = 0.5f;
+    [SerializeField] private float _boxMass = 0f;
     [SerializeField] private float _boxLinearDrag = 1.5f;
     [SerializeField] private float _boxAngularDrag = 2f;
 
@@ -33,11 +33,11 @@ public class InventoryVisualize : MonoBehaviour
     // =========================================================================
     private void Awake()
     {
-        _shipRigidbody = GetComponent<Rigidbody2D>();
+        _shipRigidbody = GetComponentInParent<Rigidbody2D>();
         if (_shipRigidbody == null)
             Debug.LogError("[InventoryVisualize] 우주선에 Rigidbody2D가 없습니다.");
 
-        _shipInventory = GetComponent<ShipInventory>();
+        _shipInventory = GetComponentInParent<ShipInventory>();
         if (_shipInventory == null)
             Debug.LogError("[InventoryVisualize] ShipInventory를 찾지 못했습니다.");
     }
@@ -89,7 +89,7 @@ public class InventoryVisualize : MonoBehaviour
 
         for (int i = 0; i < _maxBoxCount; i++)
         {
-            GameObject box = Instantiate(_boxPrefab, transform);
+            GameObject box = Instantiate(_boxPrefab, _shipInventory.transform);
             box.name = $"CargoBox_{i}";
             box.SetActive(false);
 

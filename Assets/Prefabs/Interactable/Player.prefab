@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 8943308315003750827}
   - component: {fileID: 1506485165915713758}
   - component: {fileID: 4708531947044412554}
-  - component: {fileID: 3564359708108176245}
-  - component: {fileID: 927650083950771339}
+  - component: {fileID: 4167294690862339930}
+  - component: {fileID: 8138708024360571631}
   - component: {fileID: 3022605805177355951}
   - component: {fileID: 5794337568127101619}
+  - component: {fileID: 5678400007094807978}
   - component: {fileID: 3620082188818647356}
   m_Layer: 0
   m_Name: Player
@@ -35,7 +36,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5655067223061304573}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1506485165915713758
@@ -70,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f2666b9b94144447b8aa4c3bef72ce4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipController
---- !u!114 &3564359708108176245
+--- !u!114 &4167294690862339930
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed6d36157e75b114b9a810516bc7f44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipInventory
---- !u!114 &927650083950771339
+--- !u!114 &8138708024360571631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,17 +93,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 589836737873883855}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bf83fc659ae2224f81345810a286c9d, type: 3}
+  m_Script: {fileID: 11500000, guid: ed0dd6fa8045dee47be43bbc9685c44d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryVisualize
-  _boxPrefab: {fileID: 5244795624702746697, guid: 6f90ce257453db04ca1881d0a27e7149, type: 3}
-  _maxBoxCount: 10
-  _boxSpacing: 1.2
-  _springFrequency: 2
-  _springDampingRatio: 0.3
-  _boxMass: 0.5
-  _boxLinearDrag: 1.5
-  _boxAngularDrag: 2
+  m_EditorClassIdentifier: Assembly-CSharp::ShipAnimation
 --- !u!212 &3022605805177355951
 SpriteRenderer:
   serializedVersion: 2
@@ -149,14 +143,14 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 200
+  m_SortingOrder: 100
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -1295649027, guid: f3669a23450cf534a8340f7d707a820f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.705, y: 0.405}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -188,6 +182,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &5678400007094807978
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589836737873883855}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8c9e12279298890488261f5c1f916887, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!70 &3620082188818647356
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -223,5 +239,57 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 1}
-  m_Direction: 0
+  m_Size: {x: 2.2939181, y: 0.78301775}
+  m_Direction: 1
+--- !u!1 &619972813707462845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5655067223061304573}
+  - component: {fileID: 7366389301108101889}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5655067223061304573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619972813707462845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.85, y: 0.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8943308315003750827}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7366389301108101889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619972813707462845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf83fc659ae2224f81345810a286c9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryVisualize
+  _boxPrefab: {fileID: 5244795624702746697, guid: 6f90ce257453db04ca1881d0a27e7149, type: 3}
+  _maxBoxCount: 10
+  _boxSpacing: 1.2
+  _springFrequency: 2
+  _springDampingRatio: 0.3
+  _boxMass: 0
+  _boxLinearDrag: 1.5
+  _boxAngularDrag: 2

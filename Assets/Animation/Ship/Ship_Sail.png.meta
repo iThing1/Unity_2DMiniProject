@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 061bad4a42f660443bd65a7b02392d6d
+guid: c5b48dcf7d6824040995708d67d76d35
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 600
+  spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -136,23 +136,177 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CargoBox_0
+      name: Ship_Sail (1)_0
       rect:
         serializedVersion: 2
-        x: 168
-        y: 128
-        width: 695
-        height: 756
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 465
+        y: 497
+        width: 168
+        height: 86
+      alignment: 9
+      pivot: {x: 0.61, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b931af1852195e04ba5ce3847b4a5b52
-      internalID: 886208498
+      spriteID: 460af235248cfb945b02f23c0bc905b1
+      internalID: -91380513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_1
+      rect:
+        serializedVersion: 2
+        x: 678
+        y: 497
+        width: 176
+        height: 86
+      alignment: 9
+      pivot: {x: 0.62, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e87f94ead9967134489197b3fd180a92
+      internalID: -2007730448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_2
+      rect:
+        serializedVersion: 2
+        x: 900
+        y: 497
+        width: 175
+        height: 86
+      alignment: 9
+      pivot: {x: 0.62, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 347909ec088386d449374ffc856eb503
+      internalID: -1291832133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_3
+      rect:
+        serializedVersion: 2
+        x: 1122
+        y: 497
+        width: 175
+        height: 86
+      alignment: 9
+      pivot: {x: 0.62, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f65b52f98a05f194db5c5146f8afa21d
+      internalID: 1892824069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_4
+      rect:
+        serializedVersion: 2
+        x: 463
+        y: 277
+        width: 169
+        height: 85
+      alignment: 9
+      pivot: {x: 0.6, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14e4c451bcf6b744db6e785c1ac9db6e
+      internalID: 1602500726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_5
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 277
+        width: 177
+        height: 85
+      alignment: 9
+      pivot: {x: 0.62, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a0cf6eead0bb234799d296bdcf4f35a
+      internalID: 1761232987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_6
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 277
+        width: 158
+        height: 85
+      alignment: 9
+      pivot: {x: 0.59, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d11d0c7febb60f84189bcb153f455ca6
+      internalID: -578314463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Sail (1)_7
+      rect:
+        serializedVersion: 2
+        x: 1120
+        y: 277
+        width: 177
+        height: 85
+      alignment: 9
+      pivot: {x: 0.62, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e8e7218e8a80eb42bc4be1b55b5cfea
+      internalID: -910704028
       vertices: []
       indices: 
       edges: []
@@ -161,7 +315,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 645ce37d189c32e4494e3881c2dfca4b
+    spriteID: 53e542286c9f0d0419d77bae0171204e
     internalID: 0
     vertices: []
     indices: 
@@ -173,13 +327,14 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      CargoBox_0: 886208498
-      CargoBox_1: 113310080
-      CargoBox_2: 813781919
-      CargoBox_3: -386405202
-      CargoBox_4: -1261606510
-      CargoBox_5: 844046704
-      CargoBox_6: -1536873882
+      Ship_Sail (1)_0: -91380513
+      Ship_Sail (1)_1: -2007730448
+      Ship_Sail (1)_2: -1291832133
+      Ship_Sail (1)_3: 1892824069
+      Ship_Sail (1)_4: 1602500726
+      Ship_Sail (1)_5: 1761232987
+      Ship_Sail (1)_6: -578314463
+      Ship_Sail (1)_7: -910704028
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

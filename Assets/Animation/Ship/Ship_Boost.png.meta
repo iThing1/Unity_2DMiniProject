@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 061bad4a42f660443bd65a7b02392d6d
+guid: fed3c5c7dddb6f34eb475fe78bd82089
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 600
+  spritePixelsToUnits: 35
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -136,23 +136,177 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: CargoBox_0
+      name: Ship_Boost_0
       rect:
         serializedVersion: 2
-        x: 168
-        y: 128
-        width: 695
-        height: 756
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 485
+        y: 494
+        width: 146
+        height: 63
+      alignment: 9
+      pivot: {x: 0.7, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b931af1852195e04ba5ce3847b4a5b52
-      internalID: 886208498
+      spriteID: c6682aecb1fca3846a26fdd21a0d5ff8
+      internalID: -966962344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_1
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 494
+        width: 172
+        height: 63
+      alignment: 9
+      pivot: {x: 0.74, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbe4cea4b0a374b489a1c3bee2f89928
+      internalID: -324641682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_2
+      rect:
+        serializedVersion: 2
+        x: 915
+        y: 494
+        width: 182
+        height: 63
+      alignment: 9
+      pivot: {x: 0.75, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffff2b8c897f81b41b69642a70c8b45a
+      internalID: -1150488767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_3
+      rect:
+        serializedVersion: 2
+        x: 1144
+        y: 494
+        width: 187
+        height: 63
+      alignment: 9
+      pivot: {x: 0.77, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a127e4cd0b44f9c42852deb340bc4953
+      internalID: -1900171620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_4
+      rect:
+        serializedVersion: 2
+        x: 444
+        y: 330
+        width: 187
+        height: 62
+      alignment: 9
+      pivot: {x: 0.76, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e2c8a2f86ed44543b3e22b3ab72336e
+      internalID: -1061871799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_5
+      rect:
+        serializedVersion: 2
+        x: 672
+        y: 330
+        width: 196
+        height: 62
+      alignment: 9
+      pivot: {x: 0.77, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c8da90089db74f649ad3cc78ba8d9a89
+      internalID: -851733085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_6
+      rect:
+        serializedVersion: 2
+        x: 893
+        y: 330
+        width: 204
+        height: 62
+      alignment: 9
+      pivot: {x: 0.78, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d205a580006c8e449a9e460d999de328
+      internalID: 1124147189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ship_Boost_7
+      rect:
+        serializedVersion: 2
+        x: 1112
+        y: 330
+        width: 219
+        height: 62
+      alignment: 9
+      pivot: {x: 0.8, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45337035f213f584795d00a80eedf80d
+      internalID: -1829729032
       vertices: []
       indices: 
       edges: []
@@ -161,7 +315,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 645ce37d189c32e4494e3881c2dfca4b
+    spriteID: 22fed07fa121a2846b2cef8c853404bf
     internalID: 0
     vertices: []
     indices: 
@@ -173,13 +327,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      CargoBox_0: 886208498
-      CargoBox_1: 113310080
-      CargoBox_2: 813781919
-      CargoBox_3: -386405202
-      CargoBox_4: -1261606510
-      CargoBox_5: 844046704
-      CargoBox_6: -1536873882
+      Ship_Boost_0: -966962344
+      Ship_Boost_1: -324641682
+      Ship_Boost_2: -1150488767
+      Ship_Boost_3: -1900171620
+      Ship_Boost_4: -1061871799
+      Ship_Boost_5: -851733085
+      Ship_Boost_6: 1124147189
+      Ship_Boost_7: -1829729032
+      Ship_Boost_8: -928417327
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -177,7 +177,7 @@ public class ShipController : MonoBehaviour
     {
         if (_moveInput == Vector2.zero) return;
 
-        float angle = Mathf.Atan2(_moveInput.y, _moveInput.x) * Mathf.Rad2Deg - 90f;
+        float angle = Mathf.Atan2(_moveInput.y, _moveInput.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Lerp(
             transform.rotation,
             Quaternion.Euler(0f, 0f, angle),
