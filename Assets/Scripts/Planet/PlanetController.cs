@@ -28,6 +28,7 @@ public class PlanetController : InteractableBase
     private PlanetSimulator _simulator;
     private Coroutine _interactCoroutine;
     private PlanetProgressBar _progressBar;
+    private PlanetWarningIndicator _warningIndicator;
     private SpriteRenderer _spriteRenderer;
     // =========================================================================
     // Unity 생명주기
@@ -36,6 +37,7 @@ public class PlanetController : InteractableBase
     {
         _simulator = GetComponent<PlanetSimulator>();
         _progressBar = GetComponentInChildren<PlanetProgressBar>();
+        _warningIndicator = GetComponentInChildren<PlanetWarningIndicator>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -61,6 +63,9 @@ public class PlanetController : InteractableBase
 
         _simulator.Initialize(data, instanceId);
         _progressBar.Initialize(_simulator);
+
+        if (_warningIndicator != null)
+            _warningIndicator.Initialize(instanceId);
 
         string[] parts = data.PlanetSprite.Split('/');
         if (parts.Length == 2)

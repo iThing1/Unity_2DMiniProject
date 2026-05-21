@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GameData;
 using System.Threading.Tasks;
 using UnityEngine;
-using GameData;
 
 public class GameManager : MonoBehaviour
 {

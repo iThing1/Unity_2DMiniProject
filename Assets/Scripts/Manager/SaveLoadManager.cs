@@ -71,7 +71,12 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         GameManager.Instance.LoadContext(context);
-        Debug.Log("[SaveLoadManager] 불러오기 완료");
+        Debug.Log($"[SaveLoadManager] 불러오기 완료\n" +
+                  $"  골드: {context.CurrentGold}\n" +
+                  $"  주괴: {context.CurrentIngot}\n" +
+                  $"  마지막 스테이지: {context.LastSelectedStageId}\n" +
+                  $"  클리어 스테이지: {context.StageClearStatus.Count}개\n" +
+                  $"  업그레이드: {context.UpgradeLevels.Count}개");
         return true;
     }
 

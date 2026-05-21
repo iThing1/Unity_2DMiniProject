@@ -44,7 +44,7 @@ public class ShipSpawner : MonoBehaviour
 
     private void HandleContinueRequested()
     {
-        PreloadShip();  //TODO: 세이브 로드 기능 추가시 변경 예정
+        PreloadShip();
     }
 
     private void HandleStationSpawned(Transform stationTransform)
