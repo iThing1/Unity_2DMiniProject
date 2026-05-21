@@ -20,6 +20,10 @@ public static class GameEvents
     // 업그레이드
     public static event Action<string, int> OnUpgradeCompleted;
 
+    // 게임 시작
+    public static event Action OnNewGameRequested;
+    public static event Action OnContinueRequested;
+
     // 스테이지
     public static event Action<string> OnStageSelected;
     public static event Action OnStageStartRequested;
@@ -52,6 +56,9 @@ public static class GameEvents
 
     public static void RaiseUpgradeCompleted(string upgradeId, int lv) => OnUpgradeCompleted?.Invoke(upgradeId, lv);
 
+    public static void RaiseNewGameRequested() => OnNewGameRequested?.Invoke();
+    public static void RaiseContinueRequested() => OnContinueRequested?.Invoke();
+
     public static void RaiseStageSelected(string stageId) => OnStageSelected?.Invoke(stageId);
     public static void RaiseStageStartRequested() => OnStageStartRequested?.Invoke();
     public static void RaiseStageClear(string stageId) => OnStageClear?.Invoke(stageId);
@@ -79,6 +86,9 @@ public static class GameEvents
         OnIngotChanged = null;
 
         OnUpgradeCompleted = null;
+
+        OnNewGameRequested = null;
+        OnContinueRequested = null;
 
         OnStageSelected = null;
         OnStageStartRequested = null;

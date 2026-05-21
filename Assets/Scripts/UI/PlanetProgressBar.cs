@@ -44,7 +44,7 @@ public class PlanetProgressBar : MonoBehaviour
         PlanetState state = _simulator.State;
         if (state != _lastState)
         {
-            _lastProgress = progress;
+            _lastState = state;
             RefreshColor(state);
         }  
     }

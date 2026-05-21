@@ -169,7 +169,6 @@ public class StationController : InteractableBase
         int available = Mathf.FloorToInt(_simulator.StoredFood);
         if (available <= 0)
         {
-            Debug.Log("[StationController] 적재할 식량이 없습니다.");
             CompleteInteraction();
             yield break;
         }
@@ -177,7 +176,6 @@ public class StationController : InteractableBase
         int toLoad = Mathf.Min(available, _shipInventory.Capacity - _shipInventory.Count);
         if (toLoad <= 0)
         {
-            Debug.Log("[StationController] 우주선 인벤토리가 가득 찼습니다.");
             CompleteInteraction();
             yield break;
         }
@@ -201,7 +199,6 @@ public class StationController : InteractableBase
 
         if (_shipInventory.CountOf(ShipInventory.CargoType.Ore) <= 0)
         {
-            Debug.Log("[StationController] 하역할 광석이 없습니다.");
             CompleteInteraction();
             yield break;
         }

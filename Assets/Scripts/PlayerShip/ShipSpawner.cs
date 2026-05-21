@@ -20,12 +20,16 @@ public class ShipSpawner : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
+        GameEvents.OnNewGameRequested += HandleNewGameRequested;
+        GameEvents.OnContinueRequested += HandleContinueRequested;
         GameEvents.OnStationSpawned += HandleStationSpawned;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
     }
 
     private void OnDisable()
     {
+        GameEvents.OnNewGameRequested -= HandleNewGameRequested;
+        GameEvents.OnContinueRequested -= HandleContinueRequested;
         GameEvents.OnStationSpawned -= HandleStationSpawned;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
     }
@@ -33,12 +37,25 @@ public class ShipSpawner : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
+    private void HandleNewGameRequested()
+    {
+        PreloadShip();
+    }
+
+    private void HandleContinueRequested()
+    {
+        PreloadShip();  //TODO: 세이브 로드 기능 추가시 변경 예정
+    }
+
     private void HandleStationSpawned(Transform stationTransform)
     {
         if (_spawnedShip == null)
-            SpawnShip(stationTransform);
-        else
-            ActivateShip(stationTransform);
+        {
+            Debug.LogError("[ShipSpawner] 우주선이 프리로드되지 않았습니다.");
+            return;
+        }
+
+        ActivateShip(stationTransform);
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)
@@ -52,8 +69,10 @@ public class ShipSpawner : MonoBehaviour
     // =========================================================================
     // 스폰 로직
     // =========================================================================
-    private void SpawnShip(Transform stationTransform)
+    private void PreloadShip()
     {
+        if (_spawnedShip != null) return;
+
         if (_shipPrefab == null)
         {
             Debug.LogError("[ShipSpawner] 우주선 프리팹이 연결되지 않았습니다.");
@@ -61,25 +80,23 @@ public class ShipSpawner : MonoBehaviour
         }
 
         _spawnedShip = Instantiate(_shipPrefab);
-
-        ShipController shipController = _spawnedShip.GetComponent<ShipController>();
-        if (shipController == null)
-        {
-            Debug.LogError("[ShipSpawner] ShipController 컴포넌트를 찾을 수 없습니다.");
-            Destroy(_spawnedShip);
-            return;
-        }
-
-        SetupShip(stationTransform);
-        StartCoroutine(RaiseShipSpawnedNextFrame());
+        _spawnedShip.SetActive(false);
     }
 
     private void ActivateShip(Transform stationTransform)
     {
-        _spawnedShip.SetActive(true);
+        ShipController shipController = _spawnedShip.GetComponent<ShipController>();
+        if (shipController == null)
+        {
+            Debug.LogError("[ShipSpawner] ShipController 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+
         SetupShip(stationTransform);
-        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+        _spawnedShip.SetActive(true);
+        StartCoroutine(RaiseShipSpawnedNextFrame());
     }
+
 
     private void SetupShip(Transform stationTransform)
     {

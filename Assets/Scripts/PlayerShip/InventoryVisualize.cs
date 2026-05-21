@@ -23,10 +23,10 @@ public class InventoryVisualize : MonoBehaviour
     private readonly List<SpringJoint2D> _boxJoints = new List<SpringJoint2D>();
 
     private Rigidbody2D _shipRigidbody;
-
     private ShipInventory _shipInventory;
     private int _activeBoxCount = 0;
     private int _lastCargoCount = -1;
+     private bool _isInitialized = false;
 
     // =========================================================================
     // Unity 생명주기
@@ -40,18 +40,18 @@ public class InventoryVisualize : MonoBehaviour
         _shipInventory = GetComponent<ShipInventory>();
         if (_shipInventory == null)
             Debug.LogError("[InventoryVisualize] ShipInventory를 찾지 못했습니다.");
-
-        PreloadPool();
     }
 
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEvents.OnShipSpawned += HandleShipSpawned;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEvents.OnShipSpawned -= HandleShipSpawned;
     }
 
     private void Start()
@@ -61,6 +61,7 @@ public class InventoryVisualize : MonoBehaviour
 
     private void Update()
     {
+        if (!_isInitialized) return;
         if (_shipInventory == null) return;
 
         int count = _shipInventory.Count;
@@ -98,10 +99,6 @@ public class InventoryVisualize : MonoBehaviour
             _boxObjects.Add(box);
             _boxRigidbodies.Add(rigidbody);
             _boxJoints.Add(joint);
-
-            _boxObjects.Add(box);
-            _boxRigidbodies.Add(rigidbody);
-            _boxJoints.Add(joint);
         }
     }
 
@@ -115,6 +112,15 @@ public class InventoryVisualize : MonoBehaviour
             _lastCargoCount = -1;
             SetActiveBoxCount(0);
         }
+    }
+
+    private void HandleShipSpawned(Transform shipTransform)
+    {
+        if (_isInitialized) return;
+
+        PreloadPool();
+        SetActiveBoxCount(0);
+        _isInitialized = true;
     }
 
     // =========================================================================

@@ -183,8 +183,6 @@ public class ShipInventory : MonoBehaviour
 
         _loadCoroutine = null;
         onComplete?.Invoke(loaded);
-
-        Debug.Log($"[CargoInventory] 적재 완료. {type} x{loaded}");
     }
 
     private IEnumerator UnloadRoutine(CargoType type, Action onEach, Action<int> onComplete)
@@ -205,8 +203,6 @@ public class ShipInventory : MonoBehaviour
 
         _unloadCoroutine = null;
         onComplete?.Invoke(unloaded);
-
-        Debug.Log($"[CargoInventory] 하역 완료. {type} x {unloaded}");
     }
 
     // =========================================================================

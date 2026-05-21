@@ -9,6 +9,7 @@ public class MainMenuUI : UIBase
     // =========================================================================
     [Header("버튼")]
     [SerializeField] private Button _btnNewGame;
+    [SerializeField] private Button _btnContinue;
     [SerializeField] private Button _btnQuit;
 
     // =========================================================================
@@ -20,6 +21,8 @@ public class MainMenuUI : UIBase
 
         if (_btnNewGame != null)
             _btnNewGame.onClick.AddListener(OnClickNewGame);
+        if (_btnContinue != null)
+            _btnContinue.onClick.AddListener(OnClickNewGame);
         if (_btnQuit != null)
             _btnQuit.onClick.AddListener(OnClickQuit);
     }
@@ -28,6 +31,8 @@ public class MainMenuUI : UIBase
     {
         if (_btnNewGame != null)
             _btnNewGame.onClick.RemoveListener(OnClickNewGame);
+        if (_btnContinue != null)
+            _btnContinue.onClick.RemoveListener(OnClickNewGame);
         if (_btnQuit != null)
             _btnQuit.onClick.RemoveListener(OnClickQuit);
     }
@@ -37,6 +42,13 @@ public class MainMenuUI : UIBase
     // =========================================================================
     private void OnClickNewGame()
     {
+        GameEvents.RaiseNewGameRequested();
+        GameManager.Instance.ChangeState(GameState.Lobby);
+    }
+
+    private void OnClickContinue()
+    {
+        GameEvents.RaiseContinueRequested();
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 
