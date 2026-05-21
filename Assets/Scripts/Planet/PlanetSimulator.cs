@@ -228,8 +228,6 @@ public class PlanetSimulator : MonoBehaviour
 
             GameEvents.RaisePlanetGameOverWarning(_instanceId, false);
             GameEvents.RaisePlanetDestroyed(_instanceId);
-
-            Debug.LogError($"[PlanetSimulator] '{_planetName}' 멸망! 게임오버");
         }
         else
         {

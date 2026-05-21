@@ -22,9 +22,12 @@ public class MainMenuUI : UIBase
         if (_btnNewGame != null)
             _btnNewGame.onClick.AddListener(OnClickNewGame);
         if (_btnContinue != null)
-            _btnContinue.onClick.AddListener(OnClickNewGame);
+            _btnContinue.onClick.AddListener(OnClickContinue);
         if (_btnQuit != null)
             _btnQuit.onClick.AddListener(OnClickQuit);
+
+        if (_btnContinue != null)
+            _btnContinue.interactable = SaveLoadManager.HasSaveFile();
     }
 
     private void OnDestroy()
@@ -32,7 +35,7 @@ public class MainMenuUI : UIBase
         if (_btnNewGame != null)
             _btnNewGame.onClick.RemoveListener(OnClickNewGame);
         if (_btnContinue != null)
-            _btnContinue.onClick.RemoveListener(OnClickNewGame);
+            _btnContinue.onClick.RemoveListener(OnClickContinue);
         if (_btnQuit != null)
             _btnQuit.onClick.RemoveListener(OnClickQuit);
     }

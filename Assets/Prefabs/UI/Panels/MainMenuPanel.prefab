@@ -694,6 +694,7 @@ MonoBehaviour:
   _uiId: UI_Panel_01
   _btnClose: {fileID: 0}
   _btnNewGame: {fileID: 774594111550342746}
+  _btnContinue: {fileID: 2942820499765120133}
   _btnQuit: {fileID: 8926369707330071075}
 --- !u!222 &184242332252362603
 CanvasRenderer:

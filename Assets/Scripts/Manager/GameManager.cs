@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnStageClear += HandleStageClear;
         GameEvents.OnStageFailed += HandleStageFailed;
         GameEvents.OnStageSelected += HandleStageSelected;
+        GameEvents.OnContinueRequested += HandleContinueRequested;
     }
 
     private void OnDisable()
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
         GameEvents.OnStageClear -= HandleStageClear;
         GameEvents.OnStageFailed -= HandleStageFailed;
         GameEvents.OnStageSelected -= HandleStageSelected;
+        GameEvents.OnContinueRequested -= HandleContinueRequested;
     }
 
     private async void Start()
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleStageClear(string stageId)
     {
-        Context.StageClearStatus[stageId] = true;   // 클리어 상태 저장. TODO: 다음 스테이지 잠금 해제용
+        Context.StageClearStatus[stageId] = true;
 
         if (!Context.UnlockedStageIds.Contains(stageId))
             Context.UnlockedStageIds.Add(stageId);
@@ -90,6 +92,19 @@ public class GameManager : MonoBehaviour
     private void HandleStageFailed(string stageId)
     {
         Context.StageClearStatus[stageId] = false;
+    }
+
+    private void HandleContinueRequested()
+    {
+        SaveLoadManager.Instance.Load();
+    }
+
+    public void LoadContext(GameContext context)
+    {
+        Context = context;
+        GameEvents.RaiseGoldChanged(Context.CurrentGold);
+        GameEvents.RaiseIngotChanged(Context.CurrentIngot);
+        Debug.Log("[GameManager] Context 로드 완료");
     }
 
     // =========================================================================
