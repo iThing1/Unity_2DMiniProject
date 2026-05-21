@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Sprites
   m_GUID: 7f6fa1a585f28b947aa0d0d3547c4d5a
   m_SerializeEntries:
+  - m_GUID: 061bad4a42f660443bd65a7b02392d6d
+    m_Address: Icon/CargoBox
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0f8610c350d44a343880112ee67de222
     m_Address: Icon/Ore
     m_ReadOnly: 0
@@ -35,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31e236a41c3fc4c408e6515eff9b1cfd
+    m_Address: Upgrade/NanoRefiner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 35e127fa1a997754381846da7249542e
     m_Address: Upgrade/CargoExpand
     m_ReadOnly: 0
@@ -52,6 +62,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6fb5781901c75134fb7dac3fa2bcf6b1
     m_Address: Icon/Gold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7afc635918789074280f6f4cc21e0f45
+    m_Address: Icon/Pop
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
