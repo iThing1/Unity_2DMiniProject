@@ -13,6 +13,11 @@ public class DebugUI : MonoBehaviour
     [SerializeField] private Button _btnForceClear;
     [SerializeField] private Button _btnForceFail;
 
+    [Header("재화 추가")]
+    [SerializeField] private Button _btnAddGold;
+    [SerializeField] private Button _btnAddIngot;
+    [SerializeField] private float _addGoldAmount = 10000f;
+    [SerializeField] private float _addIngotAmount = 100f;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -22,6 +27,10 @@ public class DebugUI : MonoBehaviour
             _btnForceClear.onClick.AddListener(OnClickForceClear);
         if (_btnForceFail != null)
             _btnForceFail.onClick.AddListener(OnClickForceFail);
+        if (_btnAddGold != null)
+            _btnAddGold.onClick.AddListener(OnClickAddGold);
+        if (_btnAddIngot != null)
+            _btnAddIngot.onClick.AddListener(OnClickAddIngot);
     }
 
     private void OnDestroy()
@@ -30,6 +39,10 @@ public class DebugUI : MonoBehaviour
             _btnForceClear.onClick.RemoveListener(OnClickForceClear);
         if (_btnForceFail != null)
             _btnForceFail.onClick.RemoveListener(OnClickForceFail);
+        if (_btnAddGold != null)
+            _btnAddGold.onClick.RemoveListener(OnClickAddGold);
+        if (_btnAddIngot != null)
+            _btnAddIngot.onClick.RemoveListener(OnClickAddIngot);
     }
 
     private void OnEnable()
@@ -46,7 +59,6 @@ public class DebugUI : MonoBehaviour
     // 이벤트 핸들러
     // =========================================================================
 
-    // GamePlay 상태일 때만 활성화
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         gameObject.SetActive(next == GameState.GamePlay);
@@ -79,6 +91,19 @@ public class DebugUI : MonoBehaviour
 
         Debug.Log($"[DebugUI] 강제 스테이지 실패: {stageId}");
         GameEvents.RaisePlanetDestroyed($"debug_{stageId}");
+    }
+
+    private void OnClickAddGold()
+    {
+        GameManager.Instance.AddGold(_addGoldAmount);
+        Debug.Log($"[DebugUI] 골드 +{_addGoldAmount} (현재: {GameManager.Instance.Context.CurrentGold})");
+    }
+
+    // 추가: 주괴 추가
+    private void OnClickAddIngot()
+    {
+        GameManager.Instance.AddIngot(_addIngotAmount);
+        Debug.Log($"[DebugUI] 주괴 +{_addIngotAmount} (현재: {GameManager.Instance.Context.CurrentIngot})");
     }
 #endif
 }

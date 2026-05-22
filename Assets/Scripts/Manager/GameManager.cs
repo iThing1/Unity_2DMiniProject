@@ -43,9 +43,6 @@ public class GameManager : MonoBehaviour
 
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();
-
-        Context.CurrentGold = 10000f; // [DEBUG] 초기 골드
-        Context.CurrentIngot = 10000f;  // [DEBUG] 초기 주괴
     }
 
     private void PreloadPlanetSprites()

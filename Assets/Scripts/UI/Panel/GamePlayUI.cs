@@ -1,4 +1,5 @@
 ﻿using GameData;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,10 @@ public class GamePlayUI : UIBase
 
     [Header("행성 정보 팝업")]
     [SerializeField] private GameObject _planetInfoPrefab;
+
+    [Header("게임오버 경고")] // TODO: 나중에 9-Slice로 바꿈
+    [SerializeField] private GameObject _alertBorder;
+    [SerializeField] private float _alertBlinkInterval = 0.4f;
     // =========================================================================
     // 직접 참조
     // =========================================================================
@@ -45,6 +50,8 @@ public class GamePlayUI : UIBase
     private int _lastCargoCount = -1;
     private int _lastCargoCapacity = -1;
 
+    private int _warningPlanetCount = 0;
+    private Coroutine _blinkCoroutine;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -56,6 +63,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
         GameEvents.OnStageClear += HandleStageClear;
+        GameEvents.OnPlanetGameOverWarning += HandlePlanetGameOverWarning;
     }
 
     private void OnDisable()
@@ -66,6 +74,7 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
         GameEvents.OnStageClear -= HandleStageClear;
+        GameEvents.OnPlanetGameOverWarning -= HandlePlanetGameOverWarning;
     }
 
     private void OnDestroy()
@@ -86,6 +95,9 @@ public class GamePlayUI : UIBase
 
         SetCargoPanel(false);
         SpawnPlanetInfo();
+
+        if (_alertBorder != null)
+            _alertBorder.SetActive(false);
     }
 
     private void Update()
@@ -136,6 +148,8 @@ public class GamePlayUI : UIBase
         _planetMap.Clear();
         _planetInfo?.Hide();
         _hoveredPlanet = null;
+
+        StopAlert();
     }
 
     private void HandleShipSpawned(Transform shipTransform)
@@ -195,6 +209,18 @@ public class GamePlayUI : UIBase
         _hoveredPlanet = planet;
         _planetInfo?.Show(_hoveredPlanet);
     }
+
+    private void HandlePlanetGameOverWarning(string instanceId, bool isWarning)
+    {
+        _warningPlanetCount += isWarning ? 1 : -1;
+        _warningPlanetCount = Mathf.Max(0, _warningPlanetCount);
+
+        if (_warningPlanetCount > 0)
+            StartAlert();
+        else
+            StopAlert();
+    }
+
     // =========================================================================
     // 버튼 핸들러
     // =========================================================================
@@ -242,6 +268,42 @@ public class GamePlayUI : UIBase
         Debug.LogWarning($"[GamePlayUI] 딕셔너리에서 행성을 찾지 못했습니다: {instanceId}");
         return null;
     }
+
+    // =========================================================================
+    // 게임오버 경고 점멸
+    // =========================================================================
+    private void StartAlert()
+    {
+        if (_alertBorder == null) return;
+        if (_blinkCoroutine != null) return;
+
+        _alertBorder.SetActive(true);
+        _blinkCoroutine = StartCoroutine(BlinkRoutine());
+    }
+
+    private void StopAlert()
+    {
+        if (_blinkCoroutine != null)
+        {
+            StopCoroutine(_blinkCoroutine);
+            _blinkCoroutine = null;
+        }
+
+        if (_alertBorder != null)
+            _alertBorder.SetActive(false);
+    }
+
+    private IEnumerator BlinkRoutine()
+    {
+        while (true)
+        {
+            _alertBorder.SetActive(true);
+            yield return new WaitForSeconds(_alertBlinkInterval);
+            _alertBorder.SetActive(false);
+            yield return new WaitForSeconds(_alertBlinkInterval);
+        }
+    }
+
 
     // =========================================================================
     // UI 갱신 메서드
