@@ -14,6 +14,7 @@ public class LobbyUI : UIBase
     [SerializeField] private Button _btnStart;
     [SerializeField] private Button _btnLeft;
     [SerializeField] private Button _btnRight;
+    [SerializeField] private Button _btnUpgrade;
 
     [Header("행성 리스트")]
     [SerializeField] private Transform _planetListContent;
@@ -54,6 +55,8 @@ public class LobbyUI : UIBase
             _btnLeft.onClick.AddListener(OnClickLeft);
         if (_btnRight != null)
             _btnRight.onClick.AddListener(OnClickRight);
+        if (_btnUpgrade != null)
+            _btnUpgrade.onClick.AddListener(OnClickUpgrade);
     }
 
     private void OnDestroy()
@@ -64,6 +67,8 @@ public class LobbyUI : UIBase
             _btnLeft.onClick.RemoveListener(OnClickLeft);
         if (_btnRight != null)
             _btnRight.onClick.RemoveListener(OnClickRight);
+        if (_btnUpgrade != null)
+            _btnUpgrade.onClick.RemoveListener(OnClickUpgrade);
     }
 
     // =========================================================================
@@ -103,6 +108,10 @@ public class LobbyUI : UIBase
         RefreshUI();
     }
 
+    private void OnClickUpgrade()
+    {
+        UIManager.Instance.OpenUI<UpgradeUI>(UIId.Panel.Upgrade);
+    }
     // =========================================================================
     // 스테이지 로드
     // =========================================================================
