@@ -197,10 +197,17 @@ public class GameDataManager : MonoBehaviour
         if (_loadingHandles.Count == 0) return;
 
         float total = 0f;
-        foreach (AsyncOperationHandle handle in _loadingHandles)
-            total += handle.PercentComplete;
+        int validCount = 0;
 
-        LoadingProgress = total / _loadingHandles.Count;
+        foreach (AsyncOperationHandle handle in _loadingHandles)
+        {
+            if (!handle.IsValid()) continue;
+            total += handle.PercentComplete;
+            validCount++;
+        }
+
+        if (validCount == 0) return;
+        LoadingProgress = total / validCount;
     }
 
 }

@@ -249,28 +249,6 @@ TextureImporter:
       name: Hydroponics_5
       rect:
         serializedVersion: 2
-        x: 1038
-        y: 474
-        width: 6
-        height: 12
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0754b69a3b83992479971ec913a4042a
-      internalID: -1788239039
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Hydroponics_6
-      rect:
-        serializedVersion: 2
         x: 353
         y: 211
         width: 125
@@ -290,7 +268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hydroponics_7
+      name: Hydroponics_6
       rect:
         serializedVersion: 2
         x: 492
@@ -312,7 +290,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hydroponics_8
+      name: Hydroponics_7
       rect:
         serializedVersion: 2
         x: 630
@@ -334,7 +312,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hydroponics_9
+      name: Hydroponics_8
       rect:
         serializedVersion: 2
         x: 770
@@ -356,7 +334,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Hydroponics_10
+      name: Hydroponics_9
       rect:
         serializedVersion: 2
         x: 899
@@ -395,15 +373,14 @@ TextureImporter:
     nameFileIdTable:
       Hydroponics_0: -1458081674
       Hydroponics_1: -1776350574
-      Hydroponics_10: 424523363
       Hydroponics_2: -875324697
       Hydroponics_3: 486766355
       Hydroponics_4: 187296137
-      Hydroponics_5: -1788239039
-      Hydroponics_6: -1910209084
-      Hydroponics_7: -1585342404
-      Hydroponics_8: 1334263065
-      Hydroponics_9: 1744511669
+      Hydroponics_5: -1910209084
+      Hydroponics_6: -1585342404
+      Hydroponics_7: 1334263065
+      Hydroponics_8: 1744511669
+      Hydroponics_9: 424523363
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

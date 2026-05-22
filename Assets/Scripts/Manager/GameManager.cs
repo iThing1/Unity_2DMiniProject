@@ -171,6 +171,12 @@ public class GameManager : MonoBehaviour
         return data?.GetStat(GetUpgradeLevel(upgradeId)) ?? 0f;
     }
 
+    public string GetUpgradeDesc(string upgradeId)
+    {
+        var desc = GameDataManager.Instance.Get<UpgradeData>(upgradeId);
+        return desc?.Description ?? string.Empty;
+    }
+
     public void RequestSFX(string soundId)
     {
         var data = GameDataManager.Instance.Get<SoundData>(soundId);

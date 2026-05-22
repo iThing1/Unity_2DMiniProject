@@ -12,7 +12,7 @@ public class UpgradeInfo : MonoBehaviour
     [SerializeField] private TMP_Text _txtName;
     [SerializeField] private TMP_Text _txtGold;
     [SerializeField] private TMP_Text _txtIngot;
-
+    [SerializeField] private TMP_Text _txtDesc;
     // =========================================================================
     // 외부 API
     // =========================================================================
@@ -27,10 +27,13 @@ public class UpgradeInfo : MonoBehaviour
         bool isAlreadyDone = currentLevel >= slotLevel;
 
         if (_txtLevel != null)
-            _txtLevel.text = $"Lv.{currentLevel}";
+            _txtLevel.text = $"Lv.{slotLevel}";
 
         if (_txtName != null)
             _txtName.text = data.Name;
+
+        if (_txtDesc != null)
+            _txtDesc.text = GameManager.Instance.GetUpgradeDesc(upgradeId);
 
         if (isAlreadyDone)
         {

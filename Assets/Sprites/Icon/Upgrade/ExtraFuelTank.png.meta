@@ -249,28 +249,6 @@ TextureImporter:
       name: ExtraFuelTank_5
       rect:
         serializedVersion: 2
-        x: 943
-        y: 383
-        width: 4
-        height: 8
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a9ee7eaec53922a4b84c8e0529dbac8a
-      internalID: 376910219
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ExtraFuelTank_6
-      rect:
-        serializedVersion: 2
         x: 354
         y: 211
         width: 124
@@ -290,7 +268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExtraFuelTank_7
+      name: ExtraFuelTank_6
       rect:
         serializedVersion: 2
         x: 492
@@ -312,7 +290,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExtraFuelTank_8
+      name: ExtraFuelTank_7
       rect:
         serializedVersion: 2
         x: 631
@@ -334,7 +312,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExtraFuelTank_9
+      name: ExtraFuelTank_8
       rect:
         serializedVersion: 2
         x: 770
@@ -356,7 +334,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExtraFuelTank_10
+      name: ExtraFuelTank_9
       rect:
         serializedVersion: 2
         x: 899
@@ -395,15 +373,14 @@ TextureImporter:
     nameFileIdTable:
       ExtraFuelTank_0: 870823504
       ExtraFuelTank_1: 1015604665
-      ExtraFuelTank_10: 462715046
       ExtraFuelTank_2: -941865790
       ExtraFuelTank_3: 601944328
       ExtraFuelTank_4: -195530999
-      ExtraFuelTank_5: 376910219
-      ExtraFuelTank_6: 1786501324
-      ExtraFuelTank_7: -500417944
-      ExtraFuelTank_8: 390034015
-      ExtraFuelTank_9: 1931183125
+      ExtraFuelTank_5: 1786501324
+      ExtraFuelTank_6: -500417944
+      ExtraFuelTank_7: 390034015
+      ExtraFuelTank_8: 1931183125
+      ExtraFuelTank_9: 462715046
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
