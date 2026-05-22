@@ -43,14 +43,7 @@
   },
   {
     "Id": "UI_Popup_07",
-    "Name": "RefinerUpgrade",
-    "Type": "Popup",
-    "BindState": "GamePlay",
-    "AutoSpawn": false
-  },
-  {
-    "Id": "UI_Popup_08",
-    "Name": "FarmUpgrade",
+    "Name": "StationUpgrade",
     "Type": "Popup",
     "BindState": "GamePlay",
     "AutoSpawn": false

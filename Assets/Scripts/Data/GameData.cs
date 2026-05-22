@@ -29,8 +29,8 @@ namespace GameData
             public const string StageClear = "UI_Popup_03";
             public const string StageFailed = "UI_Popup_04";
             public const string PlanetInfo = "UI_Popup_06";
-            public const string RefinerUpgrade = "UI_Popup_07";
-            public const string FarmUpgrade = "UI_Popup_08";
+            public const string StationUpgrade = "UI_Popup_07";
+            
         }
 
         public struct VeryFront

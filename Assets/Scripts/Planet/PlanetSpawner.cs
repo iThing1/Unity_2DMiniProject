@@ -12,7 +12,7 @@ public class PlanetSpawner : MonoBehaviour
     [SerializeField] private string _planetPrefabAddress = "Prefabs/Planet";
 
     [Header("스폰 거리 설정")]
-    [SerializeField] private int _maxSpawnAttempts = 10;   
+    [SerializeField] private int _maxSpawnAttempts = 20;   
     [SerializeField] private float _spawnPadding = 2f;
     [SerializeField] private float _stationExclusionRange = 3f; // 정거장 경계로부터 추가 여유 간격
 

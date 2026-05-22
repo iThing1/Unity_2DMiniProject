@@ -77,6 +77,14 @@ public class StationSimulator : MonoBehaviour
         return true;
     }
 
+    public bool TryConsumeOre(float amount)
+    {
+        if (StoredOre < amount) return false;
+        StoredOre -= amount;
+        StoredOre = Mathf.Max(0f, StoredOre);
+        return true;
+    }
+
     public void RefundFood(int amount)
     {
         StoredFood += amount;
@@ -96,7 +104,7 @@ public class StationSimulator : MonoBehaviour
         }
 
         float ingotToSell = Mathf.Floor(StoredIngot);
-        float goldEarned = ingotToSell * 10f;   // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
+        float goldEarned = ingotToSell * 10;  // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
 
         StoredIngot -= ingotToSell;
         GameManager.Instance.TrySpendIngot(ingotToSell);
@@ -124,7 +132,7 @@ public class StationSimulator : MonoBehaviour
     {
         while (true)
         {
-            if (StoredOre >= 10f)
+            if (StoredOre >= _oreToIngotRatio)
             {
                 float refineAmount = Mathf.Min(_refineRate * Time.deltaTime, StoredOre);
                 StoredOre -= refineAmount;

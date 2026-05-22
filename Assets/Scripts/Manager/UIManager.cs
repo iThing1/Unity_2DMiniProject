@@ -108,6 +108,12 @@ public class UIManager : MonoBehaviour
     public void CloseUI(string uiId)
     {
         if (!_createdUIDic.TryGetValue(uiId, out GameObject panel)) return;
+        if (panel == null)
+        {
+            _createdUIDic.Remove(uiId);
+            _openedUISet.Remove(uiId);
+            return;
+        }
 
         panel.SetActive(false);
         _openedUISet.Remove(uiId);

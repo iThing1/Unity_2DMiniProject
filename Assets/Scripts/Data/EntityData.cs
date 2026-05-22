@@ -54,6 +54,7 @@ namespace GameData
         public float BaseStats;
         public float UpgradeValue;
         public CalcType CalcType;
+        public string SpritePath = null!;
         public string Description = null!;
 
         string IGameData.Id => Id;

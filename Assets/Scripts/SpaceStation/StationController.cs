@@ -86,8 +86,34 @@ public class StationController : InteractableBase
     }
 
     // =========================================================================
-    // 외부 API: 주괴 판매
+    // 외부 API
     // =========================================================================
+    public bool TryStationUpgrade(string upgradeId)
+    {
+        var data = GameDataManager.Instance.Get<UpgradeData>(upgradeId);
+        if (data == null) return false;
+
+        int currentLevel = GameManager.Instance.GetUpgradeLevel(upgradeId);
+        if (currentLevel >= data.MaxLevel) return false;
+
+        float goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
+        float IngotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
+
+        if (!GameManager.Instance.TrySpendGold(goldCost)) return false;
+        if (!GameManager.Instance.TrySpendIngot(IngotCost))
+        {
+            GameManager.Instance.AddGold(goldCost);
+            return false;
+        }
+
+        int newLevel = currentLevel + 1;
+        GameManager.Instance.Context.UpgradeLevels[upgradeId] = newLevel;
+        GameEvents.RaiseUpgradeCompleted(upgradeId, newLevel);
+
+        Debug.Log($"[StationController] 업그레이드 완료: {upgradeId} Lv.{newLevel}");
+        return true;
+    }
+
     public void SellIngot()
     {
         _simulator.SellIngot();
@@ -100,6 +126,10 @@ public class StationController : InteractableBase
     {
         _activeZone = zoneType;
         _isPlayerInside = true;
+
+        if (!_isGamePlay) return;
+        if (zoneType == StationZoneType.Left || zoneType == StationZoneType.Right)
+            OpenUpgradeUI(zoneType);
     }
 
     public void OnPlayerExitZone(StationZoneType zoneType)
@@ -107,6 +137,8 @@ public class StationController : InteractableBase
         if (_activeZone != zoneType) return;
         _activeZone = null;
         _isPlayerInside = false;
+
+        CloseUpgradeUI();
         OnDeactivate();
     }
 
@@ -157,6 +189,7 @@ public class StationController : InteractableBase
             GameEvents.RaiseStationInteractionChanged(z, false);
 
         _shipInventory?.StopTransfer();
+        UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
 
     // =========================================================================
@@ -230,6 +263,21 @@ public class StationController : InteractableBase
     private bool IsLoadingDone()
     {
         return !_shipInventory.IsLoading;
+    }
+
+    // =========================================================================
+    // 업그레이드 UI
+    // =========================================================================
+    private void OpenUpgradeUI(StationZoneType zoneType)
+    {
+        UIManager.Instance.OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+        StationUpgrade upgradeUI = UIManager.Instance.GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+        upgradeUI?.Open(zoneType, this);
+    }
+
+    private void CloseUpgradeUI()
+    {
+        UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
 
     // =========================================================================
