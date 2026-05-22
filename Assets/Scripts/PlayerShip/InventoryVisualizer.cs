@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryVisualize : MonoBehaviour
+public class InventoryVisualizer : MonoBehaviour
 {
     [Header("화물 박스")]
     [SerializeField] private GameObject _boxPrefab;

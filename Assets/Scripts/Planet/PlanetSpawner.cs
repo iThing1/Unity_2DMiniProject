@@ -156,13 +156,13 @@ public class PlanetSpawner : MonoBehaviour
             if (planetData == null)
             {
                 Debug.LogWarning($"[PlanetSpawner] 행성 데이터를 찾지 못했습니다: {planetId}");
-                yield return new WaitForSeconds(_currentStageData.SpawnInteval);
+                yield return new WaitForSeconds(_currentStageData.SpawnInterval);
                 continue;
             }
 
             SpawnPlanet(planetData);
 
-            yield return new WaitForSeconds(_currentStageData.SpawnInteval);
+            yield return new WaitForSeconds(_currentStageData.SpawnInterval);
         }
 
         Debug.Log($"[PlanetSpawner] 최대 행성 수 도달: {_currentStageData.MaxPlanet}");
@@ -203,9 +203,6 @@ public class PlanetSpawner : MonoBehaviour
         float maxDistance = GetSpawnRange(colliderRadius);
         float minDistance = colliderRadius + _stationExclusionRange;
 
-        Debug.Log($"[스폰 영역 체크] 정거장 배제구역(최소거리): {minDistance} // 카메라 화면(최대거리): {maxDistance}");
-        Debug.Log($"[카메라 시야 영역 체크] {_cameraController.ViewHalfHeight}, {_cameraController.ViewHalfWidth}");
-
         for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++) // 겹침 방지 루프
         {
             float gradeWeight = (float)grade / MAX_GRADE;
@@ -221,7 +218,7 @@ public class PlanetSpawner : MonoBehaviour
         }
 
         // 최대 시도 초과 시 경고 후 마지막 위치 반환
-        Debug.LogWarning("[PlanetSpawner] 겹치지 않는 위치를 찾지 못했습니다. 마지막 위치로 스폰합니다.");
+        Debug.LogWarning("[PlanetSpawner] fallback: 마지막 위치로 소환");
         float fallbackAngle = Random.Range(0f, 360f) * Mathf.Deg2Rad;
         float fallbackDistance = Mathf.Lerp(minDistance, maxDistance, (float)grade / MAX_GRADE);
         Vector3 position = new Vector3(Mathf.Cos(fallbackAngle) * fallbackDistance, Mathf.Sin(fallbackAngle) * fallbackDistance, 0f);

@@ -24,7 +24,7 @@ namespace GameData
         public string Stage_ID = null!;
         public string Name = null!;
         public int MaxPlanet;
-        public float SpawnInteval;
+        public float SpawnInterval;
         public float ExpansionSpeed;
         public int ReqGold;
         public bool isClear;

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasRenderer))]
-public class LineRenderer : Graphic
+public class UILineRenderer : Graphic
 {
     // =========================================================================
     // Inspector 연결
@@ -39,12 +39,14 @@ public class LineRenderer : Graphic
         vh.Clear();
 
         Vector2 dir = (_endPos - _startPos).normalized;
+        if (dir == Vector2.zero) return;
+
         Vector2 perp = new Vector2(-dir.y, dir.x) * (_lineWidth * 0.5f);
 
         UIVertex vertex = new UIVertex();
         vertex.color = color;
+        vertex.uv0 = Vector2.zero;
 
-        // 사각형 4꼭짓점으로 선 표현
         vertex.position = _startPos + perp;
         vh.AddVert(vertex);
 

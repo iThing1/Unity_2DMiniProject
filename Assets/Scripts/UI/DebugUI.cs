@@ -5,7 +5,6 @@ using GameData;
 // 개발용 디버그 메뉴 - 빌드 시 비활성화
 public class DebugUI : MonoBehaviour
 {
-#if UNITY_EDITOR
     // =========================================================================
     // Inspector 연결
     // =========================================================================
@@ -99,11 +98,9 @@ public class DebugUI : MonoBehaviour
         Debug.Log($"[DebugUI] 골드 +{_addGoldAmount} (현재: {GameManager.Instance.Context.CurrentGold})");
     }
 
-    // 추가: 주괴 추가
     private void OnClickAddIngot()
     {
         GameManager.Instance.AddIngot(_addIngotAmount);
         Debug.Log($"[DebugUI] 주괴 +{_addIngotAmount} (현재: {GameManager.Instance.Context.CurrentIngot})");
     }
-#endif
 }

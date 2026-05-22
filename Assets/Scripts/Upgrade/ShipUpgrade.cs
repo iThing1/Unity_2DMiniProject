@@ -20,6 +20,7 @@ public class ShipUpgrade : MonoBehaviour
     [SerializeField] private float _nodeSize = 80f;
     [SerializeField] private float _nodeSpacingX = 120f;
     [SerializeField] private float _rowSpacingY = 150f;
+    [SerializeField] private Vector2 _startOffset = new Vector2(0f, 0f);
 
     // =========================================================================
     // 업그레이드 ID 목록 (순서 = 행 순서)
@@ -69,7 +70,7 @@ public class ShipUpgrade : MonoBehaviour
             UpgradeData data = GameDataManager.Instance.Get<UpgradeData>(upgradeId);
             if (data == null) continue;
 
-            float posY = -row * _rowSpacingY;
+            float posY = _startOffset.y + (-row * _rowSpacingY);
 
             // 행의 헤드 노드 (링크드리스트 시작점)
             ShipUpgradeNode headNode = null;
@@ -77,7 +78,7 @@ public class ShipUpgrade : MonoBehaviour
 
             for (int slotLevel = 1; slotLevel <= data.MaxLevel; slotLevel++)
             {
-                float posX = (slotLevel - 1) * _nodeSpacingX;
+                float posX = _startOffset.x + (slotLevel - 1) * _nodeSpacingX;
 
                 GameObject nodeObj = Instantiate(_nodePrefab, _container);
                 RectTransform nodeRect = nodeObj.GetComponent<RectTransform>();
@@ -119,10 +120,18 @@ public class ShipUpgrade : MonoBehaviour
         GameObject lineObj = Instantiate(_linePrefab, _container);
         lineObj.transform.SetAsFirstSibling(); // 노드보다 뒤에 그려지도록
 
-        LineRenderer line = lineObj.GetComponent<LineRenderer>();
+        RectTransform lineRect = lineObj.GetComponent<RectTransform>();
+        if (lineRect != null)
+        {
+            lineRect.anchoredPosition = Vector2.zero;
+            lineRect.sizeDelta = Vector2.zero;
+        }
+
+        UILineRenderer line = lineObj.GetComponent<UILineRenderer>();
         if (line == null) return;
 
-        line.SetPositions(from.anchoredPosition, to.anchoredPosition);
+        Vector2 nodeCenter = new Vector2(_nodeSize * 0.5f, -_nodeSize * 0.5f);
+        line.SetPositions(from.anchoredPosition + nodeCenter, to.anchoredPosition + nodeCenter);
         _spawnedLines.Add(lineObj);
     }
 
