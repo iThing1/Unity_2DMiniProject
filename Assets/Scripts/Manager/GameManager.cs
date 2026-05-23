@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
     {
         await GameDataManager.Instance.RegisterAllTables();
 
+        await UIManager.Instance.LoadUIPrefabsAsync();
+
+        GameEvents.RaiseDataInitialized();
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();
     }
@@ -57,7 +60,6 @@ public class GameManager : MonoBehaviour
         ResourceManager.Instance.LoadSpriteFromSheet("Planet", "Planet_0", OnPlanetSpritesLoaded);
     }
 
-    // Debug 로그용 콜백 메서드
     private void OnPlanetSpritesLoaded(Sprite sprite)
     {
         if (sprite == null)
@@ -185,6 +187,7 @@ public class GameManager : MonoBehaviour
             case UPGRADE_CARGO:
                 GameEvents.RaiseShipStatsChanged(SetShipStats());
                 break;
+
             case UPGRADE_FARM:
             case UPGRADE_REFINE:
                 GameEvents.RaiseStationStatsChanged(SetStationStats());
@@ -211,7 +214,6 @@ public class GameManager : MonoBehaviour
             RefineRate = GetUpgradeStat(UPGRADE_REFINE),
         };
     }
-
 
     public float GetUpgradeStat(string upgradeId)
     {

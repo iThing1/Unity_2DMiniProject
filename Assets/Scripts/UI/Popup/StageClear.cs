@@ -13,6 +13,17 @@ public class StageClear : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+
+    private void OnEnable()
+    {
+        GameEvents.OnStageClear += HandleStageClear;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnStageClear -= HandleStageClear;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -28,12 +39,22 @@ public class StageClear : UIBase
     }
 
     // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+
+    // 추가
+    private void HandleStageClear(string stageId)
+    {
+        gameObject.SetActive(true);
+    }
+
+    // =========================================================================
     // 버튼 핸들러
     // =========================================================================
     private void OnClickGoLobby()
     {
         Time.timeScale = 1f;
-        UIManager.Instance.CloseUI(UIId.Popup.StageClear);
+        gameObject.SetActive(false);
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 }

@@ -103,10 +103,10 @@ public class StationController : InteractableBase
         if (currentLevel >= data.MaxLevel) return false;
 
         float goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
-        float IngotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
+        float ingotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
 
         if (!GameManager.Instance.TrySpendGold(goldCost)) return false;
-        if (!GameManager.Instance.TrySpendIngot(IngotCost))
+        if (!GameManager.Instance.TrySpendIngot(ingotCost))
         {
             GameManager.Instance.AddGold(goldCost);
             return false;
@@ -130,7 +130,6 @@ public class StationController : InteractableBase
     // =========================================================================
     public void OnPlayerEnterZone(StationZoneType zoneType)
     {
-        // 이전 Zone이 남아있으면 먼저 정리 후 새 Zone 설정
         if (_activeZone.HasValue && _activeZone.Value != zoneType)
         {
             CloseUpgradeUI();
@@ -167,7 +166,7 @@ public class StationController : InteractableBase
     {
         if (_activeZone == null) return;
 
-        GameEvents.RaiseStationInteractionChanged(_activeZone.Value, true);
+        GameEvents.RaiseStationInteractionChanged(_activeZone.Value, true, this);
         StopInteractCoroutine();
 
         IEnumerator routine = null;
@@ -199,7 +198,7 @@ public class StationController : InteractableBase
         StopInteractCoroutine();
 
         foreach (StationZoneType z in Enum.GetValues(typeof(StationZoneType)))
-            GameEvents.RaiseStationInteractionChanged(z, false);
+            GameEvents.RaiseStationInteractionChanged(z, false, null);
 
         _shipInventory?.StopTransfer();
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);

@@ -20,7 +20,7 @@ public static class GameEvents
     // 업그레이드
     public static event Action<string, int> OnUpgradeCompleted;
 
-    // 스텟 변경 이벤트
+    // 스탯 변경
     public static event Action<ShipStats> OnShipStatsChanged;
     public static event Action<StationStats> OnStationStatsChanged;
 
@@ -43,7 +43,7 @@ public static class GameEvents
     public static event Action<string, bool> OnPlanetHovered;
 
     // 우주 정거장
-    public static event Action<StationZoneType, bool> OnStationInteractionChanged;
+    public static event Action<StationZoneType, bool, StationController> OnStationInteractionChanged;
 
     // 스폰 관련
     public static event Action<Transform> OnStationSpawned;
@@ -63,6 +63,7 @@ public static class GameEvents
 
     public static void RaiseUpgradeCompleted(string upgradeId, int lv) => OnUpgradeCompleted?.Invoke(upgradeId, lv);
 
+
     public static void RaiseShipStatsChanged(ShipStats stats) => OnShipStatsChanged?.Invoke(stats);
     public static void RaiseStationStatsChanged(StationStats stats) => OnStationStatsChanged?.Invoke(stats);
 
@@ -80,7 +81,7 @@ public static class GameEvents
     public static void RaisePlanetDestroyed(string instanceId) => OnPlanetDestroyed?.Invoke(instanceId);
     public static void RaisePlanetHovered(string instanceId, bool isHovered) => OnPlanetHovered?.Invoke(instanceId, isHovered);
 
-    public static void RaiseStationInteractionChanged(StationZoneType zoneType, bool isActive) => OnStationInteractionChanged?.Invoke(zoneType, isActive);
+    public static void RaiseStationInteractionChanged(StationZoneType zoneType, bool isActive, StationController station) => OnStationInteractionChanged?.Invoke(zoneType, isActive, station);
 
     public static void RaiseStationSpawned(Transform stationTransform) => OnStationSpawned?.Invoke(stationTransform);
     public static void RaiseShipSpawned(Transform shipTransform) => OnShipSpawned?.Invoke(shipTransform);

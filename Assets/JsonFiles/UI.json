@@ -1,86 +1,72 @@
 [
   {
-    "Id": "UI_Popup_01",
-    "Name": "OpenedStage",
-    "Type": "Popup",
-    "BindState": "Lobby",
-    "AutoSpawn": false
-  },
-  {
-    "Id": "UI_Popup_02",
-    "Name": "ClosedStage",
-    "Type": "Popup",
-    "BindState": "Lobby",
-    "AutoSpawn": false
-  },
-  {
     "Id": "UI_Popup_03",
     "Name": "StageClear",
     "Type": "Popup",
     "BindState": "GamePlay",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Popup_04",
     "Name": "StageFailed",
     "Type": "Popup",
     "BindState": "GamePlay",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Popup_05",
     "Name": "StageStart",
     "Type": "Popup",
     "BindState": "GamePlay",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Popup_06",
     "Name": "PlanetInfo",
     "Type": "Popup",
     "BindState": "GamePlay",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Popup_07",
     "Name": "StationUpgrade",
     "Type": "Popup",
     "BindState": "GamePlay",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",
     "BindState": "MainMenu",
-    "AutoSpawn": true
+    "Auto": true
   },
   {
     "Id": "UI_Panel_02",
     "Name": "GamePlay",
     "Type": "Main",
     "BindState": "GamePlay",
-    "AutoSpawn": true
+    "Auto": true
   },
   {
     "Id": "UI_Panel_03",
     "Name": "GameLobby",
     "Type": "Main",
     "BindState": "Lobby",
-    "AutoSpawn": true
+    "Auto": true
   },
   {
     "Id": "UI_Panel_04",
     "Name": "Upgrade",
     "Type": "Main",
     "BindState": "Lobby",
-    "AutoSpawn": false
+    "Auto": false
   },
   {
     "Id": "UI_Loading_01",
     "Name": "Loading",
     "Type": "VeryFront",
     "BindState": "Loading",
-    "AutoSpawn": true
+    "Auto": true
   }
 ]

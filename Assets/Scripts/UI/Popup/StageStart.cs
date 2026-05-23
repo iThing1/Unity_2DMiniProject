@@ -40,20 +40,27 @@ public class StageStart : UIBase
     }
 
     // =========================================================================
-    // 이벤트 핸들러
+    // 외부 API: UIManager를 통해 열릴 때 데이터 주입
     // =========================================================================
-    private void HandleStageSelected(string stageId)
+    public void Open(string stageId)
     {
         StageData data = GameDataManager.Instance.Get<StageData>(stageId);
         if (data == null)
         {
-            Debug.LogError($"[StageStartPopup] 스테이지 데이터를 찾지 못했습니다: {stageId}");
+            Debug.LogError($"[StageStart] 스테이지 데이터를 찾지 못했습니다: {stageId}");
             return;
         }
 
         RefreshUI(data);
-        UIManager.Instance.OpenUI<StageStart>(UIId.Popup.StageStart);
         Time.timeScale = 0f;
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleStageSelected(string stageId)
+    {
+        Open(stageId);
     }
 
     // =========================================================================

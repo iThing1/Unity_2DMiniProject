@@ -14,7 +14,7 @@ public class GameDataManager : MonoBehaviour
 
     public bool IsInitialized { get; private set; } = false;
     public GameConstants Constants { get; private set; }
-    public GameSetting Settings {  get; private set; }
+    public GameSetting Settings { get; private set; }
 
     public float LoadingProgress { get; private set; }
     private readonly List<AsyncOperationHandle> _loadingHandles = new List<AsyncOperationHandle>();
@@ -65,7 +65,6 @@ public class GameDataManager : MonoBehaviour
         CacheSetting();
 
         IsInitialized = true;
-        GameEvents.RaiseDataInitialized();
     }
 
     public T Get<T>(string id) where T : IGameData

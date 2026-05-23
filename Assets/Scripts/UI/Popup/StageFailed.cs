@@ -13,6 +13,17 @@ public class StageFailed : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+
+    private void OnEnable()
+    {
+        GameEvents.OnStageFailed += HandleStageFailed;
+    }
+
+    private void OnDisable()
+    {
+        GameEvents.OnStageFailed -= HandleStageFailed;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -28,12 +39,22 @@ public class StageFailed : UIBase
     }
 
     // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+
+    // 추가
+    private void HandleStageFailed(string stageId)
+    {
+        gameObject.SetActive(true);
+    }
+
+    // =========================================================================
     // 버튼 핸들러
     // =========================================================================
     private void OnClickGoLobby()
     {
         Time.timeScale = 1f;
-        UIManager.Instance.CloseUI(UIId.Popup.StageFailed);
+        gameObject.SetActive(false);
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 }

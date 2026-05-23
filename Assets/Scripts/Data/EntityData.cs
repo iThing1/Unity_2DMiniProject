@@ -89,7 +89,8 @@ namespace GameData
         public string Name = null!;
         public UIType Type;
         public string BindState = null!;
-        public bool AutoSpawn;
+        public bool Auto;
+        public bool SpawnOnState;
 
         string IGameData.Id => Id;
     }

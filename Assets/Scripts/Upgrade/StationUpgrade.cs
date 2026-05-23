@@ -14,10 +14,10 @@ public class StationUpgrade : UIBase
     [SerializeField] private GameObject _upgradeItemPrefab;
     [SerializeField] private Transform _content;
     [SerializeField] private UpgradeInfo _upgradeInfo;
+
     // =========================================================================
     // 업그레이드 ID 목록
     // =========================================================================
-
     private static readonly string[] FarmUpgradeIds = { "UP_Stat_Farm" };
     private static readonly string[] RefineUpgradeIds = { "UP_Stat_Refine" };
 
@@ -25,21 +25,17 @@ public class StationUpgrade : UIBase
     // 내부 상태
     // =========================================================================
     private readonly List<UpgradeItem> _spawnedItems = new List<UpgradeItem>();
-    private StationController _station;
 
     // =========================================================================
     // 외부 API
     // =========================================================================
     public void Open(StationZoneType zoneType, StationController station)
     {
-        _station = station;
-
         string[] upgradeIds = zoneType == StationZoneType.Right
             ? FarmUpgradeIds
             : RefineUpgradeIds;
 
-        SpawnItems(upgradeIds);
-        gameObject.SetActive(true);
+        SpawnItems(upgradeIds, station);
     }
 
     protected override void OnBeforeClose()
@@ -50,7 +46,7 @@ public class StationUpgrade : UIBase
     // =========================================================================
     // 아이템 스폰
     // =========================================================================
-    private void SpawnItems(string[] upgradeIds)
+    private void SpawnItems(string[] upgradeIds, StationController station)
     {
         ClearItems();
 
@@ -68,7 +64,7 @@ public class StationUpgrade : UIBase
                 if (item == null) continue;
 
                 item.SetInfo(_upgradeInfo);
-                item.Setup(upgradeId, slotLevel, _station);
+                item.Setup(upgradeId, slotLevel, station);
                 _spawnedItems.Add(item);
             }
         }

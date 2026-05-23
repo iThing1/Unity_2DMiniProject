@@ -1,7 +1,9 @@
 ﻿using GameData;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,11 +17,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform _popupRoot;
     [SerializeField] private Transform _veryFrontRoot;
 
-    [Header("UI 프리팹")]
-    [SerializeField] private GameObject[] _uiPrefabs;
-    
+    [Header("Loading UI")]
+    [SerializeField] private GameObject _loadingUIPrefab;
+
     [Header("HUD")]
     [SerializeField] private GameObject _currencyUIPrefab;
+
     // =========================================================================
     // 내부 상태
     // =========================================================================
@@ -41,48 +44,56 @@ public class UIManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        RegisterPrefab();
         SpawnLoadingUI();
         SpawnCurrencyUI();
     }
 
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEvents.OnStationInteractionChanged += HandleStationInteractionChanged;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEvents.OnStationInteractionChanged -= HandleStationInteractionChanged;
     }
-   
-    private void RegisterPrefab()
+
+    // =========================================================================
+    // GameManager에서 호출 - UI 프리팹 일괄 로드
+    // =========================================================================
+    public async Task LoadUIPrefabsAsync()
     {
-        foreach (GameObject prefab in _uiPrefabs)
+        var allUIData = GameDataManager.Instance.GetAll<UIData>();
+        var tasks = new List<Task>();
+
+        foreach (UIData data in allUIData)
         {
-            if (prefab == null) continue;
+            // Loading UI는 Inspector에서 처리
+            if (data.Id == UIId.VeryFront.Loading) continue;
 
-            UIBase uiBase = prefab.GetComponent<UIBase>();
-            if (uiBase == null)
-            {
-                Debug.LogWarning($"[UIManager] UIBase 컴포넌트가 없습니다: {prefab.name}");
-                continue;
-            }
-
-            _prefabMap[uiBase.UiId] = prefab;
+            tasks.Add(LoadAndRegisterPrefab(data));
         }
+
+        await Task.WhenAll(tasks);
+        Debug.Log($"[UIManager] UI 프리팹 로드 완료: {_prefabMap.Count}개");
+    }
+
+    private async Task LoadAndRegisterPrefab(UIData data)
+    {
+        var handle = Addressables.LoadAssetAsync<GameObject>(data.Name);
+        await handle.Task;
+
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+            _prefabMap[data.Id] = handle.Result;
+        else
+            Debug.LogWarning($"[UIManager] UI 프리팹 로드 실패: {data.Name}");
     }
 
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleDataInitialized()
-    {
-        SpawnAutoUI(GameManager.Instance.CurrentState);
-    }
-
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         ProcessUIForState(prev, false);
@@ -90,6 +101,21 @@ public class UIManager : MonoBehaviour
         RefreshCurrencyUI(next);
     }
 
+    private void HandleStationInteractionChanged(StationZoneType zoneType, bool isActive, StationController station)
+    {
+        if (isActive)
+        {
+            if (zoneType != StationZoneType.Left && zoneType != StationZoneType.Right) return;
+
+            OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+            StationUpgrade upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+            upgradeUI?.Open(zoneType, station);
+        }
+        else
+        {
+            CloseUI(UIId.Popup.StationUpgrade);
+        }
+    }
     // =========================================================================
     // 외부 API
     // =========================================================================
@@ -138,7 +164,7 @@ public class UIManager : MonoBehaviour
         ProcessUIForState(state, true);
     }
 
-    private void SpawnUI(string uiId)
+    private void SpawnUI(string uiId, bool hidden = false)
     {
         if (!_prefabMap.TryGetValue(uiId, out GameObject prefab) || prefab == null)
         {
@@ -156,8 +182,13 @@ public class UIManager : MonoBehaviour
         Transform root = GetRootTransform(data.Type);
         GameObject instance = Instantiate(prefab, root);
 
+        instance.SetActive(true);
+        if (hidden)
+            instance.SetActive(false);
+
         _createdUIDic[uiId] = instance;
-        _openedUISet.Add(uiId);
+        if (!hidden)
+            _openedUISet.Add(uiId);
     }
 
     private void SpawnCurrencyUI()
@@ -185,15 +216,14 @@ public class UIManager : MonoBehaviour
 
     private void SpawnLoadingUI()
     {
-        string loadingId = UIId.VeryFront.Loading;
-
-        if (!_prefabMap.TryGetValue(loadingId, out GameObject prefab) || prefab == null)
+        if (_loadingUIPrefab == null)
         {
-            Debug.LogWarning("[UIManager] LoadingPanel 프리팹이 등록되지 않았습니다.");
+            Debug.LogWarning("[UIManager] LoadingUIPrefab이 연결되지 않았습니다.");
             return;
         }
 
-        GameObject instance = Instantiate(prefab, _veryFrontRoot);
+        string loadingId = UIId.VeryFront.Loading;
+        GameObject instance = Instantiate(_loadingUIPrefab, _veryFrontRoot);
         _createdUIDic[loadingId] = instance;
         _openedUISet.Add(loadingId);
     }
@@ -212,16 +242,20 @@ public class UIManager : MonoBehaviour
 
             if (activate)
             {
-                if (!data.AutoSpawn) continue;
-
                 if (_createdUIDic.TryGetValue(data.Id, out GameObject existing))
                 {
-                    existing.SetActive(true);
-                    _openedUISet.Add(data.Id);
+                    if (data.Auto)
+                    {
+                        existing.SetActive(true);
+                        _openedUISet.Add(data.Id);
+                    }
                     continue;
                 }
 
-                SpawnUI(data.Id);
+                if (data.Auto)
+                    SpawnUI(data.Id);
+                else
+                    SpawnUI(data.Id, hidden: true);
             }
             else
             {
