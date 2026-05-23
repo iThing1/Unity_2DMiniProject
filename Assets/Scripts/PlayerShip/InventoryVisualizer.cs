@@ -11,10 +11,12 @@ public class InventoryVisualizer : MonoBehaviour
     [Header("물리 설정")]
     [SerializeField] private float _boxSpacing = 1.2f;
     [SerializeField] private float _springFrequency = 2f;
-    [SerializeField] private float _springDampingRatio = 0.3f;
-    [SerializeField] private float _boxMass = 0f;
-    [SerializeField] private float _boxLinearDrag = 1.5f;
+    [SerializeField] private float _springDampingRatio = 0.7f;
+    [SerializeField] private float _boxMass = 0.1f;
+    [SerializeField] private float _boxLinearDrag = 2.5f;
     [SerializeField] private float _boxAngularDrag = 2f;
+
+    [SerializeField] private float _maxStretchMultiplier = 1.2f;
 
     private const int CARGO_PER_BOX = 10;
 
@@ -25,8 +27,10 @@ public class InventoryVisualizer : MonoBehaviour
     private Rigidbody2D _shipRigidbody;
     private ShipInventory _shipInventory;
     private int _activeBoxCount = 0;
-    private int _lastCargoCount = -1;
-     private bool _isInitialized = false;
+
+    private int _lastFoodCount = -1;
+    private int _lastOreCount = -1;
+    private bool _isInitialized = false;
 
     // =========================================================================
     // Unity 생명주기
@@ -46,12 +50,14 @@ public class InventoryVisualizer : MonoBehaviour
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
+        GameEvents.OnCargoChanged += HandleCargoChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnShipSpawned -= HandleShipSpawned;
+        GameEvents.OnCargoChanged -= HandleCargoChanged;
     }
 
     private void Start()
@@ -59,21 +65,33 @@ public class InventoryVisualizer : MonoBehaviour
         SetActiveBoxCount(0);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!_isInitialized) return;
-        if (_shipInventory == null) return;
+        if (_activeBoxCount == 0) return;
 
-        int count = _shipInventory.Count;
-        if (count == _lastCargoCount) return;
+        float maxDist = _boxSpacing * _maxStretchMultiplier;
 
-        _lastCargoCount = count;
+        for (int i = 0; i < _activeBoxCount; i++)
+        {
+            // 연결 기준점: 0번 박스는 우주선, 나머지는 앞 박스
+            Vector2 anchorPos = i == 0
+                ? (Vector2)_shipRigidbody.transform.position
+                : (Vector2)_boxRigidbodies[i - 1].transform.position;
 
-        int targetBoxes = Mathf.Clamp(
-            Mathf.CeilToInt((float)count / CARGO_PER_BOX),
-            0, _maxBoxCount
-        );
-        SetActiveBoxCount(targetBoxes);
+            Vector2 boxPos = _boxRigidbodies[i].position;
+            float dist = Vector2.Distance(anchorPos, boxPos);
+
+            if (dist > maxDist)
+            {
+                // 최대 거리 초과 시 위치 클램프 + velocity를 앞 연결점 방향으로 보정
+                Vector2 dir = (boxPos - anchorPos).normalized;
+                _boxRigidbodies[i].position = anchorPos + dir * maxDist;
+                _boxRigidbodies[i].linearVelocity = i == 0
+                    ? _shipRigidbody.linearVelocity
+                    : _boxRigidbodies[i - 1].linearVelocity;
+            }
+        }
     }
 
     // =========================================================================
@@ -109,9 +127,27 @@ public class InventoryVisualizer : MonoBehaviour
     {
         if (prev == GameState.GamePlay)
         {
-            _lastCargoCount = -1;
+            _lastFoodCount = -1;
+            _lastOreCount = -1;
             SetActiveBoxCount(0);
         }
+    }
+
+    private void HandleCargoChanged(int foodCount, int oreCount)
+    {
+        if (!_isInitialized) return;
+
+        if (foodCount == _lastFoodCount && oreCount == _lastOreCount) return;
+
+        _lastFoodCount = foodCount;
+        _lastOreCount = oreCount;
+
+        int totalCount = foodCount + oreCount;
+        int targetBoxes = Mathf.Clamp(
+            Mathf.CeilToInt((float)totalCount / CARGO_PER_BOX),
+            0, _maxBoxCount
+        );
+        SetActiveBoxCount(targetBoxes);
     }
 
     private void HandleShipSpawned(Transform shipTransform)
@@ -148,13 +184,13 @@ public class InventoryVisualizer : MonoBehaviour
         joint.connectedBody = index == 0 ? _shipRigidbody : _boxRigidbodies[index - 1];
 
         _boxObjects[index].transform.position = GetChainSpawnPosition(index);
-        _boxRigidbodies[index].linearVelocity = Vector2.zero;
+        _boxRigidbodies[index].linearVelocity = _shipRigidbody != null ? _shipRigidbody.linearVelocity : Vector2.zero;
         _boxRigidbodies[index].angularVelocity = 0f;
     }
 
     private Vector3 GetChainSpawnPosition(int index)
     {
-        Vector2 shipBack = -transform.up;
+        Vector2 shipBack = -transform.right;
         return transform.position + (Vector3)(shipBack * _boxSpacing * (index + 1));
     }
 

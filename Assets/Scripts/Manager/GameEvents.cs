@@ -24,6 +24,9 @@ public static class GameEvents
     public static event Action<ShipStats> OnShipStatsChanged;
     public static event Action<StationStats> OnStationStatsChanged;
 
+    // 화물 변경
+    public static event Action<int, int> OnCargoChanged;
+
     // 게임 시작
     public static event Action OnNewGameRequested;
     public static event Action OnContinueRequested;
@@ -63,6 +66,8 @@ public static class GameEvents
     public static void RaiseShipStatsChanged(ShipStats stats) => OnShipStatsChanged?.Invoke(stats);
     public static void RaiseStationStatsChanged(StationStats stats) => OnStationStatsChanged?.Invoke(stats);
 
+    public static void RaiseCargoChanged(int food, int ore) => OnCargoChanged?.Invoke(food, ore);
+
     public static void RaiseNewGameRequested() => OnNewGameRequested?.Invoke();
     public static void RaiseContinueRequested() => OnContinueRequested?.Invoke();
 
@@ -96,6 +101,8 @@ public static class GameEvents
 
         OnShipStatsChanged = null;
         OnStationStatsChanged = null;
+
+        OnCargoChanged = null;
 
         OnNewGameRequested = null;
         OnContinueRequested = null;

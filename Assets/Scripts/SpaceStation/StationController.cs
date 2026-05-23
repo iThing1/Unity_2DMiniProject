@@ -130,6 +130,13 @@ public class StationController : InteractableBase
     // =========================================================================
     public void OnPlayerEnterZone(StationZoneType zoneType)
     {
+        // 이전 Zone이 남아있으면 먼저 정리 후 새 Zone 설정
+        if (_activeZone.HasValue && _activeZone.Value != zoneType)
+        {
+            CloseUpgradeUI();
+            OnDeactivate();
+        }
+
         _activeZone = zoneType;
         _isPlayerInside = true;
 

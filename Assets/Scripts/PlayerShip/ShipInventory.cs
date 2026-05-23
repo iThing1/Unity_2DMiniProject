@@ -89,6 +89,7 @@ public class ShipInventory : MonoBehaviour
         if (IsFull) return false;
 
         _cargo.Add(new Cargo(type));
+        RaiseCargoChanged();
         return true;
     }
 
@@ -106,6 +107,7 @@ public class ShipInventory : MonoBehaviour
         if (idx < 0) return false;
 
         _cargo.RemoveAt(idx);
+        RaiseCargoChanged();
         return true;
     }
 
@@ -113,11 +115,19 @@ public class ShipInventory : MonoBehaviour
     {
         int n = 0;
         foreach (var c in _cargo)
-            if (c.Type == type) n += c.Amount;
+            if (c.Type == type) 
+                n += c.Amount;
         return n;
     }
 
     public IReadOnlyList<Cargo> GetAll() => _cargo;
+
+    private void RaiseCargoChanged()
+    {
+        int food = CountOf(CargoType.Food);
+        int ore = CountOf(CargoType.Ore);
+        GameEvents.RaiseCargoChanged(food, ore);
+    }
 
     // =========================================================================
     // 외부 API: 코루틴 적재 / 하역

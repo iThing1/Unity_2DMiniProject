@@ -37,9 +37,7 @@ public class ResourceManager : MonoBehaviour
 
     public void LoadSpriteFromSheet(string sheetAddress, string spriteName, Action<Sprite> callback)
     {
-        // 스프라이트 시트 주소와 스프라이트 이름을 합쳐 캐시 키로 사용
-        string cacheKey = $"{sheetAddress}/{spriteName}";
-        LoadSpriteFromSheetInternal(cacheKey, sheetAddress, spriteName, callback);
+        LoadSpriteFromSheetInternal(sheetAddress, sheetAddress, spriteName, callback);
     }
 
     private void LoadSpriteFromSheetInternal(string cacheKey, string sheetAddress, string spriteName, Action<Sprite> callback)
