@@ -20,6 +20,10 @@ public static class GameEvents
     // 업그레이드
     public static event Action<string, int> OnUpgradeCompleted;
 
+    // 스텟 변경 이벤트
+    public static event Action<ShipStats> OnShipStatsChanged;
+    public static event Action<StationStats> OnStationStatsChanged;
+
     // 게임 시작
     public static event Action OnNewGameRequested;
     public static event Action OnContinueRequested;
@@ -56,6 +60,9 @@ public static class GameEvents
 
     public static void RaiseUpgradeCompleted(string upgradeId, int lv) => OnUpgradeCompleted?.Invoke(upgradeId, lv);
 
+    public static void RaiseShipStatsChanged(ShipStats stats) => OnShipStatsChanged?.Invoke(stats);
+    public static void RaiseStationStatsChanged(StationStats stats) => OnStationStatsChanged?.Invoke(stats);
+
     public static void RaiseNewGameRequested() => OnNewGameRequested?.Invoke();
     public static void RaiseContinueRequested() => OnContinueRequested?.Invoke();
 
@@ -86,6 +93,9 @@ public static class GameEvents
         OnIngotChanged = null;
 
         OnUpgradeCompleted = null;
+
+        OnShipStatsChanged = null;
+        OnStationStatsChanged = null;
 
         OnNewGameRequested = null;
         OnContinueRequested = null;

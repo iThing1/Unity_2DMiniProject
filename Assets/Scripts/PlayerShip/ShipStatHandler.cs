@@ -25,24 +25,17 @@ public class ShipStatHandler : MonoBehaviour
 
     // 업그레이드 스탯
     public float BaseSpeed { get; private set; }
-    public float Acceleration { get; private set; }
     public float BoostAcceleration { get; private set; }
     public float MaxFuel { get; private set; }
 
     // 상수 스탯
+    public float Acceleration { get; private set; }
     public float FuelConsumeRate { get; private set; }
     public float FuelRegenRate { get; private set; }
     public float OverheatDuration { get; private set; }
     public float DockingSpeedThreshold { get; private set; }
 
-    // =========================================================================
-    // Upgrade / Constant ID 상수
-    // =========================================================================
-    public const string UPGRADE_SPEED = "UP_Ship_Speed";
-    public const string UPGRADE_ACCEL = "UP_Ship_Accel";
-    public const string UPGRADE_MAX_FUEL = "UP_Ship_MaxFuel";
-
-    private float _baseBoostAcceleration; // 업그레이드 배율 계산용 베이스값 캐싱
+    private float _baseBoostAcceleration;
 
     // =========================================================================
     // Unity 생명주기
@@ -51,13 +44,13 @@ public class ShipStatHandler : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged += HandleShipStatsChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged -= HandleShipStatsChanged;
     }
 
     // =========================================================================
@@ -73,21 +66,17 @@ public class ShipStatHandler : MonoBehaviour
         DockingSpeedThreshold = c.DockingSpeed != 0f ? c.DockingSpeed : _defaultDockingSpeedThreshold;
         Acceleration = c.ShipAcceleration != 0f ? c.ShipAcceleration : _defaultAcceleration;
         _baseBoostAcceleration = c.ShipBoostAccel != 0f ? c.ShipBoostAccel : _defaultBoostAcceleration;
-        BoostAcceleration = _baseBoostAcceleration;
     }
-        
-    public void RefreshUpgradeStats()
+
+    public void ApplyUpgradeStats(ShipStats stats)
     {
-        var gm = GameManager.Instance;
+        BaseSpeed = stats.BaseSpeed > 0f ? stats.BaseSpeed : _defaultBaseSpeed;
 
-        float speedStat = gm.GetUpgradeStat(UPGRADE_SPEED);
-        BaseSpeed = speedStat > 0f ? speedStat : _defaultBaseSpeed;
+        BoostAcceleration = stats.BoostAcceleration > 0f
+            ? _baseBoostAcceleration * stats.BoostAcceleration
+            : _baseBoostAcceleration;
 
-        float accelMult = gm.GetUpgradeStat(UPGRADE_ACCEL);
-        BoostAcceleration = accelMult > 0f ? _baseBoostAcceleration * accelMult : _baseBoostAcceleration;
-
-        float fuelStat = gm.GetUpgradeStat(UPGRADE_MAX_FUEL);
-        MaxFuel = fuelStat > 0f ? fuelStat : _defaultMaxFuel;
+        MaxFuel = stats.MaxFuel > 0f ? stats.MaxFuel : _defaultMaxFuel;
     }
 
     // =========================================================================
@@ -97,18 +86,11 @@ public class ShipStatHandler : MonoBehaviour
     private void HandleDataInitialized()
     {
         LoadConstantStats();
-        RefreshUpgradeStats();
+        ApplyUpgradeStats(GameManager.Instance.SetShipStats());
     }
 
-    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    private void HandleShipStatsChanged(ShipStats stats)
     {
-        switch (upgradeId)
-        {
-            case UPGRADE_SPEED:
-            case UPGRADE_ACCEL:
-            case UPGRADE_MAX_FUEL:
-                RefreshUpgradeStats();
-                break;
-        }
+        ApplyUpgradeStats(stats);
     }
 }

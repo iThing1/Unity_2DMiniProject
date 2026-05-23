@@ -9,6 +9,13 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
+    private const string UPGRADE_SPEED = "UP_Ship_Speed";
+    private const string UPGRADE_ACCEL = "UP_Ship_Accel";
+    private const string UPGRADE_MAX_FUEL = "UP_Ship_MaxFuel";
+    private const string UPGRADE_CARGO = "UP_Ship_Cargo";
+    private const string UPGRADE_FARM = "UP_Stat_Farm";
+    private const string UPGRADE_REFINE = "UP_Stat_Refine";
+
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -152,15 +159,59 @@ public class GameManager : MonoBehaviour
         float goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
         float ingotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
 
-        if (!TrySpendGold(goldCost)) return false;
-        if (!TrySpendIngot(ingotCost)) { AddGold(goldCost); return false; }
+        if (Context.CurrentGold < goldCost) return false;
+        if (Context.CurrentIngot < ingotCost) return false;
+
+        TrySpendGold(goldCost);
+        TrySpendIngot(ingotCost);
 
         int newLevel = currentLevel + 1;
         Context.UpgradeLevels[upgradeId] = newLevel;
 
         GameEvents.RaiseUpgradeCompleted(upgradeId, newLevel);
+
+        RaiseStatsIfNeeded(upgradeId);
+
         return true;
     }
+
+    private void RaiseStatsIfNeeded(string upgradeId)
+    {
+        switch (upgradeId)
+        {
+            case UPGRADE_SPEED:
+            case UPGRADE_ACCEL:
+            case UPGRADE_MAX_FUEL:
+            case UPGRADE_CARGO:
+                GameEvents.RaiseShipStatsChanged(SetShipStats());
+                break;
+            case UPGRADE_FARM:
+            case UPGRADE_REFINE:
+                GameEvents.RaiseStationStatsChanged(SetStationStats());
+                break;
+        }
+    }
+
+    public ShipStats SetShipStats()
+    {
+        return new ShipStats
+        {
+            BaseSpeed = GetUpgradeStat(UPGRADE_SPEED),
+            BoostAcceleration = GetUpgradeStat(UPGRADE_ACCEL),
+            MaxFuel = GetUpgradeStat(UPGRADE_MAX_FUEL),
+            Capacity = Mathf.RoundToInt(GetUpgradeStat(UPGRADE_CARGO)),
+        };
+    }
+
+    public StationStats SetStationStats()
+    {
+        return new StationStats
+        {
+            FarmRate = GetUpgradeStat(UPGRADE_FARM),
+            RefineRate = GetUpgradeStat(UPGRADE_REFINE),
+        };
+    }
+
 
     public float GetUpgradeStat(string upgradeId)
     {

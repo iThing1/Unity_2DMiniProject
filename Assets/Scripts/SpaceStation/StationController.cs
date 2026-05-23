@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameData;
 
+public struct StationStats
+{
+    public float FarmRate;
+    public float RefineRate;
+}
+
 // 우주정거장 오브젝트의 진입점
 [RequireComponent(typeof(StationSimulator))]
 public class StationController : InteractableBase

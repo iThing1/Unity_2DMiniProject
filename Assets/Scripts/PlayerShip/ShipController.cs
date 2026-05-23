@@ -2,6 +2,14 @@
 using UnityEngine;
 using GameData;
 
+public struct ShipStats
+{
+    public float BaseSpeed;
+    public float BoostAcceleration;
+    public float MaxFuel;
+    public int Capacity;
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(ShipStatHandler))]
 public class ShipController : MonoBehaviour
@@ -41,13 +49,13 @@ public class ShipController : MonoBehaviour
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged += HandleShipStatsChanged;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged -= HandleShipStatsChanged;
     }
 
     // =========================================================================
@@ -191,7 +199,7 @@ public class ShipController : MonoBehaviour
     public void Initialize()
     {
         _stats.LoadConstantStats();
-        _stats.RefreshUpgradeStats();
+        _stats.ApplyUpgradeStats(GameManager.Instance.SetShipStats());
         InitializeFuel();
         _isControllable = GameManager.Instance.CurrentState == GameState.GamePlay;
     }
@@ -207,10 +215,8 @@ public class ShipController : MonoBehaviour
         _isControllable = next == GameState.GamePlay;
     }
 
-    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    private void HandleShipStatsChanged(ShipStats stats)
     {
-        if (upgradeId != ShipStatHandler.UPGRADE_MAX_FUEL) return;
-
         float newMax = _stats.MaxFuel;
         if (Mathf.Approximately(newMax, MaxFuel)) return;
 

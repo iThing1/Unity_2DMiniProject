@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using GameData;
+using System.Collections;
 using UnityEngine;
-using GameData;
+using static System.Collections.Specialized.BitVector32;
 
 public class ShipSpawner : MonoBehaviour
 {
@@ -85,21 +86,6 @@ public class ShipSpawner : MonoBehaviour
 
     private void ActivateShip(Transform stationTransform)
     {
-        ShipController shipController = _spawnedShip.GetComponent<ShipController>();
-        if (shipController == null)
-        {
-            Debug.LogError("[ShipSpawner] ShipController 컴포넌트를 찾을 수 없습니다.");
-            return;
-        }
-
-        SetupShip(stationTransform);
-        _spawnedShip.SetActive(true);
-        StartCoroutine(RaiseShipSpawnedNextFrame());
-    }
-
-
-    private void SetupShip(Transform stationTransform)
-    {
         StationController station = stationTransform.GetComponent<StationController>();
         if (station == null)
         {
@@ -108,8 +94,17 @@ public class ShipSpawner : MonoBehaviour
         }
 
         ShipController shipController = _spawnedShip.GetComponent<ShipController>();
+        if (shipController == null)
+        {
+            Debug.LogError("[ShipSpawner] ShipController 컴포넌트를 찾을 수 없습니다.");
+            return;
+        }
+
         station.PlacePlayerAtSpawn(_spawnedShip.transform);
+        _spawnedShip.SetActive(true);
         shipController.Initialize();
+
+        StartCoroutine(RaiseShipSpawnedNextFrame());
     }
 
     private IEnumerator RaiseShipSpawnedNextFrame()

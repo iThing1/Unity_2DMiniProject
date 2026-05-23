@@ -39,30 +39,27 @@ public class ShipInventory : MonoBehaviour
     private Coroutine _loadCoroutine;
     private Coroutine _unloadCoroutine;
 
-    // 업그레이드 ID 상수
-    private const string UPGRADE_CARGO = "UP_Ship_Cargo";
-
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
     private void OnEnable()
     {
         GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged += HandleShipStatsChanged;
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnShipSpawned += HandleShipSpawned;
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
         {
             _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-            RefreshCapacity();
+            ApplyCapacity(GameManager.Instance.SetShipStats().Capacity);
         }
     }
 
     private void OnDisable()
     {
         GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        GameEvents.OnShipStatsChanged -= HandleShipStatsChanged;
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnShipSpawned -= HandleShipSpawned;
     }
@@ -73,16 +70,15 @@ public class ShipInventory : MonoBehaviour
     public void InitializeStats()
     {
         _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-        RefreshCapacity();
+        ApplyCapacity(GameManager.Instance.SetShipStats().Capacity);
     }
 
-    private void RefreshCapacity()
+    private void ApplyCapacity(int capacity)
     {
-        float stat = GameManager.Instance.GetUpgradeStat(UPGRADE_CARGO);
-        Capacity = Mathf.RoundToInt(stat);
+        Capacity = capacity;
 
         if (Capacity <= 0)
-            Debug.LogWarning($"[ShipInventory] Capacity가 0 이하입니다. 데이터 확인 필요: {UPGRADE_CARGO}");
+            Debug.LogWarning($"[ShipInventory] Capacity가 0 이하입니다. 데이터 확인 필요.");
     }
 
     // =========================================================================
@@ -214,11 +210,10 @@ public class ShipInventory : MonoBehaviour
         Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
     }
 
-    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    private void HandleShipStatsChanged(ShipStats stats)
     {
-        if (upgradeId != UPGRADE_CARGO) return;
-        RefreshCapacity();
-        Debug.Log($"[CargoInventory] 용량 갱신. {Capacity}");
+        ApplyCapacity(stats.Capacity);
+        Debug.Log($"[ShipInventory] 용량 갱신. {Capacity}");
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)
@@ -227,8 +222,7 @@ public class ShipInventory : MonoBehaviour
         {
             StopTransfer();
             _cargo.Clear();
-        }
-            
+        }  
     }
 
     private void HandleShipSpawned(Transform shipTransform)

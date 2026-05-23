@@ -21,12 +21,6 @@ public class StationSimulator : MonoBehaviour
     private float _oreToIngotRatio;
 
     // =========================================================================
-    // 업그레이드 / 상수 ID
-    // =========================================================================
-    private const string UPGRADE_FARM = "UP_Stat_Farm";
-    private const string UPGRADE_REFINE = "UP_Stat_Refine";
-
-    // =========================================================================
     // 내부 상태
     // =========================================================================
     private Coroutine _farmCoroutine;
@@ -37,12 +31,13 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEvents.OnStationStatsChanged += HandleStationStatsChanged;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        // 변경
+        GameEvents.OnStationStatsChanged -= HandleStationStatsChanged;
     }
 
     // =========================================================================
@@ -149,10 +144,9 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    private void HandleStationStatsChanged(StationStats stats)
     {
-        if (upgradeId == UPGRADE_FARM || upgradeId == UPGRADE_REFINE)
-            LoadStats();
+        ApplyStats(stats);
     }
 
     // =========================================================================
@@ -161,10 +155,14 @@ public class StationSimulator : MonoBehaviour
     private void LoadStats()
     {
         _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
-        _farmRate = GameManager.Instance.GetUpgradeStat(UPGRADE_FARM);
-        _refineRate = GameManager.Instance.GetUpgradeStat(UPGRADE_REFINE);
+        ApplyStats(GameManager.Instance.SetStationStats());
+    }
 
-        Debug.Log($"[StationSimulator] 스탯 로드 - 농장:{_farmRate:F2}/s, 제련:{_refineRate:F2}/s, 비율:1:{_oreToIngotRatio}");
+    // 스탯 적용
+    private void ApplyStats(StationStats stats)
+    {
+        _farmRate = stats.FarmRate;
+        _refineRate = stats.RefineRate;
     }
 
     // =========================================================================
