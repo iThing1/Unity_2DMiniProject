@@ -50,18 +50,18 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnStationInteractionChanged += HandleStationInteractionChanged;
-        GameEvents.OnStageFailed += HandleStageFailed;
-        GameEvents.OnStageClear += HandleStageClear;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<bool, StationController>(GameEventType.StationInteractionChanged, HandleStationInteractionChanged);
+        GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnStationInteractionChanged -= HandleStationInteractionChanged;
-        GameEvents.OnStageFailed -= HandleStageFailed;
-        GameEvents.OnStageClear -= HandleStageClear;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<bool, StationController>(GameEventType.StationInteractionChanged, HandleStationInteractionChanged);
+        GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
     }
 
     // =========================================================================
@@ -105,15 +105,18 @@ public class UIManager : MonoBehaviour
         RefreshCurrencyUI(next);
     }
 
-    private void HandleStationInteractionChanged(StationZoneType zoneType, bool isActive, StationController station)
+    private void HandleStationInteractionChanged(bool isActive, StationController station)
     {
         if (isActive)
         {
+            if (station == null) return;
+
+            var zoneType = station.CurrentZone;
             if (zoneType != StationZoneType.Left && zoneType != StationZoneType.Right) return;
 
             OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
             StationUpgrade upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-            upgradeUI?.Open(zoneType, station);
+            upgradeUI?.Open(zoneType.Value, station);
         }
         else
         {
@@ -223,7 +226,7 @@ public class UIManager : MonoBehaviour
     {
         if (_currencyUIInstance == null) return;
 
-        bool isVisible = state == GameState.Lobby || state == GameState.GamePlay;
+        bool isVisible = state == GameState.Lobby || state == GameState.GamePlay;   
         _currencyUIInstance.SetActive(isVisible);
 
         if (isVisible)

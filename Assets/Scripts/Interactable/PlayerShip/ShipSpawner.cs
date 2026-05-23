@@ -20,18 +20,18 @@ public class ShipSpawner : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnNewGameRequested += HandleNewGameRequested;
-        GameEvents.OnContinueRequested += HandleContinueRequested;
-        GameEvents.OnStationSpawned += HandleStationSpawned;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe(GameEventType.NewGameRequested, HandleNewGameRequested);
+        GameEventBus.Subscribe(GameEventType.ContinueRequested, HandleContinueRequested);
+        GameEventBus.Subscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnNewGameRequested -= HandleNewGameRequested;
-        GameEvents.OnContinueRequested -= HandleContinueRequested;
-        GameEvents.OnStationSpawned -= HandleStationSpawned;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe(GameEventType.NewGameRequested, HandleNewGameRequested);
+        GameEventBus.Unsubscribe(GameEventType.ContinueRequested, HandleContinueRequested);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     // =========================================================================
@@ -102,6 +102,6 @@ public class ShipSpawner : MonoBehaviour
     private IEnumerator RaiseShipSpawnedNextFrame()
     {
         yield return null;
-        GameEvents.RaiseShipSpawned(_spawnedShip.transform);
+        GameEventBus.Publish(GameEventType.ShipSpawned, _spawnedShip.transform);
     }  
 }

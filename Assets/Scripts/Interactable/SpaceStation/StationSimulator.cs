@@ -31,13 +31,12 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnStationStatsChanged += HandleStationStatsChanged;
+        GameEventBus.Subscribe<StationStats>(GameEventType.StationStatsChanged, HandleStationStatsChanged);
     }
 
     private void OnDisable()
     {
-        // 변경
-        GameEvents.OnStationStatsChanged -= HandleStationStatsChanged;
+        GameEventBus.Unsubscribe<StationStats>(GameEventType.StationStatsChanged, HandleStationStatsChanged);
     }
 
     // =========================================================================

@@ -27,7 +27,7 @@ public class MainMenuUI : UIBase
             _btnQuit.onClick.AddListener(OnClickQuit);
 
         if (_btnContinue != null)
-            _btnContinue.interactable = SaveLoadManager.HasSaveFile();
+            _btnContinue.interactable = SaveLoadController.HasSaveFile();
     }
 
     private void OnDestroy()
@@ -45,13 +45,14 @@ public class MainMenuUI : UIBase
     // =========================================================================
     private void OnClickNewGame()
     {
-        GameEvents.RaiseNewGameRequested();
+        SaveLoadController.DeleteSave();
+        GameEventBus.Publish(GameEventType.NewGameRequested);
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 
     private void OnClickContinue()
     {
-        GameEvents.RaiseContinueRequested();
+        GameEventBus.Publish(GameEventType.ContinueRequested);
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 

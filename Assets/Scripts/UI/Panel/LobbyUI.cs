@@ -35,7 +35,7 @@ public class LobbyUI : UIBase
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
+        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
@@ -43,7 +43,7 @@ public class LobbyUI : UIBase
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
     }
 
     protected override void Start()
@@ -91,7 +91,8 @@ public class LobbyUI : UIBase
 
         GameManager.Instance.ChangeState(GameState.GamePlay);
         UIManager.Instance.OpenUI<StageStart>(UIId.Popup.StageStart);
-        GameEvents.RaiseStageSelected(current.Id);
+
+        GameEventBus.Publish(GameEventType.StageSelected, current.Id);
     }
 
     private void OnClickLeft()

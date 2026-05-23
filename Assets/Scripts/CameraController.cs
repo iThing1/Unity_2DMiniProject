@@ -39,9 +39,9 @@ public class CameraController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnStageSelected += HandleStageSelected;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
@@ -49,9 +49,9 @@ public class CameraController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnStageSelected -= HandleStageSelected;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void Update()

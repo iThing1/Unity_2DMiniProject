@@ -19,12 +19,12 @@ public class StationSpawner : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     // =========================================================================
@@ -67,13 +67,13 @@ public class StationSpawner : MonoBehaviour
         }
 
         _spawnedStation.Initialize();
-        GameEvents.RaiseStationSpawned(instance.transform);
+        GameEventBus.Publish(GameEventType.StationSpawned, instance.transform);
     }
 
     private void ActivateStation()
     {
         _spawnedStation.gameObject.SetActive(true);
         _spawnedStation.Initialize();
-        GameEvents.RaiseStationSpawned(_spawnedStation.transform);
+        GameEventBus.Publish(GameEventType.StationSpawned, _spawnedStation.transform);
     }
 }

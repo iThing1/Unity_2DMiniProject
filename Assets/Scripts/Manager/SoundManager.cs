@@ -33,16 +33,16 @@ public class SoundManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnSFXPlayRequested += PlaySFX;
+        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<string>(GameEventType.SFXPlayRequested, PlaySFX);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnSFXPlayRequested -= PlaySFX;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<string>(GameEventType.SFXPlayRequested, PlaySFX);
     }
 
     private void OnDestroy()
@@ -56,7 +56,7 @@ public class SoundManager : MonoBehaviour
 
     private void HandleDataInitialized()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
 
         RegisterBGMFromData();
         PreloadSFXFromData();

@@ -12,8 +12,8 @@ public abstract class InteractableBase : MonoBehaviour
 
     protected virtual void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnShipSpawned += HandleShipSpawned;
+        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
 
@@ -24,8 +24,8 @@ public abstract class InteractableBase : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnShipSpawned -= HandleShipSpawned;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
     }
 
     private void Update()

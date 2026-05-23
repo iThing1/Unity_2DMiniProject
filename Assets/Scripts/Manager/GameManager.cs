@@ -25,18 +25,18 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnStageClear += HandleStageClear;
-        GameEvents.OnStageFailed += HandleStageFailed;
-        GameEvents.OnStageSelected += HandleStageSelected;
-        GameEvents.OnContinueRequested += HandleContinueRequested;
+        GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
+        GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Subscribe(GameEventType.ContinueRequested, HandleContinueRequested);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStageClear -= HandleStageClear;
-        GameEvents.OnStageFailed -= HandleStageFailed;
-        GameEvents.OnStageSelected -= HandleStageSelected;
-        GameEvents.OnContinueRequested -= HandleContinueRequested;
+        GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
+        GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Unsubscribe(GameEventType.ContinueRequested, HandleContinueRequested);
     }
 
     private async void Start()
@@ -47,10 +47,9 @@ public class GameManager : MonoBehaviour
     private async Task InitializeAsync()
     {
         await GameDataManager.Instance.RegisterAllTables();
-
         await UIManager.Instance.LoadUIPrefabsAsync();
 
-        GameEvents.RaiseDataInitialized();
+        GameEventBus.Publish(GameEventType.DataInitialized);
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();
     }
@@ -73,7 +72,7 @@ public class GameManager : MonoBehaviour
         GameState prev = CurrentState;
         CurrentState = newState;
 
-        GameEvents.RaiseGameStateChanged(prev, newState);
+        GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
         Debug.Log($"[GameManager] 상태 전환: {prev} → {newState}");
     }
 
@@ -100,14 +99,14 @@ public class GameManager : MonoBehaviour
 
     private void HandleContinueRequested()
     {
-        SaveLoadManager.Instance.Load();
+        SaveLoadController.LoadCurrentGame();
     }
 
     public void LoadContext(GameContext context)
     {
         Context = context;
-        GameEvents.RaiseGoldChanged(Context.CurrentGold);
-        GameEvents.RaiseIngotChanged(Context.CurrentIngot);
+        GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
+        GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
         Debug.Log("[GameManager] Context 로드 완료");
     }
 
@@ -118,28 +117,28 @@ public class GameManager : MonoBehaviour
     public void AddGold(float amount)
     {
         Context.CurrentGold += amount;
-        GameEvents.RaiseGoldChanged(Context.CurrentGold);
+        GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
     }
 
     public bool TrySpendGold(float amount)
     {
         if (Context.CurrentGold < amount) return false;
         Context.CurrentGold -= amount;
-        GameEvents.RaiseGoldChanged(Context.CurrentGold);
+        GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
         return true;
     }
 
     public void AddIngot(float amount)
     {
         Context.CurrentIngot += amount;
-        GameEvents.RaiseIngotChanged(Context.CurrentIngot);
+        GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
     }
 
     public bool TrySpendIngot(float amount)
     {
         if (Context.CurrentIngot < amount) return false;
         Context.CurrentIngot -= amount;
-        GameEvents.RaiseIngotChanged(Context.CurrentIngot);
+        GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
         return true;
     }
 
@@ -170,8 +169,7 @@ public class GameManager : MonoBehaviour
         int newLevel = currentLevel + 1;
         Context.UpgradeLevels[upgradeId] = newLevel;
 
-        GameEvents.RaiseUpgradeCompleted(upgradeId, newLevel);
-
+        GameEventBus.Publish(GameEventType.UpgradeCompleted, upgradeId, newLevel);
         RaiseStatsIfNeeded(upgradeId);
 
         return true;
@@ -185,12 +183,12 @@ public class GameManager : MonoBehaviour
             case UPGRADE_ACCEL:
             case UPGRADE_MAX_FUEL:
             case UPGRADE_CARGO:
-                GameEvents.RaiseShipStatsChanged(SetShipStats());
+                GameEventBus.Publish(GameEventType.ShipStatsChanged, SetShipStats());
                 break;
 
             case UPGRADE_FARM:
             case UPGRADE_REFINE:
-                GameEvents.RaiseStationStatsChanged(SetStationStats());
+                GameEventBus.Publish(GameEventType.StationStatsChanged, SetStationStats());
                 break;
         }
     }
@@ -231,6 +229,6 @@ public class GameManager : MonoBehaviour
     {
         var data = GameDataManager.Instance.Get<SoundData>(soundId);
         if (data != null)
-            GameEvents.RaiseSFXPlayRequested(data.SoundPath);
+            GameEventBus.Publish(GameEventType.SFXPlayRequested, data.SoundPath);
     }
 }

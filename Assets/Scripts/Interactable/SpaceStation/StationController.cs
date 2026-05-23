@@ -25,7 +25,9 @@ public class StationController : InteractableBase
 
     private readonly Dictionary<StationZoneType, StationZone> _zones = new Dictionary<StationZoneType, StationZone>();
 
-    private StationZoneType? _activeZone = null;
+    private StationZoneType? _activeZone;
+    public StationZoneType? CurrentZone => _activeZone;
+
     private bool _isGamePlay = false;
     private Coroutine _interactCoroutine;
     private int _pendingFoodLoad;
@@ -55,7 +57,7 @@ public class StationController : InteractableBase
     protected override void OnEnable()
     {
         base.OnEnable();
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
 
         if (GameManager.Instance != null)
             _isGamePlay = GameManager.Instance.CurrentState == GameState.GamePlay;
@@ -64,7 +66,7 @@ public class StationController : InteractableBase
     protected override void OnDisable()
     {
         base.OnDisable();
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     // =========================================================================
@@ -145,7 +147,7 @@ public class StationController : InteractableBase
     {
         if (_activeZone == null) return;
 
-        GameEvents.RaiseStationInteractionChanged(_activeZone.Value, true, this);
+        GameEventBus.Publish(GameEventType.StationInteractionChanged, true, this);
         StopInteractCoroutine();
 
         IEnumerator routine = null;
@@ -176,8 +178,7 @@ public class StationController : InteractableBase
     {
         StopInteractCoroutine();
 
-        foreach (StationZoneType z in Enum.GetValues(typeof(StationZoneType)))
-            GameEvents.RaiseStationInteractionChanged(z, false, null);
+        GameEventBus.Publish(GameEventType.StationInteractionChanged, false, this);
 
         _shipInventory?.StopTransfer();
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);

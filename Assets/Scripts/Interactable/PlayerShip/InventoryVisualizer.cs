@@ -48,16 +48,16 @@ public class InventoryVisualizer : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnShipSpawned += HandleShipSpawned;
-        GameEvents.OnCargoChanged += HandleCargoChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
+        GameEventBus.Subscribe<int, int>(GameEventType.CargoChanged, HandleCargoChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnShipSpawned -= HandleShipSpawned;
-        GameEvents.OnCargoChanged -= HandleCargoChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
+        GameEventBus.Unsubscribe<int, int>(GameEventType.CargoChanged, HandleCargoChanged);
     }
 
     private void Start()

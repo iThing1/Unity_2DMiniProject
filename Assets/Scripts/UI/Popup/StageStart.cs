@@ -18,12 +18,12 @@ public class StageStart : UIBase
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnStageSelected += HandleStageSelected;
+        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStageSelected -= HandleStageSelected;
+        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
     }
 
     protected override void Start()
@@ -70,7 +70,7 @@ public class StageStart : UIBase
     {
         Time.timeScale = 1f;
         gameObject.SetActive(false);
-        GameEvents.RaiseStageStartRequested();
+        GameEventBus.Publish(GameEventType.StageStartRequested);
     }
 
     // =========================================================================

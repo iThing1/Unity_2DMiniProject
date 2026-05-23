@@ -53,7 +53,7 @@ public class PlanetSimulator : MonoBehaviour
     private float _populationIncreaseMax;
 
     private float _cycleDuration;
-    private float _gameoverWarningTime;
+    private float _alertTime;
     private float _foodConsumeBase;
     private float _foodConsumeRate;
     private float _oreProduceBase;
@@ -70,12 +70,12 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDestroy()
@@ -119,7 +119,7 @@ public class PlanetSimulator : MonoBehaviour
         _foodDeliveredThisCycle += amount;
 
         if (IsGameOverWarning && amount > 0)
-            CancelGameOverWarning();
+            CancelWarning();
     }
 
     public void CollectOre(int amount)
@@ -177,7 +177,7 @@ public class PlanetSimulator : MonoBehaviour
         }
 
         if (IsGameOverWarning)
-            CancelGameOverWarning();
+            CancelWarning();
     }
 
     // =========================================================================
@@ -207,18 +207,18 @@ public class PlanetSimulator : MonoBehaviour
         if (IsGameOverWarning) return;
 
         IsGameOverWarning = true;
-        GameEvents.RaisePlanetGameOverWarning(_instanceId, true);
+        GameEventBus.Publish(GameEventType.PlanetWarning, _instanceId, true);
 
         if (_gameOverCoroutine != null)
             StopCoroutine(_gameOverCoroutine);
 
         _gameOverCoroutine = StartCoroutine(GameOverCountdownRoutine());
-        Debug.LogWarning($"[PlanetSimulator] '{_planetName}' 멸망 위기! {_gameoverWarningTime}초 유예 시작");
+        Debug.LogWarning($"[PlanetSimulator] '{_planetName}' 멸망 위기! {_alertTime}초 유예 시작");
     }
 
     private IEnumerator GameOverCountdownRoutine()
     {
-        yield return new WaitForSeconds(_gameoverWarningTime);
+        yield return new WaitForSeconds(_alertTime);
 
         if (Prosperity <= 0f)
         {
@@ -226,21 +226,21 @@ public class PlanetSimulator : MonoBehaviour
             State = PlanetState.Destroyed;
             IsGameOverWarning = false;
 
-            GameEvents.RaisePlanetGameOverWarning(_instanceId, false);
-            GameEvents.RaisePlanetDestroyed(_instanceId);
+            GameEventBus.Publish(GameEventType.PlanetWarning, _instanceId, false);
+            GameEventBus.Publish(GameEventType.PlanetDestroyed, _instanceId);
         }
         else
         {
-            CancelGameOverWarning();
+            CancelWarning();
         }
     }
 
-    private void CancelGameOverWarning()
+    private void CancelWarning()
     {
         if (!IsGameOverWarning) return;
 
         IsGameOverWarning = false;
-        GameEvents.RaisePlanetGameOverWarning(_instanceId, false);
+        GameEventBus.Publish(GameEventType.PlanetWarning, _instanceId, false);
 
         if (_gameOverCoroutine != null)
         {
@@ -303,7 +303,7 @@ public class PlanetSimulator : MonoBehaviour
         _populationChangeRate = c.PopulationChangeRate;
         _populationIncreaseMax = c.PopulationIncreaseMax;
         _cycleDuration = c.PlanetConsumeInterval;
-        _gameoverWarningTime = c.PlanetGameoverTime;
+        _alertTime = c.PlanetGameoverTime;
         _foodConsumeBase = c.FoodConsumeBase;
         _foodConsumeRate = c.FoodConsumeRate;
         _oreProduceBase = c.OreProdBase;

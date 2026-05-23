@@ -44,10 +44,10 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnDataInitialized += HandleDataInitialized;
-        GameEvents.OnShipStatsChanged += HandleShipStatsChanged;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnShipSpawned += HandleShipSpawned;
+        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Subscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
         {
@@ -58,10 +58,10 @@ public class ShipInventory : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnDataInitialized -= HandleDataInitialized;
-        GameEvents.OnShipStatsChanged -= HandleShipStatsChanged;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnShipSpawned -= HandleShipSpawned;
+        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
+        GameEventBus.Unsubscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
     }
 
     // =========================================================================
@@ -126,7 +126,7 @@ public class ShipInventory : MonoBehaviour
     {
         int food = CountOf(CargoType.Food);
         int ore = CountOf(CargoType.Ore);
-        GameEvents.RaiseCargoChanged(food, ore);
+        GameEventBus.Publish(GameEventType.CargoChanged, food, ore);
     }
 
     // =========================================================================

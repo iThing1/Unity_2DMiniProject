@@ -39,18 +39,18 @@ public class PlanetSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnStageSelected += HandleStageSelected;
-        GameEvents.OnStageStartRequested += HandleStageStartRequested;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnStationSpawned += HandleStationSpawned;
+        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Subscribe(GameEventType.StageStartRequested, HandleStageStartRequested); 
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStageSelected -= HandleStageSelected;
-        GameEvents.OnStageStartRequested -= HandleStageStartRequested;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnStationSpawned -= HandleStationSpawned;
+        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+        GameEventBus.Unsubscribe(GameEventType.StageStartRequested, HandleStageStartRequested);
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
     }
 
     // =========================================================================
@@ -196,7 +196,7 @@ public class PlanetSpawner : MonoBehaviour
         planet.Initialize(data, instanceId);
 
         _spawnedPlanets.Add(planet);
-        GameEvents.RaisePlanetSpawned(instance.transform);
+        GameEventBus.Publish(GameEventType.PlanetSpawned, instance.transform);
     }
 
     // =========================================================================

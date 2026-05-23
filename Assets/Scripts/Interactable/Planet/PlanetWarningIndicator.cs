@@ -20,12 +20,12 @@ public class PlanetWarningIndicator : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnPlanetGameOverWarning += HandlePlanetGameOverWarning;
+        GameEventBus.Subscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetWarning);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnPlanetGameOverWarning -= HandlePlanetGameOverWarning;
+        GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetWarning);
     }
 
     // =========================================================================
@@ -40,7 +40,7 @@ public class PlanetWarningIndicator : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandlePlanetGameOverWarning(string instanceId, bool isWarning)
+    private void HandlePlanetWarning(string instanceId, bool isWarning)
     {
         if (_instanceId != instanceId) return;
         _warningRoot?.SetActive(isWarning);

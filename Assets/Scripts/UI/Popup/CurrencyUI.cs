@@ -16,8 +16,8 @@ public class CurrencyUI : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnGoldChanged += HandleGoldChanged;
-        GameEvents.OnIngotChanged += HandleIngotChanged;
+        GameEventBus.Subscribe<float>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Subscribe<float>(GameEventType.IngotChanged, HandleIngotChanged);
 
         // 활성화 시 현재 값으로 즉시 갱신
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
@@ -30,8 +30,8 @@ public class CurrencyUI : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEvents.OnGoldChanged -= HandleGoldChanged;
-        GameEvents.OnIngotChanged -= HandleIngotChanged;
+        GameEventBus.Unsubscribe<float>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Unsubscribe<float>(GameEventType.IngotChanged, HandleIngotChanged);
     }
 
     // =========================================================================

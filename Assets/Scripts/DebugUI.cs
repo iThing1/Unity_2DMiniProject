@@ -46,12 +46,12 @@ public class DebugUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     // =========================================================================
@@ -76,7 +76,7 @@ public class DebugUI : MonoBehaviour
         }
 
         Debug.Log($"[DebugUI] 강제 스테이지 클리어: {stageId}");
-        GameEvents.RaiseStageClear(stageId);
+        GameEventBus.Publish(GameEventType.StageClear, stageId);
     }
 
     private void OnClickForceFail()
@@ -89,7 +89,7 @@ public class DebugUI : MonoBehaviour
         }
 
         Debug.Log($"[DebugUI] 강제 스테이지 실패: {stageId}");
-        GameEvents.RaisePlanetDestroyed($"debug_{stageId}");
+        GameEventBus.Publish(GameEventType.PlanetDestroyed, $"debug_{stageId}");
     }
 
     private void OnClickAddGold()

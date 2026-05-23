@@ -43,12 +43,12 @@ public class UpgradeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void OnEnable()
     {
-        GameEvents.OnUpgradeCompleted += HandleUpgradeCompleted;
+        GameEventBus.Subscribe<string, int>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnUpgradeCompleted -= HandleUpgradeCompleted;
+        GameEventBus.Unsubscribe<string, int>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
         _upgradeInfo?.Hide();
     }
 

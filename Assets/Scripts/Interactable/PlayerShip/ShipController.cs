@@ -48,14 +48,14 @@ public class ShipController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnShipStatsChanged += HandleShipStatsChanged;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnShipStatsChanged -= HandleShipStatsChanged;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
     }
 
     // =========================================================================

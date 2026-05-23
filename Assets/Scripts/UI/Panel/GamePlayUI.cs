@@ -57,22 +57,22 @@ public class GamePlayUI : UIBase
     // =========================================================================
     private void OnEnable()
     {
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnShipSpawned += HandleShipSpawned;
-        GameEvents.OnPlanetHovered += HandlePlanetHovered;
-        GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
-        GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
-        GameEvents.OnPlanetGameOverWarning += HandlePlanetGameOverWarning;
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
+        GameEventBus.Subscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
+        GameEventBus.Subscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
+        GameEventBus.Subscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Subscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
     }
 
     private void OnDisable()
     {
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnShipSpawned -= HandleShipSpawned;
-        GameEvents.OnPlanetHovered -= HandlePlanetHovered;
-        GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
-        GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
-        GameEvents.OnPlanetGameOverWarning -= HandlePlanetGameOverWarning;
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
+        GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
+        GameEventBus.Unsubscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
+        GameEventBus.Unsubscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
     }
 
     private void OnDestroy()
@@ -182,7 +182,7 @@ public class GamePlayUI : UIBase
         _planetMap.Remove(instanceId);
 
         string stageId = GameManager.Instance.Context.LastSelectedStageId;
-        GameEvents.RaiseStageFailed(stageId);
+        GameEventBus.Publish(GameEventType.StageFailed, stageId);
     }
 
     private void HandlePlanetHovered(string instanceId, bool isHover)

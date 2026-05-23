@@ -35,6 +35,7 @@ public class StageClear : UIBase
     {
         Time.timeScale = 1f;
         gameObject.SetActive(false);
+        SaveLoadController.SaveCurrentGame();
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 }

@@ -91,12 +91,12 @@ public class PlanetController : InteractableBase
     // =========================================================================
     private void OnMouseEnter()
     {
-        GameEvents.RaisePlanetHovered(InstanceId, true);
+        GameEventBus.Publish(GameEventType.PlanetHovered, true);
     }
 
     private void OnMouseExit()
     {
-        GameEvents.RaisePlanetHovered(InstanceId, false);
+        GameEventBus.Publish(GameEventType.PlanetHovered, false);
     }
 
     // =========================================================================
