@@ -14,16 +14,6 @@ public class StageFailed : UIBase
     // Unity 생명주기
     // =========================================================================
 
-    private void OnEnable()
-    {
-        GameEvents.OnStageFailed += HandleStageFailed;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnStageFailed -= HandleStageFailed;
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -36,16 +26,6 @@ public class StageFailed : UIBase
     {
         if (_btnGoLobby != null)
             _btnGoLobby.onClick.RemoveListener(OnClickGoLobby);
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-
-    // 추가
-    private void HandleStageFailed(string stageId)
-    {
-        gameObject.SetActive(true);
     }
 
     // =========================================================================

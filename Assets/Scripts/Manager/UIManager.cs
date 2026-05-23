@@ -52,12 +52,16 @@ public class UIManager : MonoBehaviour
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnStationInteractionChanged += HandleStationInteractionChanged;
+        GameEvents.OnStageFailed += HandleStageFailed;
+        GameEvents.OnStageClear += HandleStageClear;
     }
 
     private void OnDisable()
     {
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnStationInteractionChanged -= HandleStationInteractionChanged;
+        GameEvents.OnStageFailed -= HandleStageFailed;
+        GameEvents.OnStageClear -= HandleStageClear;
     }
 
     // =========================================================================
@@ -115,6 +119,18 @@ public class UIManager : MonoBehaviour
         {
             CloseUI(UIId.Popup.StationUpgrade);
         }
+    }
+
+    private void HandleStageFailed(string stageId)
+    {
+        Time.timeScale = 0f;
+        OpenUI<StageFailed>(UIId.Popup.StageFailed);
+    }
+
+    private void HandleStageClear(string stageId)
+    {
+        Time.timeScale = 0f;
+        OpenUI<StageClear>(UIId.Popup.StageClear);
     }
     // =========================================================================
     // 외부 API

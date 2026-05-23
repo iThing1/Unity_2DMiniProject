@@ -14,16 +14,6 @@ public class StageClear : UIBase
     // Unity 생명주기
     // =========================================================================
 
-    private void OnEnable()
-    {
-        GameEvents.OnStageClear += HandleStageClear;
-    }
-
-    private void OnDisable()
-    {
-        GameEvents.OnStageClear -= HandleStageClear;
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -36,16 +26,6 @@ public class StageClear : UIBase
     {
         if (_btnGoLobby != null)
             _btnGoLobby.onClick.RemoveListener(OnClickGoLobby);
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-
-    // 추가
-    private void HandleStageClear(string stageId)
-    {
-        gameObject.SetActive(true);
     }
 
     // =========================================================================

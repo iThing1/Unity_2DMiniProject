@@ -62,7 +62,6 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetHovered += HandlePlanetHovered;
         GameEvents.OnPlanetSpawned += HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed += HandlePlanetDestroyed;
-        GameEvents.OnStageClear += HandleStageClear;
         GameEvents.OnPlanetGameOverWarning += HandlePlanetGameOverWarning;
     }
 
@@ -73,7 +72,6 @@ public class GamePlayUI : UIBase
         GameEvents.OnPlanetHovered -= HandlePlanetHovered;
         GameEvents.OnPlanetSpawned -= HandlePlanetSpawned;
         GameEvents.OnPlanetDestroyed -= HandlePlanetDestroyed;
-        GameEvents.OnStageClear -= HandleStageClear;
         GameEvents.OnPlanetGameOverWarning -= HandlePlanetGameOverWarning;
     }
 
@@ -185,14 +183,6 @@ public class GamePlayUI : UIBase
 
         string stageId = GameManager.Instance.Context.LastSelectedStageId;
         GameEvents.RaiseStageFailed(stageId);
-        Time.timeScale = 0f;
-        UIManager.Instance.OpenUI<StageFailed>(UIId.Popup.StageFailed);
-    }
-
-    private void HandleStageClear(string stageId)
-    {
-        Time.timeScale = 0f;
-        UIManager.Instance.OpenUI<StageClear>(UIId.Popup.StageClear);
     }
 
     private void HandlePlanetHovered(string instanceId, bool isHover)
