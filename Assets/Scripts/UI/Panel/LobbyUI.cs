@@ -185,7 +185,7 @@ public class LobbyUI : UIBase
         foreach (PlanetItem item in _planetItems)
         {
             if (item != null)
-                DestroyImmediate(item.gameObject);
+                Destroy(item.gameObject);
         }
         _planetItems.Clear();
 

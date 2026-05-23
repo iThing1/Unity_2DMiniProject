@@ -90,7 +90,9 @@ public class PlanetSpawner : MonoBehaviour
         else
             _prefabColliderRadius = 1f * scale;
 
+#if UNITY_EDITOR
         Debug.Log($"[PlanetSpawner] 프리팹 콜라이더 반지름: {_prefabColliderRadius}");
+#endif
     }
 
     private void HandleStageStartRequested()
@@ -165,7 +167,9 @@ public class PlanetSpawner : MonoBehaviour
             yield return new WaitForSeconds(_currentStageData.SpawnInterval);
         }
 
+#if UNITY_EDITOR
         Debug.Log($"[PlanetSpawner] 최대 행성 수 도달: {_currentStageData.MaxPlanet}");
+#endif
         _spawnCoroutine = null;
     }
 

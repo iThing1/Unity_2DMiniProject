@@ -44,10 +44,10 @@ public class UpgradeInfo : MonoBehaviour
         {
             int costLevel = slotLevel - 1;
             float goldCost = data.BaseGoldCost + data.CostIncrease * costLevel;
-            float IngotCost = data.BaseIngotCost + data.IngotIncrease * costLevel;
+            float ingotCost = data.BaseIngotCost + data.IngotIncrease * costLevel;
 
             if (_txtGold != null) _txtGold.text = goldCost.ToAbbreviatedString(0);
-            if (_txtIngot != null) _txtIngot.text = IngotCost.ToAbbreviatedString(0);
+            if (_txtIngot != null) _txtIngot.text = ingotCost.ToAbbreviatedString(0);
         }
 
         gameObject.SetActive(true);

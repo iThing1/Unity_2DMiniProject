@@ -136,22 +136,25 @@ public class ShipUpgrade : MonoBehaviour
     }
 
     // =========================================================================
-    // 정리
     // 헤드 노드에서 Next 순회로 전체 노드 파괴
     // =========================================================================
     private void ClearTree()
     {
+        var toDestroy = new List<GameObject>();
+
         foreach (ShipUpgradeNode head in _headNodes)
         {
             ShipUpgradeNode current = head;
             while (current != null)
             {
-                ShipUpgradeNode next = current.Next;
-                if (current != null)
-                    Destroy(current.gameObject);
-                current = next;
+                toDestroy.Add(current.gameObject);
+                current = current.Next;
             }
         }
+
+        foreach (GameObject obj in toDestroy)
+            Destroy(obj);
+
         _headNodes.Clear();
 
         foreach (GameObject line in _spawnedLines)

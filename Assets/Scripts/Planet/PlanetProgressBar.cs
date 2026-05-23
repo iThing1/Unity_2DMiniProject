@@ -14,7 +14,7 @@ public class PlanetProgressBar : MonoBehaviour
     [Header("Prosperty Images")]    // TODO: 일단 컬러로 구분, 스프라이트 교체로 구현
     [SerializeField] private Color _veryProsperousColor = new Color(0.4f, 0.9f, 1.0f);   // 밝은 파랑;    
     [SerializeField] private Color _prosperousColor = new Color(0.2f, 0.5f, 1.0f);   // 파랑
-    [SerializeField] private Color _NeutralColor = new Color(0.2f, 0.8f, 0.2f);   // 초록
+    [SerializeField] private Color _neutralColor = new Color(0.2f, 0.8f, 0.2f);   // 초록
     [SerializeField] private Color _poorColor = new Color(1.0f, 0.8f, 0.0f);   // 노랑
     [SerializeField] private Color _criticalColor = new Color(1.0f, 0.2f, 0.2f);   // 빨강
 
@@ -86,7 +86,7 @@ public class PlanetProgressBar : MonoBehaviour
         {
             case PlanetState.VeryProsperous: return _veryProsperousColor;
             case PlanetState.Prosperous: return _prosperousColor;
-            case PlanetState.Neutral: return _NeutralColor;
+            case PlanetState.Neutral: return _neutralColor;
             case PlanetState.Poor: return _poorColor;
             case PlanetState.Critical: return _criticalColor;
             default: return Color.grey;

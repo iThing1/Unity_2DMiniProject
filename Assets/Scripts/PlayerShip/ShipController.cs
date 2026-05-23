@@ -213,6 +213,17 @@ public class ShipController : MonoBehaviour
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         _isControllable = next == GameState.GamePlay;
+
+        if (next != GameState.GamePlay)
+        {
+            if (_overheatCoroutine != null)
+            {
+                StopCoroutine(_overheatCoroutine);
+                _overheatCoroutine = null;
+            }
+            IsOverheat = false;
+            IsBoosting = false;
+        }
     }
 
     private void HandleShipStatsChanged(ShipStats stats)

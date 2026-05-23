@@ -148,6 +148,7 @@ public class GamePlayUI : UIBase
         _planetMap.Clear();
         _planetInfo?.Hide();
         _hoveredPlanet = null;
+        _warningPlanetCount = 0;
 
         StopAlert();
     }

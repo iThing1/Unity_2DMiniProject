@@ -1,7 +1,6 @@
 ﻿using GameData;
 using System.Collections;
 using UnityEngine;
-using static System.Collections.Specialized.BitVector32;
 
 public class ShipSpawner : MonoBehaviour
 {
@@ -38,15 +37,8 @@ public class ShipSpawner : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleNewGameRequested()
-    {
-        PreloadShip();
-    }
-
-    private void HandleContinueRequested()
-    {
-        PreloadShip();
-    }
+    private void HandleNewGameRequested() => PreloadShip();
+    private void HandleContinueRequested() => PreloadShip();
 
     private void HandleStationSpawned(Transform stationTransform)
     {

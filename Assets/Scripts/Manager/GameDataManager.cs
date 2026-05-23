@@ -96,7 +96,7 @@ public class GameDataManager : MonoBehaviour
 
     private void CacheConstants()
     {
-        float Get(string id, float fallback)
+        float GetConstant(string id, float fallback)
         {
             var data = Get<GameConstantData>(id);
             if (data == null)
@@ -107,37 +107,37 @@ public class GameDataManager : MonoBehaviour
         Constants = new GameConstants
         {
             // 우주선
-            FuelConsumeRate = Get("FUEL_CONSUME_RATE", 50f),
-            FuelRegenRate = Get("FUEL_REGEN_RATE", 20f),
-            OverheatDuration = Get("OVERHEAT_DURATION", 5f),
-            ShipAcceleration = Get("SHIP_ACCELERATION", 5f),
-            ShipBoostAccel = Get("SHIP_BOOST_ACCELERATION", 20f),
-            DockingSpeed = Get("STATION_DOCKING_SPEED", 0.5f),
+            FuelConsumeRate = GetConstant("FUEL_CONSUME_RATE", 50f),
+            FuelRegenRate = GetConstant("FUEL_REGEN_RATE", 20f),
+            OverheatDuration = GetConstant("OVERHEAT_DURATION", 5f),
+            ShipAcceleration = GetConstant("SHIP_ACCELERATION", 5f),
+            ShipBoostAccel = GetConstant("SHIP_BOOST_ACCELERATION", 20f),
+            DockingSpeed = GetConstant("STATION_DOCKING_SPEED", 0.5f),
 
             // 행성
-            ProsperityChangeRate = Get("PROSPERITY_CHANGE_RATE", 0.15f),
-            ProsperityIncreaseMax = Get("PROSPERITY_INCREASE_MAX", 20f),
-            PopulationChangeRate = Get("POPULATION_CHANGE_RATE", 0.1f),
-            PopulationIncreaseMax = Get("POPULATION_INCREASE_MAX", 0.2f),
-            PlanetGameoverTime = Get("PLANET_GAMEOVER_TIME", 10f),
-            PlanetConsumeInterval = Get("PLANET_CONSUME_INTERVAL", 10f),
-            PlanetProsperityMax = Get("PLANET_PROSPERITY_MAX", 100f),
+            ProsperityChangeRate = GetConstant("PROSPERITY_CHANGE_RATE", 0.15f),
+            ProsperityIncreaseMax = GetConstant("PROSPERITY_INCREASE_MAX", 20f),
+            PopulationChangeRate = GetConstant("POPULATION_CHANGE_RATE", 0.1f),
+            PopulationIncreaseMax = GetConstant("POPULATION_INCREASE_MAX", 0.2f),
+            PlanetGameoverTime = GetConstant("PLANET_GAMEOVER_TIME", 10f),
+            PlanetConsumeInterval = GetConstant("PLANET_CONSUME_INTERVAL", 10f),
+            PlanetProsperityMax = GetConstant("PLANET_PROSPERITY_MAX", 100f),
 
             // 정거장 / 화물
-            CargoTransferInterval = Get("CARGO_TRANSFER_INTERVAL", 0.2f),
-            OreToIngotRatio = Get("ORE_TO_INGOT_RATIO", 10f),
-            StationDockingRange = Get("STATION_DOCKING_RANGE", 5f),
+            CargoTransferInterval = GetConstant("CARGO_TRANSFER_INTERVAL", 0.2f),
+            OreToIngotRatio = GetConstant("ORE_TO_INGOT_RATIO", 10f),
+            StationDockingRange = GetConstant("STATION_DOCKING_RANGE", 5f),
 
-            FoodConsumeBase = Get("FOOD_CONSUME_BASE", 0f),
-            FoodConsumeRate = Get("FOOD_CONSUME_RATE", 0.0001f),
-            OreProdBase = Get("ORE_PRODUCE_BASE", 3f),
-            OreProdRate = Get("ORE_PRODUCE_RATE", 0.00005f),
+            FoodConsumeBase = GetConstant("FOOD_CONSUME_BASE", 0f),
+            FoodConsumeRate = GetConstant("FOOD_CONSUME_RATE", 0.0001f),
+            OreProdBase = GetConstant("ORE_PRODUCE_BASE", 3f),
+            OreProdRate = GetConstant("ORE_PRODUCE_RATE", 0.00005f),
         };
     }
 
     private void CacheSetting()
     {
-        float Get(string id, float fallback)
+        float GetConstant(string id, float fallback)
         {
             var Settings = Get<GameSettingData>(id);
             if (Settings == null)
@@ -147,10 +147,10 @@ public class GameDataManager : MonoBehaviour
 
         Settings = new GameSetting
         {
-            CameraHeightDefault = Get("CAM_HEIGHT_DEFAULT", 20f),
-            CameraShakePower = Get("CAM_SHAKE_PWR", 0.2f),
-            SoundBackgroundVolume = Get("SOUND_BACKGROUND_VOLUME", 100),
-            SoundEffectVolume = Get("SOUND_EFFECT_VOLUME", 100),
+            CameraHeightDefault = GetConstant("CAM_HEIGHT_DEFAULT", 20f),
+            CameraShakePower = GetConstant("CAM_SHAKE_PWR", 0.2f),
+            SoundBackgroundVolume = GetConstant("SOUND_BACKGROUND_VOLUME", 100),
+            SoundEffectVolume = GetConstant("SOUND_EFFECT_VOLUME", 100),
         };
     }
 

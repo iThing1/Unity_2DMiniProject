@@ -96,28 +96,7 @@ public class StationController : InteractableBase
     // =========================================================================
     public bool TryStationUpgrade(string upgradeId)
     {
-        var data = GameDataManager.Instance.Get<UpgradeData>(upgradeId);
-        if (data == null) return false;
-
-        int currentLevel = GameManager.Instance.GetUpgradeLevel(upgradeId);
-        if (currentLevel >= data.MaxLevel) return false;
-
-        float goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
-        float ingotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
-
-        if (!GameManager.Instance.TrySpendGold(goldCost)) return false;
-        if (!GameManager.Instance.TrySpendIngot(ingotCost))
-        {
-            GameManager.Instance.AddGold(goldCost);
-            return false;
-        }
-
-        int newLevel = currentLevel + 1;
-        GameManager.Instance.Context.UpgradeLevels[upgradeId] = newLevel;
-        GameEvents.RaiseUpgradeCompleted(upgradeId, newLevel);
-
-        Debug.Log($"[StationController] 업그레이드 완료: {upgradeId} Lv.{newLevel}");
-        return true;
+        return GameManager.Instance.TryUpgrade(upgradeId);
     }
 
     public void SellIngot()
