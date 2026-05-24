@@ -18,7 +18,7 @@ public class PlanetInfo : UIBase
     private float _lastFood = -1f;
     private float _lastOre = -1f;
     private float _lastPop = -1f;
-
+    
     public override void Setup(object data = null)
     {
         _target = data as PlanetController;

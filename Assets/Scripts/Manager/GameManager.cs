@@ -96,7 +96,7 @@ public class GameManager : MonoBehaviour
             Context.UnlockedStageIds.Add(stageId);
 
         Time.timeScale = 0f;
-        UIManager.Instance.OpenUI<StageClear>(UIId.Popup.StageClear);
+        UIManager.Instance.OpenUI(UIId.Popup.StageClear);
     }
 
     private void HandleStageFailed(string stageId)
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
         Context.StageClearStatus[stageId] = false;
 
         Time.timeScale = 0f;
-        UIManager.Instance.OpenUI<StageFailed>(UIId.Popup.StageFailed);
+        UIManager.Instance.OpenUI(UIId.Popup.StageFailed);
     }
 
     private void HandleContinueRequested()
@@ -124,13 +124,13 @@ public class GameManager : MonoBehaviour
     // 재화 관련
     // =========================================================================
 
-    public void AddGold(float amount)
+    public void AddGold(int amount)
     {
         Context.CurrentGold += amount;
         GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
     }
 
-    public bool TrySpendGold(float amount)
+    public bool TrySpendGold(int amount)
     {
         if (Context.CurrentGold < amount) return false;
         Context.CurrentGold -= amount;
@@ -138,13 +138,13 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public void AddIngot(float amount)
+    public void AddIngot(int amount)
     {
         Context.CurrentIngot += amount;
         GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
     }
 
-    public bool TrySpendIngot(float amount)
+    public bool TrySpendIngot(int amount)
     {
         if (Context.CurrentIngot < amount) return false;
         Context.CurrentIngot -= amount;
@@ -167,8 +167,8 @@ public class GameManager : MonoBehaviour
         int currentLevel = GetUpgradeLevel(upgradeId);
         if (currentLevel >= data.MaxLevel) return false;
 
-        float goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
-        float ingotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
+        int goldCost = data.BaseGoldCost + data.CostIncrease * currentLevel;
+        int ingotCost = data.BaseIngotCost + data.IngotIncrease * currentLevel;
 
         if (Context.CurrentGold < goldCost) return false;
         if (Context.CurrentIngot < ingotCost) return false;

@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c324430cee6f5c40879f3db188fe210
+    m_Address: ContinueInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0d79cd2eaacc7ad4bb1c13208b673b03
     m_Address: Prefabs/Planet
     m_ReadOnly: 0

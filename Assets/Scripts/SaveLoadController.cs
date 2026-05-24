@@ -1,5 +1,6 @@
 ﻿using GameData;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -52,6 +53,7 @@ public static class SaveLoadController
     {
         if (GameManager.Instance != null && GameManager.Instance.Context != null)
         {
+            GameManager.Instance.Context.SavedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
             Save(DEFAULT_SAVE_FILE, GameManager.Instance.Context);
         }
     }
@@ -63,6 +65,11 @@ public static class SaveLoadController
 
         GameManager.Instance.LoadContext(context);
         return true;
+    }
+
+    public static GameContext PeekSaveData()
+    {
+        return Load<GameContext>(DEFAULT_SAVE_FILE);
     }
 
     public static bool HasSaveFile()

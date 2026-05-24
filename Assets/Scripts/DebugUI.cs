@@ -15,8 +15,8 @@ public class DebugUI : MonoBehaviour
     [Header("재화 추가")]
     [SerializeField] private Button _btnAddGold;
     [SerializeField] private Button _btnAddIngot;
-    [SerializeField] private float _addGoldAmount = 10000f;
-    [SerializeField] private float _addIngotAmount = 100f;
+    [SerializeField] private int _addGoldAmount = 1000;
+    [SerializeField] private int _addIngotAmount = 10;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================

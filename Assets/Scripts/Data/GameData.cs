@@ -25,11 +25,14 @@ namespace GameData
 
         public struct Popup
         {
-            public const string StageStart = "UI_Popup_05";
+            public const string ContinueInfo = "UI_Popup_02";
             public const string StageClear = "UI_Popup_03";
             public const string StageFailed = "UI_Popup_04";
+            public const string StageStart = "UI_Popup_05";
             public const string PlanetInfo = "UI_Popup_06";
             public const string StationUpgrade = "UI_Popup_07";
+
+            public const string DebugMenu = "UI_Debug_01";
             
         }
 

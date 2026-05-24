@@ -52,8 +52,19 @@ public class MainMenuUI : UIBase
 
     private void OnClickContinue()
     {
-        GameEventBus.Publish(GameEventType.ContinueRequested);
-        GameManager.Instance.ChangeState(GameState.Lobby);
+        GameContext saveData = SaveLoadController.PeekSaveData();
+        if (saveData == null)
+        {
+            Debug.LogWarning("[MainMenuUI] 세이브 데이터를 읽을 수 없습니다.");
+            return;
+        }
+
+        ContinueInfo continueInfo = UIManager.Instance.PrepareUI<ContinueInfo>(UIId.Popup.ContinueInfo);
+        if (continueInfo != null)
+        {
+            continueInfo.Setup(saveData);
+            UIManager.Instance.OpenUI(UIId.Popup.ContinueInfo);
+        }
     }
 
     private void OnClickQuit()

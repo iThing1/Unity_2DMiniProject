@@ -1,5 +1,12 @@
 [
   {
+    "Id": "UI_Popup_02",
+    "Name": "ContinueInfo",
+    "Type": "Popup",
+    "BindState": "MainMenu",
+    "Auto": false
+  },
+  {
     "Id": "UI_Popup_03",
     "Name": "StageClear",
     "Type": "Popup",

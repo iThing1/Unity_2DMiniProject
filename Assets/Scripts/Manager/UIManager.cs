@@ -82,6 +82,7 @@ public class UIManager : MonoBehaviour
     // =========================================================================
     // 외부 API
     // =========================================================================
+    // 데이터 주입 없이 그냥 열기만 하면 되는 팝업
     public void OpenUI(string uiId)
     {
         if (!_createdUIDic.ContainsKey(uiId))
@@ -101,6 +102,25 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // 이미 열려있는 UI의 실시간 갱신
+    public T GetUI<T>(string uiId) where T : MonoBehaviour
+    {
+        if (!_createdUIDic.TryGetValue(uiId, out GameObject panel)) return null;
+        return panel.GetComponent<T>();
+    }
+
+    // 열기 전에 데이터를 먼저 넣어야 하는 팝업
+    public T PrepareUI<T>(string uiId) where T : MonoBehaviour
+    {
+        if (!_createdUIDic.ContainsKey(uiId))
+        {
+            SpawnUI(uiId);
+        }
+
+        return GetUI<T>(uiId);
+    }
+
+    // 닫기
     public void CloseUI(string uiId)
     {
         if (!_createdUIDic.TryGetValue(uiId, out GameObject panel)) return;
@@ -118,17 +138,7 @@ public class UIManager : MonoBehaviour
         _openedUISet.Remove(uiId);
     }
 
-    public void OpenUI<T>(string uiId) where T : MonoBehaviour
-    {
-        OpenUI(uiId);
-    }
-
-    public T GetUI<T>(string uiId) where T : MonoBehaviour
-    {
-        if (!_createdUIDic.TryGetValue(uiId, out GameObject panel)) return null;
-        return panel.GetComponent<T>();
-    }
-
+    // 열려있는지 확인용
     public bool IsOpen(string uiId)
     {
         return _openedUISet.Contains(uiId);

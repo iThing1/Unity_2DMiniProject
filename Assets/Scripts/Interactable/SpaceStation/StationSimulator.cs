@@ -97,8 +97,8 @@ public class StationSimulator : MonoBehaviour
             return;
         }
 
-        float ingotToSell = Mathf.Floor(StoredIngot);
-        float goldEarned = ingotToSell * 10;  // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
+        int ingotToSell = Mathf.FloorToInt(StoredIngot);
+        int goldEarned = ingotToSell * 10;  // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
 
         StoredIngot -= ingotToSell;
         GameManager.Instance.TrySpendIngot(ingotToSell);
@@ -131,7 +131,7 @@ public class StationSimulator : MonoBehaviour
                 float refineAmount = Mathf.Min(_refineRate * Time.deltaTime, StoredOre);
                 StoredOre -= refineAmount;
 
-                float ingotGain = refineAmount / _oreToIngotRatio;
+                int ingotGain = Mathf.FloorToInt(refineAmount / _oreToIngotRatio);
                 StoredIngot += ingotGain;
                 GameManager.Instance.AddIngot(ingotGain);
             }

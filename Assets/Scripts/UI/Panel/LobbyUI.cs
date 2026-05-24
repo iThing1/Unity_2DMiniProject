@@ -92,7 +92,7 @@ public class LobbyUI : UIBase
         StageData current = _stageList[_currentIndex];
 
         GameManager.Instance.ChangeState(GameState.GamePlay);
-        UIManager.Instance.OpenUI<StageStart>(UIId.Popup.StageStart);
+        UIManager.Instance.OpenUI(UIId.Popup.StageStart);
 
         GameEventBus.Publish(GameEventType.StageSelected, current.Id);
     }
@@ -113,7 +113,7 @@ public class LobbyUI : UIBase
 
     private void OnClickUpgrade()
     {
-        UIManager.Instance.OpenUI<UpgradeUI>(UIId.Panel.Upgrade);
+        UIManager.Instance.OpenUI(UIId.Panel.Upgrade);
     }
     // =========================================================================
     // 스테이지 로드

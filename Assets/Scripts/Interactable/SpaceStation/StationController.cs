@@ -256,7 +256,7 @@ public class StationController : InteractableBase
     // =========================================================================
     private void OpenUpgradeUI(StationZoneType zoneType)
     {
-        UIManager.Instance.OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+        UIManager.Instance.OpenUI(UIId.Popup.StationUpgrade);
         StationUpgrade upgradeUI = UIManager.Instance.GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
         if (upgradeUI != null)
         {
