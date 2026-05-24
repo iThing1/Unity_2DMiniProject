@@ -12,8 +12,9 @@ public class UpgradeUI : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
+    public override void Open()
     {
+        base.Open();
         _shipUpgrade?.Open();
     }
 

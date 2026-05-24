@@ -16,16 +16,6 @@ public class StageStart : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-    }
-
     protected override void Start()
     {
         base.Start();
@@ -39,20 +29,23 @@ public class StageStart : UIBase
             _btnStart.onClick.RemoveListener(OnClickStart);
     }
 
-    // =========================================================================
-    // 외부 API: UIManager를 통해 열릴 때 데이터 주입
-    // =========================================================================
-    public void Open(string stageId)
+    protected override void RegisterEvents()
     {
-        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
-        if (data == null)
-        {
-            Debug.LogError($"[StageStart] 스테이지 데이터를 찾지 못했습니다: {stageId}");
-            return;
-        }
+        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+    }
 
-        RefreshUI(data);
-        Time.timeScale = 0f;
+    protected override void UnregisterEvents()
+    {
+        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
+    }
+
+    // =========================================================================
+    // 데이터 주입
+    // =========================================================================
+    public override void Setup(object data = null)
+    {
+        if (data is string stageId)
+            RefreshUI(stageId);
     }
 
     // =========================================================================
@@ -60,7 +53,9 @@ public class StageStart : UIBase
     // =========================================================================
     private void HandleStageSelected(string stageId)
     {
-        Open(stageId);
+        Setup(stageId);
+        Time.timeScale = 0f;
+        Open();
     }
 
     // =========================================================================
@@ -69,15 +64,22 @@ public class StageStart : UIBase
     private void OnClickStart()
     {
         Time.timeScale = 1f;
-        gameObject.SetActive(false);
+        Close();
         GameEventBus.Publish(GameEventType.StageStartRequested);
     }
 
     // =========================================================================
     // UI 갱신
     // =========================================================================
-    private void RefreshUI(StageData data)
+    private void RefreshUI(string stageId)
     {
+        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
+        if (data == null)
+        {
+            Debug.LogError($"[StageStart] 스테이지 데이터를 찾지 못했습니다: {stageId}");
+            return;
+        }
+
         if (_txtName != null)
             _txtName.text = data.Name;
 

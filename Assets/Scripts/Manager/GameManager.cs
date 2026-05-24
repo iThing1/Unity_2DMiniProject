@@ -9,13 +9,6 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
-    private const string UPGRADE_SPEED = "UP_Ship_Speed";
-    private const string UPGRADE_ACCEL = "UP_Ship_Accel";
-    private const string UPGRADE_MAX_FUEL = "UP_Ship_MaxFuel";
-    private const string UPGRADE_CARGO = "UP_Ship_Cargo";
-    private const string UPGRADE_FARM = "UP_Stat_Farm";
-    private const string UPGRADE_REFINE = "UP_Stat_Refine";
-
     private void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
@@ -179,15 +172,15 @@ public class GameManager : MonoBehaviour
     {
         switch (upgradeId)
         {
-            case UPGRADE_SPEED:
-            case UPGRADE_ACCEL:
-            case UPGRADE_MAX_FUEL:
-            case UPGRADE_CARGO:
+            case Upgrade.StatSpeed:
+            case Upgrade.StatAccel:
+            case Upgrade.StatMaxFuel:
+            case Upgrade.StatCargo:
                 GameEventBus.Publish(GameEventType.ShipStatsChanged, SetShipStats());
                 break;
 
-            case UPGRADE_FARM:
-            case UPGRADE_REFINE:
+            case Upgrade.StatFarm:
+            case Upgrade.StatRefine:
                 GameEventBus.Publish(GameEventType.StationStatsChanged, SetStationStats());
                 break;
         }
@@ -197,10 +190,10 @@ public class GameManager : MonoBehaviour
     {
         return new ShipStats
         {
-            BaseSpeed = GetUpgradeStat(UPGRADE_SPEED),
-            BoostAcceleration = GetUpgradeStat(UPGRADE_ACCEL),
-            MaxFuel = GetUpgradeStat(UPGRADE_MAX_FUEL),
-            Capacity = Mathf.RoundToInt(GetUpgradeStat(UPGRADE_CARGO)),
+            BaseSpeed = GetUpgradeStat(Upgrade.StatSpeed),
+            BoostAcceleration = GetUpgradeStat(Upgrade.StatAccel),
+            MaxFuel = GetUpgradeStat(Upgrade.StatMaxFuel),
+            Capacity = Mathf.RoundToInt(GetUpgradeStat(Upgrade.StatCargo)),
         };
     }
 
@@ -208,8 +201,8 @@ public class GameManager : MonoBehaviour
     {
         return new StationStats
         {
-            FarmRate = GetUpgradeStat(UPGRADE_FARM),
-            RefineRate = GetUpgradeStat(UPGRADE_REFINE),
+            FarmRate = GetUpgradeStat(Upgrade.StatFarm),
+            RefineRate = GetUpgradeStat(Upgrade.StatRefine),
         };
     }
 

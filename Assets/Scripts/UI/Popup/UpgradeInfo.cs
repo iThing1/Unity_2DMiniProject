@@ -13,6 +13,15 @@ public class UpgradeInfo : MonoBehaviour
     [SerializeField] private TMP_Text _txtGold;
     [SerializeField] private TMP_Text _txtIngot;
     [SerializeField] private TMP_Text _txtDesc;
+
+    private void Awake()
+    {
+        CanvasGroup canvasgroup = GetComponent<CanvasGroup>();
+        if (canvasgroup == null)
+            canvasgroup = gameObject.AddComponent<CanvasGroup>();
+        canvasgroup.blocksRaycasts = false;
+    }
+
     // =========================================================================
     // 외부 API
     // =========================================================================

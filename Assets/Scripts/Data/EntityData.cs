@@ -2,6 +2,16 @@
 
 namespace GameData
 {
+    public static class Upgrade
+    {
+        public const string StatCargo = "UP_Ship_Cargo";
+        public const string StatSpeed = "UP_Ship_Speed";
+        public const string StatAccel = "UP_Ship_Accel";
+        public const string StatMaxFuel = "UP_Ship_MaxFuel";
+        public const string StatFarm = "UP_Stat_Farm";
+        public const string StatRefine = "UP_Stat_Refine";
+    }
+
     [Serializable]
     public class PlanetData : IGameData
     {
@@ -11,7 +21,7 @@ namespace GameData
         public int BasePop;
         public int BaseFood;
         public int BaseOre;
-        public int Property;
+        public int Properity;
         public int Grade;
         public string PlanetSprite = null!;
 

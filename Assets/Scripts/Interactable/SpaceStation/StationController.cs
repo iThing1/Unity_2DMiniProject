@@ -113,8 +113,8 @@ public class StationController : InteractableBase
     {
         if (_activeZone.HasValue && _activeZone.Value != zoneType)
         {
+            StopInteractCoroutine();
             CloseUpgradeUI();
-            OnDeactivate();
         }
 
         _activeZone = zoneType;
@@ -131,8 +131,9 @@ public class StationController : InteractableBase
         _activeZone = null;
         _isPlayerInside = false;
 
+        StopInteractCoroutine();
+        _shipInventory?.StopTransfer();
         CloseUpgradeUI();
-        OnDeactivate();
     }
 
     // =========================================================================
@@ -147,7 +148,6 @@ public class StationController : InteractableBase
     {
         if (_activeZone == null) return;
 
-        GameEventBus.Publish(GameEventType.StationInteractionChanged, true, this);
         StopInteractCoroutine();
 
         IEnumerator routine = null;
@@ -181,7 +181,6 @@ public class StationController : InteractableBase
         GameEventBus.Publish(GameEventType.StationInteractionChanged, false, this);
 
         _shipInventory?.StopTransfer();
-        UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
 
     // =========================================================================
@@ -228,7 +227,7 @@ public class StationController : InteractableBase
             yield break;
         }
 
-        _shipInventory.StartUnloading(ShipInventory.CargoType.Ore, OnOreUnloadEach, OnOreUnloadComplete);
+        _shipInventory.StartUnloading(ShipInventory.CargoType.Ore, OnOreUnloadEach, null);
 
         yield return new WaitUntil(IsLoadingDone);
         _interactCoroutine = null;
@@ -250,27 +249,27 @@ public class StationController : InteractableBase
         _simulator.UnloadOre(1f);
     }
 
-    private void OnOreUnloadComplete(int unloaded) { }
-
     private bool IsLoadingDone()
     {
         return !_shipInventory.IsLoading;
     }
 
     // =========================================================================
-    // 업그레이드 UI
+    // 업그레이드 UI — Zone 진입/이탈에서만 호출
     // =========================================================================
     private void OpenUpgradeUI(StationZoneType zoneType)
     {
-        UIManager.Instance.OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
         StationUpgrade upgradeUI = UIManager.Instance.GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-        upgradeUI?.Open(zoneType, this);
+        if (upgradeUI == null) return;
+        upgradeUI.Open();
+        upgradeUI.Setup(new StationUpgradeData(zoneType, this));
     }
 
     private void CloseUpgradeUI()
     {
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
+
 
     // =========================================================================
     // 이벤트 핸들러

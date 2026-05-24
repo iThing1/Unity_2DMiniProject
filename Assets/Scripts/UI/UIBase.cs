@@ -10,10 +10,23 @@ public class UIBase : MonoBehaviour
     [SerializeField] private Button _btnClose;
 
     public string UiId => _uiId;
+    public bool IsOpen { get; private set; }
 
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+    protected virtual void Awake() { }
+
+    protected virtual void OnEnable()
+    {
+        RegisterEvents();
+    }
+
+    protected virtual void OnDisable()
+    {
+        UnregisterEvents();
+    }
+
     protected virtual void Start()
     {
         if (_btnClose != null)
@@ -27,13 +40,31 @@ public class UIBase : MonoBehaviour
     }
 
     // =========================================================================
+    // 가상 메서드 (하위 클래스 오버라이드용)
+    // =========================================================================
+    public virtual void Setup(object data = null) { }
+    protected virtual void RegisterEvents() { }
+    protected virtual void UnregisterEvents() { }
+    protected virtual void OnBeforeClose() { }
+
+    // =========================================================================
     // 닫기
     // =========================================================================
-    private void OnClickClose()
+    public virtual void Open()
+    {
+        gameObject.SetActive(true);
+        IsOpen = true;
+    }
+
+    public virtual void Close()
     {
         OnBeforeClose();
         gameObject.SetActive(false);
+        IsOpen = false;
     }
 
-    protected virtual void OnBeforeClose() { }
+    private void OnClickClose()
+    {
+        Close();
+    }
 }

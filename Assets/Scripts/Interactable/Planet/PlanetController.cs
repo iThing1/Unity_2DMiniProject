@@ -41,16 +41,6 @@ public class PlanetController : InteractableBase
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
-
     // =========================================================================
     // 외부 API: 초기화
     // =========================================================================
@@ -87,16 +77,16 @@ public class PlanetController : InteractableBase
     }
 
     // =========================================================================
-    // 마우스 오버 (추가)
+    // 마우스 오버
     // =========================================================================
     private void OnMouseEnter()
     {
-        GameEventBus.Publish(GameEventType.PlanetHovered, true);
+        GameEventBus.Publish(GameEventType.PlanetHovered, InstanceId, true);
     }
 
     private void OnMouseExit()
     {
-        GameEventBus.Publish(GameEventType.PlanetHovered, false);
+        GameEventBus.Publish(GameEventType.PlanetHovered, InstanceId, false);
     }
 
     // =========================================================================

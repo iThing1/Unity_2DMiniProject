@@ -15,9 +15,6 @@ public enum PlanetState
 // 행성 내부 시뮬레이션을 담당
 public class PlanetSimulator : MonoBehaviour
 {
-    // =========================================================================
-    // 상수
-    // =========================================================================
     private const float PROSPERITY_VERY_HIGH = 80f;
     private const float PROSPERITY_HIGH = 60f;
     private const float PROSPERITY_NEUTRAL = 40f;
@@ -48,10 +45,8 @@ public class PlanetSimulator : MonoBehaviour
     private float _prosperityMax;
     private float _prosperityChangeRate;
     private float _prosperityIncreaseMax;
-
     private float _populationChangeRate;
     private float _populationIncreaseMax;
-
     private float _cycleDuration;
     private float _alertTime;
     private float _foodConsumeBase;
@@ -93,7 +88,7 @@ public class PlanetSimulator : MonoBehaviour
         _basePop = data.BasePop;
 
         Population = data.BasePop;
-        Prosperity = data.Property;
+        Prosperity = data.Properity;
         StoredFood = data.BaseFood;
         StoredOre = data.BaseOre;
 
@@ -101,7 +96,6 @@ public class PlanetSimulator : MonoBehaviour
         CycleProgress = 0f;
 
         LoadConstants();
-
         State = CalcPlanetState(Prosperity);
 
         IsRunning = true;
@@ -112,7 +106,6 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // 외부 API: 식량 전달 / 광석 수거
     // =========================================================================
-
     public void DeliverFood(int amount)
     {
         StoredFood += amount;

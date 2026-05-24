@@ -59,5 +59,5 @@ namespace GameData
         public string Desc;
 
         string IGameData.Id => Id;
-    }
+    }  
 }

@@ -33,16 +33,18 @@ public class LobbyUI : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
 
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
             HandleDataInitialized();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
     }
 

@@ -5,7 +5,7 @@ using GameData;
 // 우주선 업그레이드 트리
 // 각 업그레이드 행은 링크드리스트로 노드를 관리
 // Head 노드에서 Next를 따라 순회하며 연결선 생성
-public class ShipUpgrade : MonoBehaviour
+public class ShipUpgrade : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -27,10 +27,10 @@ public class ShipUpgrade : MonoBehaviour
     // =========================================================================
     private static readonly string[] ShipUpgradeIds =
     {
-        "UP_Ship_Cargo",
-        "UP_Ship_Speed",
-        "UP_Ship_Accel",
-        "UP_Ship_MaxFuel"
+        Upgrade.StatCargo,
+        Upgrade.StatSpeed,
+        Upgrade.StatAccel,
+        Upgrade.StatMaxFuel
     };
 
     // =========================================================================
@@ -43,16 +43,15 @@ public class ShipUpgrade : MonoBehaviour
     // =========================================================================
     // 외부 API
     // =========================================================================
-    public void Open()
+    public override void Open()
     {
         SpawnTree();
-        gameObject.SetActive(true);
+        base.Open();
     }
 
-    public void Close()
+    protected override void OnBeforeClose()
     {
         ClearTree();
-        gameObject.SetActive(false);
     }
 
     // =========================================================================

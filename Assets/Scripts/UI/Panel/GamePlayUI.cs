@@ -55,7 +55,7 @@ public class GamePlayUI : UIBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
+    protected override void RegisterEvents()
     {
         GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
@@ -65,7 +65,7 @@ public class GamePlayUI : UIBase
         GameEventBus.Subscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
     }
 
-    private void OnDisable()
+    protected override void UnregisterEvents()
     {
         GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
@@ -144,7 +144,7 @@ public class GamePlayUI : UIBase
         if (next == GameState.GamePlay) return;
 
         _planetMap.Clear();
-        _planetInfo?.Hide();
+        _planetInfo?.Close();
         _hoveredPlanet = null;
         _warningPlanetCount = 0;
 
@@ -175,7 +175,7 @@ public class GamePlayUI : UIBase
     {
         if (_hoveredPlanet != null && _hoveredPlanet.InstanceId == instanceId)
         {
-            _planetInfo?.Hide();
+            _planetInfo?.Close();
             _hoveredPlanet = null;
         }
 
@@ -189,7 +189,7 @@ public class GamePlayUI : UIBase
     {
         if (!isHover)
         {
-            _planetInfo?.Hide();
+            _planetInfo?.Close();
             _hoveredPlanet = null;
             return;
         }
@@ -198,7 +198,8 @@ public class GamePlayUI : UIBase
         if (planet == null) return;
 
         _hoveredPlanet = planet;
-        _planetInfo?.Show(_hoveredPlanet);
+        _planetInfo?.Open();
+        _planetInfo?.Setup(_hoveredPlanet);
     }
 
     private void HandlePlanetGameOverWarning(string instanceId, bool isWarning)
@@ -227,24 +228,19 @@ public class GamePlayUI : UIBase
             _cargoPanel.SetActive(isOpen);
     }
 
+    // =========================================================================
+    // PlanetInfo 스폰
+    // =========================================================================
     private void SpawnPlanetInfo()
     {
-        if (_planetInfoPrefab == null)
-        {
-            Debug.LogWarning("[GamePlayUI] PlanetInfoPrefab이 연결되지 않았습니다.");
-            return;
-        }
+        if (_planetInfoPrefab == null) return;
 
         GameObject instance = Instantiate(_planetInfoPrefab, transform);
         _planetInfo = instance.GetComponent<PlanetInfo>();
 
-        if (_planetInfo == null)
-        {
-            Debug.LogError("[GamePlayUI] PlanetInfoPopup 컴포넌트를 찾을 수 없습니다.");
-            return;
-        }
+        if (_planetInfo == null) return;
 
-        _planetInfo.Hide();
+        instance.SetActive(false);
     }
 
     private PlanetController FindPlanetById(string instanceId)
@@ -256,7 +252,6 @@ public class GamePlayUI : UIBase
             return planet;
         }
 
-        Debug.LogWarning($"[GamePlayUI] 딕셔너리에서 행성을 찾지 못했습니다: {instanceId}");
         return null;
     }
 

@@ -109,14 +109,28 @@ public class UIManager : MonoBehaviour
     {
         if (isActive)
         {
-            if (station == null) return;
+            if (station == null)
+            {
+                Debug.LogWarning("[UIManager] station이 null입니다.");
+                return;
+            }
 
             var zoneType = station.CurrentZone;
             if (zoneType != StationZoneType.Left && zoneType != StationZoneType.Right) return;
 
-            OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+            bool exists = _createdUIDic.ContainsKey(UIId.Popup.StationUpgrade);
+
             StationUpgrade upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-            upgradeUI?.Open(zoneType.Value, station);
+            if (upgradeUI == null)
+            {
+                SpawnUI(UIId.Popup.StationUpgrade, hidden: false);
+                upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+
+                if (upgradeUI == null) return;
+            }
+
+            upgradeUI.Open();
+            upgradeUI.Setup(new StationUpgradeData(zoneType.Value, station));
         }
         else
         {
@@ -142,12 +156,21 @@ public class UIManager : MonoBehaviour
     {
         if (_createdUIDic.TryGetValue(uiId, out GameObject existing))
         {
-            existing.SetActive(true);
+            UIBase ui = existing.GetComponent<UIBase>();
+
+            if (ui != null) ui.Open();
+            else existing.SetActive(true);
+
             _openedUISet.Add(uiId);
             return;
         }
 
         SpawnUI(uiId);
+        if (_createdUIDic.TryGetValue(uiId, out GameObject newInstance))
+        {
+            UIBase newUi = newInstance.GetComponent<UIBase>();
+            if (newUi != null) newUi.Open();
+        }
     }
 
     public void CloseUI(string uiId)
@@ -160,7 +183,10 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        panel.SetActive(false);
+        UIBase ui = panel.GetComponent<UIBase>();
+        if (ui != null) ui.Close();
+        else panel.SetActive(false);
+
         _openedUISet.Remove(uiId);
     }
 

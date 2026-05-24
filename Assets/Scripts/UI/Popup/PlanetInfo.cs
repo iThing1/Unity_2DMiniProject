@@ -19,11 +19,45 @@ public class PlanetInfo : UIBase
     private float _lastOre = -1f;
     private float _lastPop = -1f;
 
+    public override void Setup(object data = null)
+    {
+        _target = data as PlanetController;
+        if (_target == null) return;
+
+        RefreshAllUI();
+    }
+
+    protected override void OnBeforeClose()
+    {
+        _target = null;
+    }
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
     private void Update()
     {
         if (_target == null) return;
 
-        // 식량
+        RefreshAllUI();
+    }
+
+    // =========================================================================
+    // 내부 갱신
+    // =========================================================================
+    private void RefreshStatic()
+    {
+        if (_target == null) return;
+
+        if (_txtName != null)
+            _txtName.text = _target.PlanetName;
+
+        string[] parts = _target.PlanetSprite.Split('/');
+        ResourceManager.Instance.LoadSpriteFromSheet(parts[0], parts[1], OnSpriteLoaded);
+    }
+
+    private void RefreshAllUI()
+    {
         if (!Mathf.Approximately(_target.StoredFood, _lastFood))
         {
             _lastFood = _target.StoredFood;
@@ -46,46 +80,12 @@ public class PlanetInfo : UIBase
             if (_txtPop != null)
                 _txtPop.text = _lastPop.ToAbbreviatedString(2);
         }
-    }
-
-    public void Show(PlanetController target)
-    {
-        _target = target;
-        RefreshCache();
         RefreshStatic();
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        _target = null;
-        gameObject.SetActive(false);
-    }
-
-    // =========================================================================
-    // 내부 갱신
-    // =========================================================================
-    private void RefreshStatic()
-    {
-        if (_target == null) return;
-
-        if (_txtName != null)
-            _txtName.text = _target.PlanetName;
-
-        string[] parts = _target.PlanetSprite.Split('/');
-        ResourceManager.Instance.LoadSpriteFromSheet(parts[0], parts[1], OnSpriteLoaded);
     }
 
     private void OnSpriteLoaded(Sprite sprite)
     {
         if (_imgPlanet != null)
             _imgPlanet.sprite = sprite;
-    }
-
-    private void RefreshCache()
-    {
-        _lastFood = -1f;
-        _lastOre = -1f;
-        _lastPop = -1f;
     }
 }

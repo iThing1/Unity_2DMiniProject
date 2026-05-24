@@ -2,9 +2,19 @@
 using UnityEngine;
 using GameData;
 
+public readonly struct StationUpgradeData
+{
+    public readonly StationZoneType ZoneType;
+    public readonly StationController Station;
+
+    public StationUpgradeData(StationZoneType zoneType, StationController station)
+    {
+        ZoneType = zoneType;
+        Station = station;
+    }
+}
+
 // 정거장 업그레이드 팝업
-// Left Zone: 광석(제련) 관련 업그레이드
-// Right Zone: 식량(농장) 관련 업그레이드
 public class StationUpgrade : UIBase
 {
     // =========================================================================
@@ -18,8 +28,8 @@ public class StationUpgrade : UIBase
     // =========================================================================
     // 업그레이드 ID 목록
     // =========================================================================
-    private static readonly string[] FarmUpgradeIds = { "UP_Stat_Farm" };
-    private static readonly string[] RefineUpgradeIds = { "UP_Stat_Refine" };
+    private static readonly string[] FarmUpgradeIds = { Upgrade.StatFarm };
+    private static readonly string[] RefineUpgradeIds = { Upgrade.StatRefine };
 
     // =========================================================================
     // 내부 상태
@@ -27,15 +37,17 @@ public class StationUpgrade : UIBase
     private readonly List<UpgradeItem> _spawnedItems = new List<UpgradeItem>();
 
     // =========================================================================
-    // 외부 API
+    // 데이터 주입
     // =========================================================================
-    public void Open(StationZoneType zoneType, StationController station)
+    public override void Setup(object data = null)
     {
-        string[] upgradeIds = zoneType == StationZoneType.Right
+        if (data is not StationUpgradeData upgradeData) return;
+
+        string[] upgradeIds = upgradeData.ZoneType == StationZoneType.Right
             ? FarmUpgradeIds
             : RefineUpgradeIds;
 
-        SpawnItems(upgradeIds, station);
+        SpawnItems(upgradeIds, upgradeData.Station);
     }
 
     protected override void OnBeforeClose()
