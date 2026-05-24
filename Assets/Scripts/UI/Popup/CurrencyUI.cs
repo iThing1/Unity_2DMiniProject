@@ -16,8 +16,8 @@ public class CurrencyUI : MonoBehaviour
     // =========================================================================
     private void OnEnable()
     {
-        GameEventBus.Subscribe<float>(GameEventType.GoldChanged, HandleGoldChanged);
-        GameEventBus.Subscribe<float>(GameEventType.IngotChanged, HandleIngotChanged);
+        GameEventBus.Subscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Subscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
 
         // 활성화 시 현재 값으로 즉시 갱신
         if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
@@ -30,19 +30,19 @@ public class CurrencyUI : MonoBehaviour
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe<float>(GameEventType.GoldChanged, HandleGoldChanged);
-        GameEventBus.Unsubscribe<float>(GameEventType.IngotChanged, HandleIngotChanged);
+        GameEventBus.Unsubscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Unsubscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
     }
 
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleGoldChanged(float gold)
+    private void HandleGoldChanged(int gold)
     {
         RefreshGold(gold);
     }
 
-    private void HandleIngotChanged(float ingot)
+    private void HandleIngotChanged(int ingot)
     {
         RefreshIngot(ingot);
     }
@@ -50,15 +50,15 @@ public class CurrencyUI : MonoBehaviour
     // =========================================================================
     // UI 갱신
     // =========================================================================
-    private void RefreshGold(float gold)
+    private void RefreshGold(int gold)
     {
         if (_txtGold == null) return;
-        _txtGold.text = Mathf.FloorToInt(gold).ToString("N0");
+        _txtGold.text = gold.ToString("N0");
     }
 
-    private void RefreshIngot(float ingot)
+    private void RefreshIngot(int ingot)
     {
         if (_txtIngot == null) return;
-        _txtIngot.text = Mathf.FloorToInt(ingot).ToString("N0");
+        _txtIngot.text = ingot.ToString("N0");
     }
 }
