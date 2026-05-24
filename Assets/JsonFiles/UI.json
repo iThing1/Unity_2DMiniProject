@@ -68,5 +68,12 @@
     "Type": "VeryFront",
     "BindState": "Loading",
     "Auto": true
+  },
+  {
+    "Id": "UI_Debug_01",
+    "Name": "DebugUI",
+    "Type": "Popup",
+    "BindState": "Lobby",
+    "Auto": true
   }
 ]

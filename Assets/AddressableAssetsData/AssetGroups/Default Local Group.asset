@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c89651ee53767749a2e4b8b727e6137
+    m_Address: DebugUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b80c2921b1b7ccd44b8bc8c8e7674e5f
     m_Address: Upgrade
     m_ReadOnly: 0

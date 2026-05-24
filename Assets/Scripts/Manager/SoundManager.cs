@@ -1,5 +1,6 @@
 ﻿using GameData;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -31,20 +32,6 @@ public class SoundManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Subscribe<string>(GameEventType.SFXPlayRequested, PlaySFX);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Unsubscribe<string>(GameEventType.SFXPlayRequested, PlaySFX);
-    }
-
     private void OnDestroy()
     {
         foreach (var handle in _sfxHandles.Values)
@@ -54,48 +41,16 @@ public class SoundManager : MonoBehaviour
         ReleaseBgmHandle();
     }
 
-    private void HandleDataInitialized()
+    public async Task SetUp()
     {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
-
         RegisterBGMFromData();
         PreloadSFXFromData();
         ApplyVolumeSettings();
-        
+
+        await Task.CompletedTask;
     }
 
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        if (prev == GameState.GamePlay)
-            StopBGM();
-
-        string bindState;
-        switch (next)
-        {
-            case GameState.Lobby: bindState = "Lobby"; break;
-            case GameState.GamePlay: bindState = "GamePlay"; break;
-            default: bindState = null; break;
-        }
-
-        if (bindState == null) return;
-
-        var candidates = new List<string>();
-        foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
-        {
-            if (sound.Type == SoundType.BGM && sound.BindState == bindState)
-                candidates.Add(sound.Id);
-        }
-
-        if (candidates.Count == 0)
-        {
-            Debug.LogWarning($"[SoundManager] '{bindState}'에 바인딩된 BGM 없음");
-            return;
-        }
-
-        PlayBGM(candidates[Random.Range(0, candidates.Count)]);
-    }
-
-    private void RegisterBGMFromData()
+    public void RegisterBGMFromData()
     {
         _bgmAddressMap.Clear();
 
@@ -106,7 +61,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void PreloadSFXFromData()
+    public void PreloadSFXFromData()
     {
         foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
         {
@@ -170,7 +125,7 @@ public class SoundManager : MonoBehaviour
     // SFX
     // =========================================================================
 
-    private void PlaySFX(string address)
+    public void PlaySFX(string address)
     {
         if (_sfxHandles.TryGetValue(address, out var cached))
         {

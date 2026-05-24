@@ -11,6 +11,9 @@ public class PlanetSpawner : MonoBehaviour
     [Header("행성 프리팹")]
     [SerializeField] private string _planetPrefabAddress = "Prefabs/Planet";
 
+    [Header("컨테이너 설정")]
+    [SerializeField] private Transform _planetContainer;
+
     [Header("스폰 거리 설정")]
     [SerializeField] private int _maxSpawnAttempts = 20;
     [SerializeField] private float _spawnPadding = 2f;
@@ -172,6 +175,8 @@ public class PlanetSpawner : MonoBehaviour
 
     private void SpawnPlanet(PlanetData data)
     {
+        if (GameManager.Instance.CurrentState != GameState.GamePlay) return;
+
         if (_planetPrefab == null)
         {
             Debug.LogError("[PlanetSpawner] 행성 프리팹이 연결되지 않았습니다.");
@@ -190,6 +195,7 @@ public class PlanetSpawner : MonoBehaviour
         );
 
         GameObject instance = Instantiate(_planetPrefab, spawnPosition, Quaternion.identity);
+        instance.transform.SetParent(_planetContainer);
 
         PlanetController planet = instance.GetComponent<PlanetController>();
         if (planet == null)
@@ -219,5 +225,13 @@ public class PlanetSpawner : MonoBehaviour
 
         _spawnedPlanets.Clear();
         _spawnCount = 0;
+
+        if (_planetContainer != null)
+        {
+            foreach (Transform child in _planetContainer)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }

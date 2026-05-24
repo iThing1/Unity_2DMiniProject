@@ -48,20 +48,6 @@ public class UIManager : MonoBehaviour
         SpawnCurrencyUI();
     }
 
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
-        GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
-        GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
-    }
-
     // =========================================================================
     // GameManager에서 호출 - UI 프리팹 일괄 로드
     // =========================================================================
@@ -94,80 +80,24 @@ public class UIManager : MonoBehaviour
     }
 
     // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        ProcessUIForState(prev, false);
-        SpawnAutoUI(next);
-        RefreshCurrencyUI(next);
-    }
-
-    private void HandleStationInteractionChanged(bool isActive, StationController station)
-    {
-        if (isActive)
-        {
-            if (station == null)
-            {
-                Debug.LogWarning("[UIManager] station이 null입니다.");
-                return;
-            }
-
-            var zoneType = station.CurrentZone;
-            if (zoneType != StationZoneType.Left && zoneType != StationZoneType.Right) return;
-
-            bool exists = _createdUIDic.ContainsKey(UIId.Popup.StationUpgrade);
-
-            StationUpgrade upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-            if (upgradeUI == null)
-            {
-                SpawnUI(UIId.Popup.StationUpgrade, hidden: false);
-                upgradeUI = GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-
-                if (upgradeUI == null) return;
-            }
-
-            upgradeUI.Open();
-            upgradeUI.Setup(new StationUpgradeData(zoneType.Value, station));
-        }
-        else
-        {
-            CloseUI(UIId.Popup.StationUpgrade);
-        }
-    }
-
-    private void HandleStageFailed(string stageId)
-    {
-        Time.timeScale = 0f;
-        OpenUI<StageFailed>(UIId.Popup.StageFailed);
-    }
-
-    private void HandleStageClear(string stageId)
-    {
-        Time.timeScale = 0f;
-        OpenUI<StageClear>(UIId.Popup.StageClear);
-    }
-    // =========================================================================
     // 외부 API
     // =========================================================================
-    public void OpenUI<T>(string uiId) where T : MonoBehaviour
+    public void OpenUI(string uiId)
     {
-        if (_createdUIDic.TryGetValue(uiId, out GameObject existing))
+        if (!_createdUIDic.ContainsKey(uiId))
         {
-            UIBase ui = existing.GetComponent<UIBase>();
-
-            if (ui != null) ui.Open();
-            else existing.SetActive(true);
-
-            _openedUISet.Add(uiId);
-            return;
+            SpawnUI(uiId);
         }
 
-        SpawnUI(uiId);
-        if (_createdUIDic.TryGetValue(uiId, out GameObject newInstance))
+        if (_createdUIDic.TryGetValue(uiId, out GameObject instance))
         {
-            UIBase newUi = newInstance.GetComponent<UIBase>();
-            if (newUi != null) newUi.Open();
+            UIBase ui = instance.GetComponent<UIBase>();
+            if (ui != null)
+                ui.Open();
+            else
+                instance.SetActive(true);
+
+            _openedUISet.Add(uiId);
         }
     }
 
@@ -188,6 +118,11 @@ public class UIManager : MonoBehaviour
         _openedUISet.Remove(uiId);
     }
 
+    public void OpenUI<T>(string uiId) where T : MonoBehaviour
+    {
+        OpenUI(uiId);
+    }
+
     public T GetUI<T>(string uiId) where T : MonoBehaviour
     {
         if (!_createdUIDic.TryGetValue(uiId, out GameObject panel)) return null;
@@ -202,36 +137,18 @@ public class UIManager : MonoBehaviour
     // =========================================================================
     // 스폰 관련
     // =========================================================================
-    private void SpawnAutoUI(GameState state)
+    private void SpawnUI(string uiId)
     {
-        ProcessUIForState(state, true);
-    }
-
-    private void SpawnUI(string uiId, bool hidden = false)
-    {
-        if (!_prefabMap.TryGetValue(uiId, out GameObject prefab) || prefab == null)
-        {
-            Debug.LogWarning($"[UIManager] 등록되지 않은 UI: {uiId}");
-            return;
-        }
+        if (!_prefabMap.TryGetValue(uiId, out GameObject prefab) || prefab == null) return;
 
         UIData data = GameDataManager.Instance.Get<UIData>(uiId);
-        if (data == null)
-        {
-            Debug.LogError($"[UIManager] UIData를 찾지 못했습니다: {uiId}");
-            return;
-        }
+        if (data == null) return;
 
         Transform root = GetRootTransform(data.Type);
         GameObject instance = Instantiate(prefab, root);
 
-        instance.SetActive(true);
-        if (hidden)
-            instance.SetActive(false);
-
+        instance.SetActive(false);
         _createdUIDic[uiId] = instance;
-        if (!hidden)
-            _openedUISet.Add(uiId);
     }
 
     private void SpawnCurrencyUI()
@@ -246,15 +163,11 @@ public class UIManager : MonoBehaviour
         _currencyUIInstance.SetActive(false);
     }
 
-    private void RefreshCurrencyUI(GameState state)
+    public void ShowCurrencyUI(bool active)
     {
         if (_currencyUIInstance == null) return;
-
-        bool isVisible = state == GameState.Lobby || state == GameState.GamePlay;   
-        _currencyUIInstance.SetActive(isVisible);
-
-        if (isVisible)
-            _currencyUIInstance.transform.SetAsLastSibling();
+        _currencyUIInstance.SetActive(active);
+        if (active) _currencyUIInstance.transform.SetAsLastSibling();
     }
 
     private void SpawnLoadingUI()
@@ -274,9 +187,8 @@ public class UIManager : MonoBehaviour
     // =========================================================================
     // 상태별 UI 처리 공통 메서드
     // =========================================================================
-    private void ProcessUIForState(GameState state, bool activate)
+    public void SetUIByBindState(string bindState, bool activate)
     {
-        string bindState = StateToString(state);
         if (bindState == null) return;
 
         foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
@@ -285,31 +197,12 @@ public class UIManager : MonoBehaviour
 
             if (activate)
             {
-                if (_createdUIDic.TryGetValue(data.Id, out GameObject existing))
-                {
-                    if (data.Auto)
-                    {
-                        existing.SetActive(true);
-                        _openedUISet.Add(data.Id);
-                    }
-                    continue;
-                }
-
-                if (data.Auto)
-                    SpawnUI(data.Id);
-                else
-                    SpawnUI(data.Id, hidden: true);
+                if (data.Auto) OpenUI(data.Id);
             }
             else
-            {
-                if (!_createdUIDic.TryGetValue(data.Id, out GameObject panel)) continue;
-
-                panel.SetActive(false);
-                _openedUISet.Remove(data.Id);
-            }
+                CloseUI(data.Id);
         }
     }
-
     // =========================================================================
     // 유틸
     // =========================================================================
@@ -321,18 +214,6 @@ public class UIManager : MonoBehaviour
             case UIType.Popup: return _popupRoot;
             case UIType.VeryFront: return _veryFrontRoot;
             default: return _mainRoot;
-        }
-    }
-
-    private string StateToString(GameState state)
-    {
-        switch (state)
-        {
-            case GameState.Loading: return "Loading";
-            case GameState.MainMenu: return "MainMenu";
-            case GameState.Lobby: return "Lobby";
-            case GameState.GamePlay: return "GamePlay";
-            default: return null;
         }
     }
 }

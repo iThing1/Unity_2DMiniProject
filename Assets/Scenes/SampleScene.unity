@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSpawner
   _planetPrefabAddress: Prefabs/Planet
+  _planetContainer: {fileID: 870530832}
   _maxSpawnAttempts: 10
   _spawnPadding: 2
   _stationExclusionRange: 5
@@ -747,7 +748,7 @@ GameObject:
   m_Component:
   - component: {fileID: 870530832}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: PlanetContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

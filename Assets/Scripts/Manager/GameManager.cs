@@ -1,5 +1,6 @@
 ﻿using GameData;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         await GameDataManager.Instance.RegisterAllTables();
         await UIManager.Instance.LoadUIPrefabsAsync();
+        await SoundManager.Instance.SetUp();
 
         GameEventBus.Publish(GameEventType.DataInitialized);
         ChangeState(GameState.MainMenu);
@@ -62,11 +64,20 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == newState) return;
 
+        string prevBindState = StateToString(CurrentState);
+        UIManager.Instance.SetUIByBindState(prevBindState, false);
+
         GameState prev = CurrentState;
         CurrentState = newState;
 
+        string nextBindState = StateToString(CurrentState);
+        UIManager.Instance.SetUIByBindState(nextBindState, true);
+
+        bool showCurrency = (newState == GameState.Lobby || newState == GameState.GamePlay);
+        UIManager.Instance.ShowCurrencyUI(showCurrency);
+
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
-        Debug.Log($"[GameManager] 상태 전환: {prev} → {newState}");
+        UpdateBGMForState(prev, newState);
     }
 
     public void StartGamePlay() => ChangeState(GameState.GamePlay);
@@ -83,11 +94,17 @@ public class GameManager : MonoBehaviour
 
         if (!Context.UnlockedStageIds.Contains(stageId))
             Context.UnlockedStageIds.Add(stageId);
+
+        Time.timeScale = 0f;
+        UIManager.Instance.OpenUI<StageClear>(UIId.Popup.StageClear);
     }
 
     private void HandleStageFailed(string stageId)
     {
         Context.StageClearStatus[stageId] = false;
+
+        Time.timeScale = 0f;
+        UIManager.Instance.OpenUI<StageFailed>(UIId.Popup.StageFailed);
     }
 
     private void HandleContinueRequested()
@@ -218,10 +235,61 @@ public class GameManager : MonoBehaviour
         return desc?.Description ?? string.Empty;
     }
 
+    private void UpdateBGMForState(GameState prev, GameState next)
+    {
+        if (prev == GameState.GamePlay)
+            SoundManager.Instance.StopBGM();
+
+        string bindState;
+        switch (next)
+        {
+            case GameState.Lobby:
+                bindState = "Lobby";
+                break;
+            case GameState.GamePlay:
+                bindState = "GamePlay";
+                break;
+            default:
+                bindState = null;
+                break;
+        }
+
+        if (bindState == null) return;
+
+        var candidates = new System.Collections.Generic.List<string>();
+        foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
+        {
+            if (sound.Type == SoundType.BGM && sound.BindState == bindState)
+                candidates.Add(sound.Id);
+        }
+
+        if (candidates.Count > 0)
+        {
+            string selectedBgm = candidates[Random.Range(0, candidates.Count)];
+            SoundManager.Instance.PlayBGM(selectedBgm);
+        }
+        else
+        {
+            Debug.LogWarning($"[GameManager] '{bindState}'에 바인딩된 BGM 없음");
+        }
+    }
+
     public void RequestSFX(string soundId)
     {
         var data = GameDataManager.Instance.Get<SoundData>(soundId);
         if (data != null)
             GameEventBus.Publish(GameEventType.SFXPlayRequested, data.SoundPath);
+    }
+
+    private string StateToString(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Loading: return "Loading";
+            case GameState.MainMenu: return "MainMenu";
+            case GameState.Lobby: return "Lobby";
+            case GameState.GamePlay: return "GamePlay";
+            default: return null;
+        }
     }
 }

@@ -44,25 +44,6 @@ public class DebugUI : MonoBehaviour
             _btnAddIngot.onClick.RemoveListener(OnClickAddIngot);
     }
 
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        gameObject.SetActive(next == GameState.GamePlay);
-    }
-
     // =========================================================================
     // 버튼 핸들러
     // =========================================================================
