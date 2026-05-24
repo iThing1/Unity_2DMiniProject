@@ -114,7 +114,7 @@ public class StationController : InteractableBase
         if (_activeZone.HasValue && _activeZone.Value != zoneType)
         {
             StopInteractCoroutine();
-            CloseUpgradeUI();
+            OnDeactivate();
         }
 
         _activeZone = zoneType;
@@ -177,9 +177,6 @@ public class StationController : InteractableBase
     protected override void OnDeactivate()
     {
         StopInteractCoroutine();
-
-        GameEventBus.Publish(GameEventType.StationInteractionChanged, false, this);
-
         _shipInventory?.StopTransfer();
     }
 
@@ -259,17 +256,18 @@ public class StationController : InteractableBase
     // =========================================================================
     private void OpenUpgradeUI(StationZoneType zoneType)
     {
+        UIManager.Instance.OpenUI<StationUpgrade>(UIId.Popup.StationUpgrade);
         StationUpgrade upgradeUI = UIManager.Instance.GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
-        if (upgradeUI == null) return;
-        upgradeUI.Open();
-        upgradeUI.Setup(new StationUpgradeData(zoneType, this));
+        if (upgradeUI != null)
+        {
+            upgradeUI.Setup(new StationUpgradeData(zoneType, this));
+        }
     }
 
     private void CloseUpgradeUI()
     {
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
-
 
     // =========================================================================
     // 이벤트 핸들러

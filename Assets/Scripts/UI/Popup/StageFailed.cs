@@ -34,7 +34,7 @@ public class StageFailed : UIBase
     private void OnClickGoLobby()
     {
         Time.timeScale = 1f;
-        gameObject.SetActive(false);
+        Close();
         GameManager.Instance.ChangeState(GameState.Lobby);
     }
 }

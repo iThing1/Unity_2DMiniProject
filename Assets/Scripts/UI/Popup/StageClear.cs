@@ -34,7 +34,7 @@ public class StageClear : UIBase
     private void OnClickGoLobby()
     {
         Time.timeScale = 1f;
-        gameObject.SetActive(false);
+        Close();
         SaveLoadController.SaveCurrentGame();
         GameManager.Instance.ChangeState(GameState.Lobby);
     }

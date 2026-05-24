@@ -51,7 +51,6 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Subscribe<bool, StationController>(GameEventType.StationInteractionChanged, HandleStationInteractionChanged);
         GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
         GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
     }
@@ -59,7 +58,6 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-        GameEventBus.Unsubscribe<bool, StationController>(GameEventType.StationInteractionChanged, HandleStationInteractionChanged);
         GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
         GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
     }

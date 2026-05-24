@@ -117,7 +117,7 @@ public class PlanetController : InteractableBase
     }
 
     // =========================================================================
-    // 상호작용 코루틴: 식량 하역 + 광석 적재 동시 진행
+    // 상호작용 코루틴: 식량 하역 + 광석 적재
     // =========================================================================
     private IEnumerator InteractRoutine()
     {
@@ -125,18 +125,15 @@ public class PlanetController : InteractableBase
         if (foodCount > 0)
         {
             _shipInventory.StartUnloading(ShipInventory.CargoType.Food, OnFoodUnloadEach, null);
+            yield return new WaitUntil(IsLoadingDone);
         }
 
-        int oreToLoad = Mathf.Min(
-            Mathf.FloorToInt(_simulator.StoredOre),
-            _shipInventory.Capacity - _shipInventory.Count
-        );
+        int oreToLoad = Mathf.Min(Mathf.FloorToInt(_simulator.StoredOre), _shipInventory.Capacity - _shipInventory.Count);
         if (oreToLoad > 0)
         {
             _shipInventory.StartLoading(ShipInventory.CargoType.Ore, oreToLoad, OnOreLoadEach, null);
+            yield return new WaitUntil(IsLoadingDone);
         }
-
-        yield return new WaitUntil(IsLoadingDone);
 
         _interactCoroutine = null;
         CompleteInteraction();
