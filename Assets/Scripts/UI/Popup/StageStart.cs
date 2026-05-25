@@ -29,16 +29,6 @@ public class StageStart : UIBase
             _btnStart.onClick.RemoveListener(OnClickStart);
     }
 
-    protected override void RegisterEvents()
-    {
-        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-    }
-
-    protected override void UnregisterEvents()
-    {
-        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-    }
-
     // =========================================================================
     // 데이터 주입
     // =========================================================================
@@ -46,16 +36,6 @@ public class StageStart : UIBase
     {
         if (data is string stageId)
             RefreshUI(stageId);
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleStageSelected(string stageId)
-    {
-        Setup(stageId);
-        Time.timeScale = 0f;
-        Open();
     }
 
     // =========================================================================

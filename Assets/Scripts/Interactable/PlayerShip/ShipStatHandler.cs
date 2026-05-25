@@ -40,16 +40,19 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+    private void Start()
+    {
+        LoadConstantStats();
+        ApplyUpgradeStats(GameManager.Instance.SetShipStats());
+    }
 
     private void OnEnable()
     {
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Subscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
     }
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Unsubscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
     }
 
@@ -82,12 +85,6 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-
-    private void HandleDataInitialized()
-    {
-        LoadConstantStats();
-        ApplyUpgradeStats(GameManager.Instance.SetShipStats());
-    }
 
     private void HandleShipStatsChanged(ShipStats stats)
     {

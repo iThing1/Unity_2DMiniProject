@@ -132,19 +132,17 @@ public class SoundManager : MonoBehaviour
             if (cached.IsDone)
                 PlaySFXClip(cached.Result);
             else
-                cached.Completed += handle => PlaySFXClip(handle.Result);
+            {
+                SfxLoadContext ctx = new SfxLoadContext(address, this);
+                cached.Completed += ctx.OnSfxCachedLoaded;
+            }
             return;
         }
 
         var newHandle = Addressables.LoadAssetAsync<AudioClip>(address);
         _sfxHandles[address] = newHandle;
-        newHandle.Completed += handle =>
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-                PlaySFXClip(handle.Result);
-            else
-                Debug.LogWarning($"[SoundManager] SFX 로드 실패: {address}");
-        };
+        SfxLoadContext newCtx = new SfxLoadContext(address, this);
+        newHandle.Completed += newCtx.OnSfxNewLoaded;
     }
 
     public void ReleaseSFX(string address)
@@ -165,6 +163,30 @@ public class SoundManager : MonoBehaviour
 
     public void SetSFXVolume(float volume) => _sfxSource.volume = Mathf.Clamp01(volume);
 
+    private class SfxLoadContext
+    {
+        private readonly string _address;
+        private readonly SoundManager _owner;
+
+        public SfxLoadContext(string address, SoundManager owner)
+        {
+            _address = address;
+            _owner = owner;
+        }
+
+        public void OnSfxCachedLoaded(AsyncOperationHandle<AudioClip> handle)
+        {
+            _owner.PlaySFXClip(handle.Result);
+        }
+
+        public void OnSfxNewLoaded(AsyncOperationHandle<AudioClip> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+                _owner.PlaySFXClip(handle.Result);
+            else
+                Debug.LogWarning($"[SoundManager] SFX 로드 실패: {_address}");
+        }
+    }
     // =========================================================================
     // 내부 구현
     // =========================================================================

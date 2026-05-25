@@ -33,10 +33,6 @@ public class UpgradeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // =========================================================================
     private void Awake()
     {
-        _canvasGroup = GetComponent<CanvasGroup>();
-        if (_canvasGroup == null)
-            _canvasGroup = gameObject.AddComponent<CanvasGroup>();
-
         if (_btnUpgrade != null)
             _btnUpgrade.onClick.AddListener(OnClickUpgrade);
     }
@@ -117,6 +113,14 @@ public class UpgradeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void Refresh()
     {
         if (string.IsNullOrEmpty(_upgradeId)) return;
+
+        if (_canvasGroup == null)
+        {
+            _canvasGroup = GetComponent<CanvasGroup>();
+            if (_canvasGroup == null)
+                _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
+
 
         UpgradeData data = GameDataManager.Instance.Get<UpgradeData>(_upgradeId);
         if (data == null) return;

@@ -1,11 +1,15 @@
 ﻿using GameData;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [Header("Spawner")]
+    [SerializeField] private StationSpawner _stationSpawner;
+    [SerializeField] private ShipSpawner _shipSpawner;
+    [SerializeField] private PlanetSpawner _planetSpawner;
 
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
@@ -22,7 +26,6 @@ public class GameManager : MonoBehaviour
         GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
         GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-        GameEventBus.Subscribe(GameEventType.ContinueRequested, HandleContinueRequested);
     }
 
     private void OnDisable()
@@ -30,7 +33,6 @@ public class GameManager : MonoBehaviour
         GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
         GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-        GameEventBus.Unsubscribe(GameEventType.ContinueRequested, HandleContinueRequested);
     }
 
     private async void Start()
@@ -76,6 +78,18 @@ public class GameManager : MonoBehaviour
         bool showCurrency = (newState == GameState.Lobby || newState == GameState.GamePlay);
         UIManager.Instance.ShowCurrencyUI(showCurrency);
 
+        if (prev == GameState.GamePlay)
+        {
+            if (_stationSpawner != null) _stationSpawner.OnExitGamePlay();
+            if (_shipSpawner != null) _shipSpawner.OnExitGamePlay();
+            if (_planetSpawner != null) _planetSpawner.OnExitGamePlay();
+        }
+
+        if (newState == GameState.GamePlay)
+        {
+            if (_stationSpawner != null) _stationSpawner.OnEnterGamePlay();
+        }
+
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
         UpdateBGMForState(prev, newState);
     }
@@ -105,11 +119,6 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         UIManager.Instance.OpenUI(UIId.Popup.StageFailed);
-    }
-
-    private void HandleContinueRequested()
-    {
-        SaveLoadController.LoadCurrentGame();
     }
 
     public void LoadContext(GameContext context)

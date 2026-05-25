@@ -14,39 +14,20 @@ public class StationSpawner : MonoBehaviour
     // =========================================================================
     private StationController _spawnedStation;
 
-    // =========================================================================
-    // Unity 생명주기
-    // =========================================================================
-    private void OnEnable()
+    public void OnEnterGamePlay()
     {
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+        if (_spawnedStation == null)
+            SpawnStation();
+        else
+            ActivateStation();
     }
 
-    private void OnDisable()
+    public void OnExitGamePlay()
     {
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
+        if (_spawnedStation == null) return;
 
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        if (next == GameState.GamePlay)
-        {
-            if (_spawnedStation == null)
-                SpawnStation();
-            else
-                ActivateStation();
-
-            return;
-        }
-
-        if (_spawnedStation != null)
-        {
-            _spawnedStation.StopSimulation();
-            _spawnedStation.gameObject.SetActive(false);
-        } 
+        _spawnedStation.StopSimulation();
+        _spawnedStation.gameObject.SetActive(false);
     }
 
     // =========================================================================

@@ -25,9 +25,6 @@ public class GamePlayUI : UIBase
     [SerializeField] private Button _btnCargo;
     [SerializeField] private GameObject _cargoPanel;
 
-    [Header("행성 정보 팝업")]
-    [SerializeField] private GameObject _planetInfoPrefab;
-
     [Header("게임오버 경고")] // TODO: 나중에 9-Slice로 바꿈
     [SerializeField] private GameObject _alertBorder;
     [SerializeField] private float _alertBlinkInterval = 0.4f;
@@ -36,7 +33,6 @@ public class GamePlayUI : UIBase
     // =========================================================================
     private ShipController _controller;
     private ShipInventory _cargo;
-    private PlanetInfo _planetInfo;
     private PlanetController _hoveredPlanet;
     private readonly Dictionary<string, PlanetController> _planetMap = new Dictionary<string, PlanetController>();
 
@@ -57,7 +53,6 @@ public class GamePlayUI : UIBase
     // =========================================================================
     protected override void RegisterEvents()
     {
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
         GameEventBus.Subscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
         GameEventBus.Subscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
@@ -67,7 +62,6 @@ public class GamePlayUI : UIBase
 
     protected override void UnregisterEvents()
     {
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
         GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
         GameEventBus.Unsubscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
@@ -92,7 +86,6 @@ public class GamePlayUI : UIBase
             _btnCargo.onClick.AddListener(OnClickCargo);
 
         SetCargoPanel(false);
-        SpawnPlanetInfo();
 
         if (_alertBorder != null)
             _alertBorder.SetActive(false);
@@ -139,18 +132,6 @@ public class GamePlayUI : UIBase
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        if (next == GameState.GamePlay) return;
-
-        _planetMap.Clear();
-        _planetInfo?.Close();
-        _hoveredPlanet = null;
-        _warningPlanetCount = 0;
-
-        StopAlert();
-    }
-
     private void HandleShipSpawned(Transform shipTransform)
     {
         _controller = shipTransform.GetComponent<ShipController>();
@@ -175,7 +156,7 @@ public class GamePlayUI : UIBase
     {
         if (_hoveredPlanet != null && _hoveredPlanet.InstanceId == instanceId)
         {
-            _planetInfo?.Close();
+            UIManager.Instance.CloseUI(UIId.Popup.PlanetInfo);
             _hoveredPlanet = null;
         }
 
@@ -189,7 +170,7 @@ public class GamePlayUI : UIBase
     {
         if (!isHover)
         {
-            _planetInfo?.Close();
+            UIManager.Instance.CloseUI(UIId.Popup.PlanetInfo);
             _hoveredPlanet = null;
             return;
         }
@@ -198,8 +179,13 @@ public class GamePlayUI : UIBase
         if (planet == null) return;
 
         _hoveredPlanet = planet;
-        _planetInfo?.Open();
-        _planetInfo?.Setup(_hoveredPlanet);
+
+        PlanetInfo planetInfo = UIManager.Instance.PrepareUI<PlanetInfo>(UIId.Popup.PlanetInfo);
+        if (planetInfo != null)
+        {
+            planetInfo.Setup(_hoveredPlanet);
+            UIManager.Instance.OpenUI(UIId.Popup.PlanetInfo);
+        }
     }
 
     private void HandlePlanetGameOverWarning(string instanceId, bool isWarning)
@@ -226,21 +212,6 @@ public class GamePlayUI : UIBase
     {
         if (_cargoPanel != null)
             _cargoPanel.SetActive(isOpen);
-    }
-
-    // =========================================================================
-    // PlanetInfo 스폰
-    // =========================================================================
-    private void SpawnPlanetInfo()
-    {
-        if (_planetInfoPrefab == null) return;
-
-        GameObject instance = Instantiate(_planetInfoPrefab, transform);
-        _planetInfo = instance.GetComponent<PlanetInfo>();
-
-        if (_planetInfo == null) return;
-
-        instance.SetActive(false);
     }
 
     private PlanetController FindPlanetById(string instanceId)
@@ -318,5 +289,14 @@ public class GamePlayUI : UIBase
 
         if (_txtOre != null)
             _txtOre.text = ore.ToString();
+    }
+
+    protected override void OnBeforeClose()
+    {
+        _planetMap.Clear();
+        UIManager.Instance.CloseUI(UIId.Popup.PlanetInfo);
+        _hoveredPlanet = null;
+        _warningPlanetCount = 0;
+        StopAlert();
     }
 }

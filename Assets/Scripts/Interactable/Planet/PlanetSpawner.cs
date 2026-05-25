@@ -47,7 +47,6 @@ public class PlanetSpawner : MonoBehaviour
     {
         GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Subscribe(GameEventType.StageStartRequested, HandleStageStartRequested);
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Subscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
         GameEventBus.Subscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
     }
@@ -56,7 +55,6 @@ public class PlanetSpawner : MonoBehaviour
     {
         GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Unsubscribe(GameEventType.StageStartRequested, HandleStageStartRequested);
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Unsubscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
         GameEventBus.Unsubscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
     }
@@ -114,13 +112,10 @@ public class PlanetSpawner : MonoBehaviour
         StartSpawn();
     }
 
-    private void HandleGameStateChanged(GameState prev, GameState next)
+    public void OnExitGamePlay()
     {
-        if (next != GameState.GamePlay)
-        {
-            StopSpawn();
-            ClearPlanets();
-        }
+        StopSpawn();
+        ClearPlanets();
     }
 
     // =========================================================================

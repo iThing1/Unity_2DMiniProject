@@ -42,23 +42,21 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+
+    private void Start()
+    {
+        InitializeData();
+    }
+
     private void OnEnable()
     {
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Subscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
         GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
-
-        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-        {
-            _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-            ApplyCapacity(GameManager.Instance.SetShipStats().Capacity);
-        }
     }
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Unsubscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);
         GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
         GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
@@ -67,7 +65,7 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 초기화
     // =========================================================================
-    public void InitializeStats()
+    public void InitializeData()
     {
         _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
         ApplyCapacity(GameManager.Instance.SetShipStats().Capacity);
@@ -214,12 +212,6 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleDataInitialized()
-    {
-        InitializeStats();
-        Debug.Log($"[CargoInventory] 초기화 완료. 용량: {Capacity}, 인터벌: {_transferInterval}s");
-    }
-
     private void HandleShipStatsChanged(ShipStats stats)
     {
         ApplyCapacity(stats.Capacity);
@@ -237,7 +229,7 @@ public class ShipInventory : MonoBehaviour
 
     private void HandleShipSpawned(Transform shipTransform)
     {
-        InitializeStats();
+        InitializeData();
         Debug.Log($"[ShipInventory] 스폰 후 초기화 완료. 용량: {Capacity}");
     }
 }

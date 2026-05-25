@@ -37,19 +37,19 @@ public class CameraController : MonoBehaviour
         _camera = GetComponent<Camera>();
     }
 
+    private void Start()
+    {
+        InitializeData();
+    }
+
     private void OnEnable()
     {
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-
-        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-            HandleDataInitialized();
     }
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleDataInitialized()
+    private void InitializeData()
     {
         _defaultZ = -GameDataManager.Instance.Settings.CameraHeightDefault;
         _targetZ = _defaultZ;

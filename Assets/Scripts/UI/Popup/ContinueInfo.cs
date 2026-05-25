@@ -47,6 +47,7 @@ public class ContinueInfo : UIBase
     private void OnClickStart()
     {
         Close();
+        SaveLoadController.LoadCurrentGame();
         GameEventBus.Publish(GameEventType.ContinueRequested);
         GameManager.Instance.ChangeState(GameState.Lobby);
     }

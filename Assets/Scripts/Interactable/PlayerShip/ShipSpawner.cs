@@ -23,7 +23,6 @@ public class ShipSpawner : MonoBehaviour
         GameEventBus.Subscribe(GameEventType.NewGameRequested, HandleNewGameRequested);
         GameEventBus.Subscribe(GameEventType.ContinueRequested, HandleContinueRequested);
         GameEventBus.Subscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     private void OnDisable()
@@ -31,7 +30,6 @@ public class ShipSpawner : MonoBehaviour
         GameEventBus.Unsubscribe(GameEventType.NewGameRequested, HandleNewGameRequested);
         GameEventBus.Unsubscribe(GameEventType.ContinueRequested, HandleContinueRequested);
         GameEventBus.Unsubscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
     }
 
     // =========================================================================
@@ -51,14 +49,11 @@ public class ShipSpawner : MonoBehaviour
         ActivateShip(stationTransform);
     }
 
-    private void HandleGameStateChanged(GameState prev, GameState next)
+    public void OnExitGamePlay()
     {
-        if (next == GameState.GamePlay) return;
         if (_spawnedShip == null) return;
-
         _spawnedShip.SetActive(false);
     }
-
     // =========================================================================
     // 스폰 로직
     // =========================================================================

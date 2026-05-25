@@ -36,21 +36,19 @@ public class LobbyUI : UIBase
     protected override void OnEnable()
     {
         base.OnEnable();
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
-
-        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-            HandleDataInitialized();
     }
 
     protected override void OnDisable()
     {
         base.OnDisable();
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
     }
 
     protected override void Start()
     {
         base.Start();
+        LoadStageList();
+        RefreshUI();
+
         if (_btnStart != null)
             _btnStart.onClick.AddListener(OnClickStart);
         if (_btnLeft != null)
@@ -74,15 +72,6 @@ public class LobbyUI : UIBase
     }
 
     // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleDataInitialized()
-    {
-        LoadStageList();
-        RefreshUI();
-    }
-
-    // =========================================================================
     // 버튼 핸들러
     // =========================================================================
     private void OnClickStart()
@@ -91,10 +80,16 @@ public class LobbyUI : UIBase
 
         StageData current = _stageList[_currentIndex];
 
-        GameManager.Instance.ChangeState(GameState.GamePlay);
-        UIManager.Instance.OpenUI(UIId.Popup.StageStart);
-
         GameEventBus.Publish(GameEventType.StageSelected, current.Id);
+        GameManager.Instance.ChangeState(GameState.GamePlay);
+
+        StageStart stageStart = UIManager.Instance.PrepareUI<StageStart>(UIId.Popup.StageStart);
+        if (stageStart != null)
+        {
+            stageStart.Setup(current.Id);
+            UIManager.Instance.OpenUI(UIId.Popup.StageStart);
+        }
+
     }
 
     private void OnClickLeft()

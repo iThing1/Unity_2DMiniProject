@@ -35,6 +35,16 @@ public class StationController : InteractableBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
     private void Awake()
     {
         _simulator = GetComponent<StationSimulator>();
@@ -54,21 +64,6 @@ public class StationController : InteractableBase
             Debug.LogError("[StationController] 자식에서 StationZone을 찾지 못했습니다.");
     }
 
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-
-        if (GameManager.Instance != null)
-            _isGamePlay = GameManager.Instance.CurrentState == GameState.GamePlay;
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
-
     // =========================================================================
     // 초기화
     // =========================================================================
@@ -80,6 +75,7 @@ public class StationController : InteractableBase
 
     public void StopSimulation()
     {
+        _isGamePlay = false;
         _simulator.StopProduction();
     }
 
@@ -256,28 +252,17 @@ public class StationController : InteractableBase
     // =========================================================================
     private void OpenUpgradeUI(StationZoneType zoneType)
     {
-        UIManager.Instance.OpenUI(UIId.Popup.StationUpgrade);
-        StationUpgrade upgradeUI = UIManager.Instance.GetUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+        StationUpgrade upgradeUI = UIManager.Instance.PrepareUI<StationUpgrade>(UIId.Popup.StationUpgrade);
         if (upgradeUI != null)
         {
             upgradeUI.Setup(new StationUpgradeData(zoneType, this));
+            UIManager.Instance.OpenUI(UIId.Popup.StationUpgrade);
         }
     }
 
     private void CloseUpgradeUI()
     {
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        _isGamePlay = next == GameState.GamePlay;
-
-        if (!_isGamePlay)
-            OnDeactivate();
     }
 
     // =========================================================================

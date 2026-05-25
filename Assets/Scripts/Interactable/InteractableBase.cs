@@ -10,12 +10,17 @@ public abstract class InteractableBase : MonoBehaviour
     protected bool _isPlayerInside = false;
     private bool _isInteracting = false;
 
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    protected virtual void Start()
+    {
+        InitializeData();
+    }
+
     protected virtual void OnEnable()
     {
-        GameEventBus.Subscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
-        if (GameDataManager.Instance != null && GameDataManager.Instance.IsInitialized)
-            HandleDataInitialized();
 
         ShipController ship = FindAnyObjectByType<ShipController>();
         if (ship != null)
@@ -24,7 +29,6 @@ public abstract class InteractableBase : MonoBehaviour
 
     protected virtual void OnDisable()
     {
-        GameEventBus.Unsubscribe(GameEventType.DataInitialized, HandleDataInitialized);
         GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
     }
 
@@ -79,13 +83,10 @@ public abstract class InteractableBase : MonoBehaviour
     protected abstract void OnDeactivate();
     protected virtual bool CanInteract() => true;
 
-    private void HandleDataInitialized()
+    private void InitializeData()
     {
         _dockingSpeedThreshold = GameDataManager.Instance.Constants.DockingSpeed;
-        OnDataInitialized();
     }
-
-    protected virtual void OnDataInitialized() { }
 
     private void HandleShipSpawned(Transform shipTransform)
     {

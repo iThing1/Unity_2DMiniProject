@@ -50,7 +50,8 @@ public class ResourceManager : MonoBehaviour
 
         var handle = Addressables.LoadAssetAsync<IList<Sprite>>(sheetAddress);
         _handles[cacheKey] = handle;
-        handle.Completed += h => OnAtlasLoaded(h, spriteName, cacheKey, callback);
+        AtlasLoadContext ctx = new AtlasLoadContext(spriteName, cacheKey, callback, this);
+        handle.Completed += ctx.OnAtlasLoadedFromContext;
     }
 
     private void ResolveAtlasHandle(AsyncOperationHandle cached, string spriteName, string cacheKey, Action<Sprite> callback)
@@ -62,7 +63,8 @@ public class ResourceManager : MonoBehaviour
         else
         {
             var typed = cached.Convert<IList<Sprite>>();
-            typed.Completed += h => OnAtlasLoaded(h, spriteName, cacheKey, callback);
+            AtlasLoadContext ctx = new AtlasLoadContext(spriteName, cacheKey, callback, this);
+            typed.Completed += ctx.OnAtlasLoadedFromContext;
         }
     }
 
@@ -103,23 +105,65 @@ public class ResourceManager : MonoBehaviour
             else
             {
                 var typed = cached.Convert<T>();
-                typed.Completed += h => callback?.Invoke(h.Result);
+                AssetLoadContext<T> ctx = new AssetLoadContext<T>(address, callback);
+                typed.Completed += ctx.OnCachedLoaded;
             }
             return;
         }
 
         var handle = Addressables.LoadAssetAsync<T>(address);
         _handles[address] = handle;
-        handle.Completed += h =>
+        AssetLoadContext<T> newCtx = new AssetLoadContext<T>(address, callback);
+        handle.Completed += newCtx.OnNewLoaded;
+    }
+
+    private class AssetLoadContext<T> where T : UnityEngine.Object
+    {
+        private readonly string _address;
+        private readonly Action<T> _callback;
+
+        public AssetLoadContext(string address, Action<T> callback)
         {
-            if (h.Status == AsyncOperationStatus.Succeeded)
-                callback?.Invoke(h.Result);
+            _address = address;
+            _callback = callback;
+        }
+
+        public void OnCachedLoaded(AsyncOperationHandle<T> handle)
+        {
+            _callback?.Invoke(handle.Result);
+        }
+
+        public void OnNewLoaded(AsyncOperationHandle<T> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+                _callback?.Invoke(handle.Result);
             else
             {
-                Debug.LogWarning($"[ResourceManager] 에셋 로드 실패: {address}");
-                callback?.Invoke(null);
+                Debug.LogWarning($"[ResourceManager] 에셋 로드 실패: {_address}");
+                _callback?.Invoke(null);
             }
-        };
+        }
+    }
+
+    private class AtlasLoadContext
+    {
+        private readonly string _spriteName;
+        private readonly string _cacheKey;
+        private readonly Action<Sprite> _callback;
+        private readonly ResourceManager _owner;
+
+        public AtlasLoadContext(string spriteName, string cacheKey, Action<Sprite> callback, ResourceManager owner)
+        {
+            _spriteName = spriteName;
+            _cacheKey = cacheKey;
+            _callback = callback;
+            _owner = owner;
+        }
+
+        public void OnAtlasLoadedFromContext(AsyncOperationHandle<IList<Sprite>> handle)
+        {
+            _owner.OnAtlasLoaded(handle, _spriteName, _cacheKey, _callback);
+        }
     }
 
     // =========================================================================
