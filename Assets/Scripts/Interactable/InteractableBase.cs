@@ -13,7 +13,7 @@ public abstract class InteractableBase : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         InitializeData();
     }

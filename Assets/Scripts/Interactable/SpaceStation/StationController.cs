@@ -45,8 +45,9 @@ public class StationController : InteractableBase
         base.OnDisable();
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _simulator = GetComponent<StationSimulator>();
 
         _zones.Clear();

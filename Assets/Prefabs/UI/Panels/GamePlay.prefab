@@ -540,6 +540,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6287750854919010662}
+  - component: {fileID: 4063657162920824646}
   m_Layer: 0
   m_Name: ShipHUD
   m_TagString: Untagged
@@ -568,6 +569,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4063657162920824646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998173077844133481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88fd095e75ec2b6489cee97a60742bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelGauge
+  _fuelSlider: {fileID: 8255962527147410799}
+  _boostIcon: {fileID: 6774050591406030823}
+  _boostOnSprite: {fileID: 990671240, guid: 99ca28cd618a43b4784ab4967c552cbb, type: 3}
+  _boostOffSprite: {fileID: 399945351, guid: 99ca28cd618a43b4784ab4967c552cbb, type: 3}
 --- !u!1 &3182189622884922146
 GameObject:
   m_ObjectHideFlags: 0
@@ -1537,18 +1554,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GamePlayUI
   _uiId: UI_Panel_02
   _btnClose: {fileID: 0}
-  _fuelSlider: {fileID: 8255962527147410799}
-  _boostIcon: {fileID: 6774050591406030823}
-  _boostOnSprite: {fileID: 990671240, guid: 99ca28cd618a43b4784ab4967c552cbb, type: 3}
-  _boostOffSprite: {fileID: 399945351, guid: 99ca28cd618a43b4784ab4967c552cbb, type: 3}
-  _txtCargoInfo: {fileID: 3230177336502298282}
-  _txtFood: {fileID: 6271876699918285028}
-  _txtOre: {fileID: 8092876626129539958}
-  _btnCargo: {fileID: 4383488460583811782}
-  _cargoPanel: {fileID: 4917021736466809538}
-  _planetInfoPrefab: {fileID: 6868254862704934756, guid: 66f627dc8f6d4ae4f966d057de95cbfb, type: 3}
-  _alertBorder: {fileID: 7491351222939792462}
-  _alertBlinkInterval: 0.4
+  _fuelGauge: {fileID: 4063657162920824646}
+  _cargoPanel: {fileID: 2204840640809927960}
+  _alertBorder: {fileID: 8665931663501492825}
 --- !u!114 &4933890009282058084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1614,8 +1622,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7123598406805469126}
+  - component: {fileID: 8665931663501492825}
   m_Layer: 0
-  m_Name: WarningBorder
+  m_Name: AlertBorder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1644,6 +1653,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8665931663501492825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7491351222939792462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23a201931e9d60e42842db17410238f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AlertBorder
+  _alertBorder: {fileID: 7491351222939792462}
+  _alertBlinkInterval: 0.4
 --- !u!1 &7602417112061659941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2105,6 +2128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8548546442817320938}
+  - component: {fileID: 2204840640809927960}
   - component: {fileID: 964352552366779007}
   - component: {fileID: 1773806473743894024}
   - component: {fileID: 4383488460583811782}
@@ -2135,6 +2159,23 @@ RectTransform:
   m_AnchoredPosition: {x: 30, y: 30}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &2204840640809927960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9055836570484873061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12677b966532326409b3e99edb6c62ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CargoPanel
+  _txtCargoInfo: {fileID: 3230177336502298282}
+  _txtFood: {fileID: 6271876699918285028}
+  _txtOre: {fileID: 8092876626129539958}
+  _btnCargo: {fileID: 4383488460583811782}
+  _cargoPanel: {fileID: 4917021736466809538}
 --- !u!222 &964352552366779007
 CanvasRenderer:
   m_ObjectHideFlags: 0

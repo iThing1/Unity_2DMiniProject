@@ -1152,6 +1152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3037dcc246d6cd4681bf8032c94d920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  _stationSpawner: {fileID: 17693462}
+  _shipSpawner: {fileID: 17693461}
+  _planetSpawner: {fileID: 17693460}
 --- !u!1 &2137377617
 GameObject:
   m_ObjectHideFlags: 0

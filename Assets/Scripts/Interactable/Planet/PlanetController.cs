@@ -33,8 +33,9 @@ public class PlanetController : InteractableBase
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _simulator = GetComponent<PlanetSimulator>();
         _progressBar = GetComponentInChildren<PlanetProgressBar>();
         _warningIndicator = GetComponentInChildren<PlanetWarningIndicator>();

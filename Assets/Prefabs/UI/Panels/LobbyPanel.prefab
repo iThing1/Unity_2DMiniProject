@@ -689,10 +689,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 970452336846914054}
+  - component: {fileID: 4650112757277170789}
   - component: {fileID: 3321335096461490157}
   - component: {fileID: 8985471330585708147}
   m_Layer: 5
-  m_Name: box_stage
+  m_Name: StageList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -720,6 +721,23 @@ RectTransform:
   m_AnchoredPosition: {x: 450, y: 50}
   m_SizeDelta: {x: 700, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4650112757277170789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869806199031988315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2761c71f9b0b5864a896b448418864a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageList
+  _txtStageName: {fileID: 2551296905742201562}
+  _btnStart: {fileID: 2892536868949747927}
+  _btnLeft: {fileID: 7446559903557036861}
+  _btnRight: {fileID: 3030289426087489181}
+  _lockedAlpha: 0.3
 --- !u!222 &3321335096461490157
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -888,11 +906,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2532567434898194397}
+  - component: {fileID: 1675485417432725151}
   - component: {fileID: 3752731036280086071}
   - component: {fileID: 8007940556649830515}
   - component: {fileID: 8569728754041347702}
   m_Layer: 7
-  m_Name: Scroll View
+  m_Name: PlanetList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -918,6 +937,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -45}
   m_SizeDelta: {x: 550, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1675485417432725151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5389011077462429997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f46b10cd44dd784d888349e36ff0de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetList
+  _planetListContent: {fileID: 6060800400605602658}
+  _planetItemPrefab: {fileID: 2916308515960010113, guid: 7ab8f4aa808c0ae4b924378a1df35c4e, type: 3}
 --- !u!222 &3752731036280086071
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1298,14 +1331,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LobbyUI
   _uiId: UI_Panel_03
   _btnClose: {fileID: 0}
-  _txtStageName: {fileID: 2551296905742201562}
-  _btnStart: {fileID: 2892536868949747927}
-  _btnLeft: {fileID: 7446559903557036861}
-  _btnRight: {fileID: 3030289426087489181}
+  _stageList: {fileID: 4650112757277170789}
+  _planetList: {fileID: 1675485417432725151}
   _btnUpgrade: {fileID: 1292769621282072653}
-  _planetListContent: {fileID: 6060800400605602658}
-  _planetItemPrefab: {fileID: 2916308515960010113, guid: 7ab8f4aa808c0ae4b924378a1df35c4e, type: 3}
-  _lockedAlpha: 0.3
 --- !u!222 &184242332252362603
 CanvasRenderer:
   m_ObjectHideFlags: 0

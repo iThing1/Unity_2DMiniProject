@@ -1,33 +1,16 @@
-﻿using GameData;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using GameData;
 
 public class GamePlayUI : UIBase
 {
     // =========================================================================
     // Inspector 연결
     // =========================================================================
-    [Header("연료 슬라이더")]
-    [SerializeField] private Slider _fuelSlider;
+    [SerializeField] private FuelGauge _fuelGauge;
+    [SerializeField] private CargoPanel _cargoPanel;
+    [SerializeField] private AlertBorder _alertBorder;
 
-    [Header("부스터 아이콘")]
-    [SerializeField] private Image _boostIcon;
-    [SerializeField] private Sprite _boostOnSprite;
-    [SerializeField] private Sprite _boostOffSprite;
-
-    [Header("화물")]
-    [SerializeField] private TMP_Text _txtCargoInfo;
-    [SerializeField] private TMP_Text _txtFood;
-    [SerializeField] private TMP_Text _txtOre;
-    [SerializeField] private Button _btnCargo;
-    [SerializeField] private GameObject _cargoPanel;
-
-    [Header("게임오버 경고")] // TODO: 나중에 9-Slice로 바꿈
-    [SerializeField] private GameObject _alertBorder;
-    [SerializeField] private float _alertBlinkInterval = 0.4f;
     // =========================================================================
     // 직접 참조
     // =========================================================================
@@ -35,6 +18,8 @@ public class GamePlayUI : UIBase
     private ShipInventory _cargo;
     private PlanetController _hoveredPlanet;
     private readonly Dictionary<string, PlanetController> _planetMap = new Dictionary<string, PlanetController>();
+
+    private readonly List<string> _boundPopupIds = new List<string>();
 
     // =========================================================================
     // 이전 값 캐싱 (변경 시에만 갱신)
@@ -47,7 +32,7 @@ public class GamePlayUI : UIBase
     private int _lastCargoCapacity = -1;
 
     private int _warningPlanetCount = 0;
-    private Coroutine _blinkCoroutine;
+
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -69,26 +54,13 @@ public class GamePlayUI : UIBase
         GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
     }
 
-    private void OnDestroy()
-    {
-        if (_btnCargo != null)
-            _btnCargo.onClick.RemoveListener(OnClickCargo);
-    }
-
     protected override void Start()
     {
         base.Start();
-        RefreshFuel(0f, 1f);
-        RefreshBooster(false);
-        RefreshCargo(0, 0, 0, 1);
+        _fuelGauge.Initialize();
+        _cargoPanel.Initialize();
 
-        if (_btnCargo != null)
-            _btnCargo.onClick.AddListener(OnClickCargo);
-
-        SetCargoPanel(false);
-
-        if (_alertBorder != null)
-            _alertBorder.SetActive(false);
+        CollectBoundPopups();
     }
 
     private void Update()
@@ -101,14 +73,14 @@ public class GamePlayUI : UIBase
         {
             _lastFuel = _controller.CurrentFuel;
             _lastMaxFuel = _controller.MaxFuel;
-            RefreshFuel(_lastFuel, _lastMaxFuel);
+            _fuelGauge.RefreshFuel(_lastFuel, _lastMaxFuel);
         }
 
         // 부스터
         if (_controller.IsBoosting != _lastIsBoosting)
         {
             _lastIsBoosting = _controller.IsBoosting;
-            RefreshBooster(_lastIsBoosting);
+            _fuelGauge.RefreshBooster(_lastIsBoosting);
         }
 
         // 과열
@@ -116,7 +88,7 @@ public class GamePlayUI : UIBase
         {
             _lastIsOverheat = _controller.IsOverheat;
             if (_lastIsOverheat)
-                RefreshBooster(false);
+                _fuelGauge.RefreshBooster(false);
         }
 
         // 화물
@@ -125,7 +97,12 @@ public class GamePlayUI : UIBase
         {
             _lastCargoCount = _cargo.Count;
             _lastCargoCapacity = _cargo.Capacity;
-            RefreshCargo(_cargo.CountOf(ShipInventory.CargoType.Food), _cargo.CountOf(ShipInventory.CargoType.Ore), _lastCargoCount, _lastCargoCapacity);
+            _cargoPanel.RefreshCargo(
+                _cargo.CountOf(ShipInventory.CargoType.Food),
+                _cargo.CountOf(ShipInventory.CargoType.Ore),
+                _lastCargoCount,
+                _lastCargoCapacity
+            );
         }
     }
 
@@ -137,7 +114,6 @@ public class GamePlayUI : UIBase
         _controller = shipTransform.GetComponent<ShipController>();
         _cargo = shipTransform.GetComponent<ShipInventory>();
 
-        // 캐시 초기화 (다음 Update에서 즉시 갱신)
         _lastFuel = -1f;
         _lastMaxFuel = -1f;
         _lastCargoCount = -1;
@@ -194,109 +170,48 @@ public class GamePlayUI : UIBase
         _warningPlanetCount = Mathf.Max(0, _warningPlanetCount);
 
         if (_warningPlanetCount > 0)
-            StartAlert();
+            _alertBorder.StartAlert();
         else
-            StopAlert();
+            _alertBorder.StopAlert();
     }
 
     // =========================================================================
-    // 버튼 핸들러
+    // 내부 유틸
     // =========================================================================
-    private void OnClickCargo()
-    {
-        if (_cargoPanel == null) return;
-        SetCargoPanel(!_cargoPanel.activeSelf);
-    }
-
-    private void SetCargoPanel(bool isOpen)
-    {
-        if (_cargoPanel != null)
-            _cargoPanel.SetActive(isOpen);
-    }
-
     private PlanetController FindPlanetById(string instanceId)
     {
         if (string.IsNullOrEmpty(instanceId)) return null;
 
         if (_planetMap.TryGetValue(instanceId, out PlanetController planet))
-        {
             return planet;
-        }
 
         return null;
     }
 
-    // =========================================================================
-    // 게임오버 경고 점멸
-    // =========================================================================
-    private void StartAlert()
+    private void CollectBoundPopups()
     {
-        if (_alertBorder == null) return;
-        if (_blinkCoroutine != null) return;
+        _boundPopupIds.Clear();
 
-        _alertBorder.SetActive(true);
-        _blinkCoroutine = StartCoroutine(BlinkRoutine());
-    }
-
-    private void StopAlert()
-    {
-        if (_blinkCoroutine != null)
+        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
         {
-            StopCoroutine(_blinkCoroutine);
-            _blinkCoroutine = null;
-        }
+            if (data.BindState != "GamePlay") continue;
+            if (data.Id == UiId) continue;
 
-        if (_alertBorder != null)
-            _alertBorder.SetActive(false);
-    }
-
-    private IEnumerator BlinkRoutine()
-    {
-        while (true)
-        {
-            _alertBorder.SetActive(true);
-            yield return new WaitForSeconds(_alertBlinkInterval);
-            _alertBorder.SetActive(false);
-            yield return new WaitForSeconds(_alertBlinkInterval);
+            _boundPopupIds.Add(data.Id);
         }
     }
 
-
     // =========================================================================
-    // UI 갱신 메서드
+    // 닫기 전 정리
     // =========================================================================
-    private void RefreshFuel(float current, float max)
-    {
-        if (_fuelSlider == null) return;
-        _fuelSlider.value = max > 0f ? current / max : 0f;
-    }
-
-    private void RefreshBooster(bool isOn)
-    {
-        if (_boostIcon == null) return;
-        Sprite target = isOn ? _boostOnSprite : _boostOffSprite;
-        if (target != null)
-            _boostIcon.sprite = target;
-    }
-
-    private void RefreshCargo(int food, int ore, int total, int capacity)
-    {
-        if (_txtCargoInfo != null)
-            _txtCargoInfo.text = $"{total} / {capacity}";
-
-        if (_txtFood != null)
-            _txtFood.text = food.ToString();
-
-        if (_txtOre != null)
-            _txtOre.text = ore.ToString();
-    }
-
     protected override void OnBeforeClose()
     {
         _planetMap.Clear();
-        UIManager.Instance.CloseUI(UIId.Popup.PlanetInfo);
         _hoveredPlanet = null;
         _warningPlanetCount = 0;
-        StopAlert();
+        _alertBorder.StopAlert();
+
+        foreach (string popupId in _boundPopupIds)
+            UIManager.Instance.CloseUI(popupId);
     }
 }
