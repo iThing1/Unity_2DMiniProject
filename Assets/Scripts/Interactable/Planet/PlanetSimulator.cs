@@ -63,16 +63,6 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
-    }
-
     private void OnDestroy()
     {
         StopAllCoroutines();
@@ -242,18 +232,6 @@ public class PlanetSimulator : MonoBehaviour
         }
 
         Debug.Log($"[PlanetSimulator] '{_planetName}' 게임오버 경고 해제");
-    }
-
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
-    private void HandleGameStateChanged(GameState prev, GameState next)
-    {
-        if (next != GameState.GamePlay)
-        {
-            IsRunning = false;
-            StopAllCoroutines();
-        }
     }
 
     // =========================================================================

@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ContinueInfo : UIBase
+public class SaveSlotItem : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -11,20 +11,10 @@ public class ContinueInfo : UIBase
     [SerializeField] private TextMeshProUGUI _txtDate;
     [SerializeField] private TextMeshProUGUI _txtGold;
     [SerializeField] private TextMeshProUGUI _txtIngot;
-    [SerializeField] private Button _btnStart;
-
+    [SerializeField] private TextMeshProUGUI _txtLastStage;
     protected override void Start()
     {
         base.Start();
-
-        if (_btnStart != null)
-            _btnStart.onClick.AddListener(OnClickStart);
-    }
-
-    private void OnDestroy()
-    {
-        if (_btnStart != null)
-            _btnStart.onClick.RemoveListener(OnClickStart);
     }
 
     public override void Setup(object data = null)
@@ -42,13 +32,5 @@ public class ContinueInfo : UIBase
             if (_txtIngot != null)
                 _txtIngot.text = context.CurrentIngot.ToString("N0");
         }
-    }
-
-    private void OnClickStart()
-    {
-        Close();
-        SaveLoadController.LoadCurrentGame();
-        GameEventBus.Publish(GameEventType.ContinueRequested);
-        GameManager.Instance.ChangeState(GameState.Lobby);
     }
 }

@@ -6,7 +6,7 @@ public class InventoryVisualizer : MonoBehaviour
 {
     [Header("화물 박스")]
     [SerializeField] private GameObject _boxPrefab;
-    [SerializeField] private int _maxBoxCount = 10;
+    [SerializeField] private int _maxBoxCount = 20;
 
     [Header("물리 설정")]
     [SerializeField] private float _boxSpacing = 1.2f;

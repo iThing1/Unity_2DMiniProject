@@ -37,11 +37,6 @@ public class CameraController : MonoBehaviour
         _camera = GetComponent<Camera>();
     }
 
-    private void Start()
-    {
-        InitializeData();
-    }
-
     private void OnEnable()
     {
         GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
@@ -84,6 +79,7 @@ public class CameraController : MonoBehaviour
 
         if (_isGamePlay)
         {
+            InitializeData();
             _elapsedTime = 0f;
             return;
         }
