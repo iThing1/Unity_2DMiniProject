@@ -57,11 +57,7 @@ public static class SaveLoadController
     private static T LoadFromFile<T>(string fileName)
     {
         string path = GetPath(fileName);
-        if (!File.Exists(path))
-        {
-            Debug.LogWarning($"[SaveLoadController] 세이브 파일이 없습니다: {path}");
-            return default;
-        }
+        if (!File.Exists(path)) return default;
 
         string json = File.ReadAllText(path);
         T data = JsonConvert.DeserializeObject<T>(json);
@@ -72,18 +68,13 @@ public static class SaveLoadController
             return default;
         }
 
-        Debug.Log($"[SaveLoadController] 불러오기 완료: {path}");
         return data;
     }
 
     private static void DeleteFile(string fileName)
     {
         string path = GetPath(fileName);
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log($"[SaveLoadController] 파일 삭제 완료: {path}");
-        }
+        if (File.Exists(path)) File.Delete(path);
     }
 
     private static bool FileExists(string fileName)

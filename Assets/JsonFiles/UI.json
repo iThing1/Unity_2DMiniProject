@@ -1,5 +1,12 @@
 [
   {
+    "Id": "UI_Popup_01",
+    "Name": "Confirm",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
     "Id": "UI_Popup_02",
     "Name": "SlotSelect",
     "Type": "Popup",

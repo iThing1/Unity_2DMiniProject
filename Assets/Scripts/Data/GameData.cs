@@ -25,6 +25,7 @@ namespace GameData
 
         public struct Popup
         {
+            public const string Confirm = "UI_Popup_01";
             public const string ContinueInfo = "UI_Popup_02";
             public const string StageClear = "UI_Popup_03";
             public const string StageFailed = "UI_Popup_04";

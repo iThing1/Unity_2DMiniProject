@@ -107,22 +107,46 @@ public class SlotSelectUI : UIBase
     {
         if (_selectedSlotIndex < 0) return;
 
-        Close();
         switch (_mode)
         {
             case SlotSelectMode.NewGame:
-                SaveLoadController.DeleteSlot(_selectedSlotIndex);
-                GameManager.Instance.Context.LastLoadedSlot = _selectedSlotIndex;
-                GameEventBus.Publish(GameEventType.NewGameRequested);
-                GameManager.Instance.ChangeState(GameState.Lobby);
+                if (SaveLoadController.HasSlot(_selectedSlotIndex))
+                {
+                    Confirm confirm = UIManager.Instance.PrepareUI<Confirm>(UIId.Popup.Confirm);
+                    if (confirm != null)
+                    {
+                        confirm.Setup(new ConfirmData("기존 데이터가 삭제됩니다.\n계속하시겠습니까?", OnConfirmNewGame));
+                        UIManager.Instance.OpenUI(UIId.Popup.Confirm);
+                    }
+                }
+                else
+                {
+                    StartNewGame();
+                }
                 break;
             case SlotSelectMode.Continue:
                 GameManager.Instance.LoadGame(_selectedSlotIndex);
                 GameEventBus.Publish(GameEventType.ContinueRequested);
                 GameManager.Instance.ChangeState(GameState.Lobby);
+                Close();
                 break;
         }
     }
+
+    private void OnConfirmNewGame()
+    {
+        Close();
+        StartNewGame();
+    }
+
+    private void StartNewGame()
+    {
+        SaveLoadController.DeleteSlot(_selectedSlotIndex);
+        GameManager.Instance.ResetContext(_selectedSlotIndex);
+        GameEventBus.Publish(GameEventType.NewGameRequested);
+        GameManager.Instance.ChangeState(GameState.Lobby);
+    }
+
 
     // =========================================================================
     // 내부 유틸

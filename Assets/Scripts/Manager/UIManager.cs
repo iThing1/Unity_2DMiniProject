@@ -65,7 +65,6 @@ public class UIManager : MonoBehaviour
         }
 
         await Task.WhenAll(tasks);
-        Debug.Log($"[UIManager] UI 프리팹 로드 완료: {_prefabMap.Count}개");
     }
 
     private async Task LoadAndRegisterPrefab(UIData data)
