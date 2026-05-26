@@ -112,6 +112,8 @@ public class StationController : InteractableBase
         {
             StopInteractCoroutine();
             OnDeactivate();
+            if (_activeZone.Value == StationZoneType.Center)
+                CloseMarketUI();
         }
 
         _activeZone = zoneType;
@@ -120,6 +122,8 @@ public class StationController : InteractableBase
         if (!_isGamePlay) return;
         if (zoneType == StationZoneType.Left || zoneType == StationZoneType.Right)
             OpenUpgradeUI(zoneType);
+        else if (zoneType == StationZoneType.Center)
+            OpenMarketUI();
     }
 
     public void OnPlayerExitZone(StationZoneType zoneType)
@@ -130,7 +134,10 @@ public class StationController : InteractableBase
 
         StopInteractCoroutine();
         _shipInventory?.StopTransfer();
-        CloseUpgradeUI();
+        if (zoneType == StationZoneType.Left || zoneType == StationZoneType.Right)
+            CloseUpgradeUI();
+        if (zoneType == StationZoneType.Center)
+            CloseMarketUI();
     }
 
     // =========================================================================
@@ -249,7 +256,7 @@ public class StationController : InteractableBase
     }
 
     // =========================================================================
-    // 업그레이드 UI — Zone 진입/이탈에서만 호출
+    // 업그레이드 UI -> Zone 진입/이탈에서만 호출
     // =========================================================================
     private void OpenUpgradeUI(StationZoneType zoneType)
     {
@@ -266,6 +273,15 @@ public class StationController : InteractableBase
         UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
     }
 
+    private void OpenMarketUI()
+    {
+        UIManager.Instance.OpenUI(UIId.Popup.StationMarket);
+    }
+
+    private void CloseMarketUI()
+    {
+        UIManager.Instance.CloseUI(UIId.Popup.StationMarket);
+    }
     // =========================================================================
     // 내부 유틸
     // =========================================================================

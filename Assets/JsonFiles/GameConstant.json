@@ -31,7 +31,7 @@
   },
   {
     "Id": "STATION_DOCKING_SPEED",
-    "Value": 0.5,
+    "Value": 1,
     "Desc": "정거장 상호작용 가능 속도"
   },
   {
@@ -96,7 +96,7 @@
   },
   {
     "Id": "ORE_PRODUCE_RATE",
-    "Value": 2E-05,
+    "Value": 1E-05,
     "Desc": "광석 초당 생산량 조절계수"
   }
 ]

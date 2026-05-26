@@ -49,6 +49,13 @@
     "Auto": false
   },
   {
+    "Id": "UI_Popup_08",
+    "Name": "StationMarket",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",

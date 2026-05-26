@@ -32,6 +32,7 @@ namespace GameData
             public const string StageStart = "UI_Popup_05";
             public const string PlanetInfo = "UI_Popup_06";
             public const string StationUpgrade = "UI_Popup_07";
+            public const string StationMarket = "UI_Popup_08";
 
             public const string DebugMenu = "UI_Debug_01";
             
