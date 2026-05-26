@@ -81,6 +81,18 @@ namespace GameData
     }
 
     [Serializable]
+    public class ExchangeData : IGameData
+    {
+        public string Id;
+        public string Name;
+        public int Value;
+        public int Exchanges;
+        public string Desc;
+
+        string IGameData.Id => Id;
+    }
+
+    [Serializable]
     public class SoundData : IGameData
     {
         public string Id = null!;

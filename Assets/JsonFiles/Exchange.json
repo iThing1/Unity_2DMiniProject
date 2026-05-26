@@ -1,0 +1,44 @@
+[
+  {
+    "Id": "ex_gold_to_ingot_01",
+    "Name": "Buy Ingot small",
+    "Value": 20,
+    "Exchanges": 1,
+    "Desc": "골드를 주고 주괴를 하나 구입합니다"
+  },
+  {
+    "Id": "ex_gold_to_ingot_02",
+    "Name": "Buy Ingot medium",
+    "Value": 100,
+    "Exchanges": 5,
+    "Desc": "골드를 좀 더 내고 주괴 묶음을 구입합니다"
+  },
+  {
+    "Id": "ex_gold_to_ingot_03",
+    "Name": "Buy Ingot small",
+    "Value": 200,
+    "Exchanges": 10,
+    "Desc": "골드를 많이 주고 주괴 박스를 구입합니다"
+  },
+  {
+    "Id": "ex_ingot_to_gold_01",
+    "Name": null,
+    "Value": 1,
+    "Exchanges": 10,
+    "Desc": "주괴를 판매합니다"
+  },
+  {
+    "Id": "ex_ingot_to_gold_02",
+    "Name": null,
+    "Value": 5,
+    "Exchanges": 55,
+    "Desc": "주괴 묶음을 판매합니다"
+  },
+  {
+    "Id": "ex_ingot_to_gold_03",
+    "Name": null,
+    "Value": 10,
+    "Exchanges": 110,
+    "Desc": "주괴 박스를 판매합니다"
+  }
+]

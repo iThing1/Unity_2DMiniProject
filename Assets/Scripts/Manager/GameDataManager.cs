@@ -48,6 +48,7 @@ public class GameDataManager : MonoBehaviour
             RegisterTable<PlanetData>("Data/Planet"),
             RegisterTable<StageData>("Data/Stage"),
             RegisterTable<UpgradeData>("Data/Upgrade"),
+            RegisterTable<ExchangeData>("Data/Exchange"),
             RegisterTable<SoundData>("Data/Sound"),
             RegisterTable<UIData>("Data/UI")
         };

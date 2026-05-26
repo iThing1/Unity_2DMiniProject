@@ -1,4 +1,6 @@
 ﻿using GameData;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -13,6 +15,10 @@ public class GameManager : MonoBehaviour
 
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
+
+    private float _stageStartTime;
+    private int _stageStartGold;
+    private int _stageStartIngot;
 
     private void Awake()
     {
@@ -83,11 +89,15 @@ public class GameManager : MonoBehaviour
             if (_stationSpawner != null) _stationSpawner.OnExitGamePlay();
             if (_shipSpawner != null) _shipSpawner.OnExitGamePlay();
             if (_planetSpawner != null) _planetSpawner.OnExitGamePlay();
+            SaveCurrentGame();
         }
 
         if (newState == GameState.GamePlay)
         {
             if (_stationSpawner != null) _stationSpawner.OnEnterGamePlay();
+            _stageStartTime = Time.realtimeSinceStartup;
+            _stageStartGold = Context.CurrentGold;
+            _stageStartIngot = Context.CurrentIngot;
         }
 
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
@@ -109,8 +119,30 @@ public class GameManager : MonoBehaviour
         if (!Context.UnlockedStageIds.Contains(stageId))
             Context.UnlockedStageIds.Add(stageId);
 
+        int goldEarned = Context.CurrentGold - _stageStartGold;
+        int ingotEarned = Context.CurrentIngot - _stageStartIngot;
+
+        StageClearRecord record = new StageClearRecord
+        {
+            ClearTime = Time.realtimeSinceStartup - _stageStartTime,
+            GoldEarned = goldEarned,
+            IngotEarned = ingotEarned,
+            Score = goldEarned * 1 + ingotEarned * 10,
+            ClearedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
+        };
+
+        if (!Context.ClearRecords.ContainsKey(stageId))
+            Context.ClearRecords[stageId] = new List<StageClearRecord>();
+
+        Context.ClearRecords[stageId].Add(record);
+
         Time.timeScale = 0f;
-        UIManager.Instance.OpenUI(UIId.Popup.StageClear);
+        StageClear stageClear = UIManager.Instance.PrepareUI<StageClear>(UIId.Popup.StageClear);
+        if (stageClear != null)
+        {
+            stageClear.Setup(record);
+            UIManager.Instance.OpenUI(UIId.Popup.StageClear);
+        }
     }
 
     private void HandleStageFailed(string stageId)
@@ -119,6 +151,24 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0f;
         UIManager.Instance.OpenUI(UIId.Popup.StageFailed);
+    }
+
+    // =========================================================================
+    // 저장 / 로드
+    // =========================================================================
+    public void SaveCurrentGame()
+    {
+        SaveLoadController.SaveSlot(Context.LastLoadedSlot, Context);
+    }
+
+    public bool LoadGame(int slotIndex)
+    {
+        GameContext context = SaveLoadController.LoadSlot(slotIndex);
+        if (context == null) return false;
+
+        context.LastLoadedSlot = slotIndex;
+        LoadContext(context);
+        return true;
     }
 
     public void LoadContext(GameContext context)
@@ -159,6 +209,22 @@ public class GameManager : MonoBehaviour
         Context.CurrentIngot -= amount;
         GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
         return true;
+    }
+
+    private void CheckStageClear()
+    {
+        if (CurrentState != GameState.GamePlay) return;
+
+        string stageId = Context.LastSelectedStageId;
+        if (string.IsNullOrEmpty(stageId)) return;
+
+        if (Context.StageClearStatus.TryGetValue(stageId, out bool isClear) && isClear) return;
+
+        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
+        if (data == null) return;
+
+        if (Context.CurrentGold >= data.ReqGold)
+            GameEventBus.Publish(GameEventType.StageClear, stageId);
     }
 
     // =========================================================================
@@ -265,7 +331,7 @@ public class GameManager : MonoBehaviour
 
         if (bindState == null) return;
 
-        var candidates = new System.Collections.Generic.List<string>();
+        var candidates = new List<string>();
         foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
         {
             if (sound.Type == SoundType.BGM && sound.BindState == bindState)
@@ -274,7 +340,7 @@ public class GameManager : MonoBehaviour
 
         if (candidates.Count > 0)
         {
-            string selectedBgm = candidates[Random.Range(0, candidates.Count)];
+            string selectedBgm = candidates[UnityEngine.Random.Range(0, candidates.Count)];
             SoundManager.Instance.PlayBGM(selectedBgm);
         }
         else

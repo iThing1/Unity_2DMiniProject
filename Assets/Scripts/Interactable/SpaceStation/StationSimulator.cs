@@ -25,6 +25,7 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private Coroutine _farmCoroutine;
     private Coroutine _refineCoroutine;
+    private float _refineAccumulator;
 
     // =========================================================================
     // Unity 생명주기
@@ -44,6 +45,7 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     public void Initialize()
     {
+        _refineAccumulator = 0f;
         LoadStats();
         ResetTempUpgrades();
         StartProduction();
@@ -131,9 +133,15 @@ public class StationSimulator : MonoBehaviour
                 float refineAmount = Mathf.Min(_refineRate * Time.deltaTime, StoredOre);
                 StoredOre -= refineAmount;
 
-                int ingotGain = Mathf.FloorToInt(refineAmount / _oreToIngotRatio);
-                StoredIngot += ingotGain;
-                GameManager.Instance.AddIngot(ingotGain);
+                _refineAccumulator += refineAmount;
+                int ingotGain = Mathf.FloorToInt(_refineAccumulator / _oreToIngotRatio);
+
+                if (ingotGain > 0)
+                {
+                    _refineAccumulator -= ingotGain * _oreToIngotRatio;
+                    StoredIngot += ingotGain;
+                    GameManager.Instance.AddIngot(ingotGain);
+                }
             }
 
             yield return null;

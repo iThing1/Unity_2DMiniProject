@@ -1,7 +1,7 @@
 [
   {
     "Id": "UI_Popup_02",
-    "Name": "ContinueInfo",
+    "Name": "SlotSelect",
     "Type": "Popup",
     "BindState": "MainMenu",
     "Auto": false

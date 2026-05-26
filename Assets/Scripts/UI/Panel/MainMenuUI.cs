@@ -26,8 +26,17 @@ public class MainMenuUI : UIBase
         if (_btnQuit != null)
             _btnQuit.onClick.AddListener(OnClickQuit);
 
+        bool hasAnySave = false;
+        for (int i = 0; i < SaveLoadController.MAX_SLOTS; i++)
+        {
+            if (SaveLoadController.HasSlot(i))
+            {
+                hasAnySave = true;
+                break;
+            }
+        }
         if (_btnContinue != null)
-            _btnContinue.interactable = SaveLoadController.HasSaveFile();
+            _btnContinue.interactable = hasAnySave;
     }
 
     private void OnDestroy()
@@ -45,26 +54,16 @@ public class MainMenuUI : UIBase
     // =========================================================================
     private void OnClickNewGame()
     {
-        SaveLoadController.DeleteSave();
-        GameEventBus.Publish(GameEventType.NewGameRequested);
-        GameManager.Instance.ChangeState(GameState.Lobby);
+        SlotSelectUI slotSelect = UIManager.Instance.PrepareUI<SlotSelectUI>(UIId.Popup.ContinueInfo);
+        if (slotSelect != null)
+            slotSelect.Open(SlotSelectMode.NewGame);
     }
 
     private void OnClickContinue()
     {
-        GameContext saveData = SaveLoadController.PeekSaveData();
-        if (saveData == null)
-        {
-            Debug.LogWarning("[MainMenuUI] 세이브 데이터를 읽을 수 없습니다.");
-            return;
-        }
-
-        ContinueInfo continueInfo = UIManager.Instance.PrepareUI<ContinueInfo>(UIId.Popup.ContinueInfo);
-        if (continueInfo != null)
-        {
-            continueInfo.Setup(saveData);
-            UIManager.Instance.OpenUI(UIId.Popup.ContinueInfo);
-        }
+        SlotSelectUI slotSelect = UIManager.Instance.PrepareUI<SlotSelectUI>(UIId.Popup.ContinueInfo);
+        if (slotSelect != null)
+            slotSelect.Open(SlotSelectMode.Continue);
     }
 
     private void OnClickQuit()
