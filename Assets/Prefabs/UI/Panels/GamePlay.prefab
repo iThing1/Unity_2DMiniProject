@@ -1554,8 +1554,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GamePlayUI
   _uiId: UI_Panel_02
   _btnClose: {fileID: 0}
+  _slideDirection: 0
+  _slideDuration: 0.25
   _fuelGauge: {fileID: 4063657162920824646}
-  _cargoPanel: {fileID: 2204840640809927960}
+  _cargoInfo: {fileID: 2204840640809927960}
   _alertBorder: {fileID: 8665931663501492825}
 --- !u!114 &4933890009282058084
 MonoBehaviour:

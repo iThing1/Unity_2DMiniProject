@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CargoPanel : MonoBehaviour
+public class CargoInfo : MonoBehaviour
 {
     // =========================================================================
     // Inspector 연결

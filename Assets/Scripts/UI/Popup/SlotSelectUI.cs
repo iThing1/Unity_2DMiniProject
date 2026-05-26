@@ -43,19 +43,23 @@ public class SlotSelectUI : UIBase
     }
 
     // =========================================================================
-    // 목록 갱신
+    // 목록 세팅
     // =========================================================================
-    public void Open(SlotSelectMode mode)
+    public override void Setup(object data = null)
     {
-        _mode = mode;
+        base.Setup(data);
 
-        if (_txtTitle != null)
-            _txtTitle.text = mode == SlotSelectMode.NewGame ? "New Game" : "Continue";
+        if (data is SlotSelectMode mode)
+        {
+            _mode = mode;
 
-        _selectedSlotIndex = -1;
-        SetStartButtonActive(false);
-        RefreshSlots();
-        base.Open();
+            if (_txtTitle != null)
+                _txtTitle.text = mode == SlotSelectMode.NewGame ? "New Game" : "Continue";
+
+            _selectedSlotIndex = -1;
+            SetStartButtonActive(false);
+            RefreshSlots();
+        }
     }
 
     // =========================================================================

@@ -1609,7 +1609,7 @@ MonoBehaviour:
   _uiId: UI_Popup_08
   _btnClose: {fileID: 0}
   _slideDirection: 2
-  _slideDuration: 0.1
+  _slideDuration: 0.5
   _txtGoldSmall: {fileID: 7892457189887906923}
   _txtGoldMedium: {fileID: 1711189196639300120}
   _txtGoldLarge: {fileID: 9188869248588511423}

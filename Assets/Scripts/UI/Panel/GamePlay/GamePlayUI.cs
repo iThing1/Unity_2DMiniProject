@@ -8,7 +8,7 @@ public class GamePlayUI : UIBase
     // Inspector 연결
     // =========================================================================
     [SerializeField] private FuelGauge _fuelGauge;
-    [SerializeField] private CargoPanel _cargoPanel;
+    [SerializeField] private CargoInfo _cargoInfo;
     [SerializeField] private AlertBorder _alertBorder;
 
     // =========================================================================
@@ -58,7 +58,7 @@ public class GamePlayUI : UIBase
     {
         base.Start();
         _fuelGauge.Initialize();
-        _cargoPanel.Initialize();
+        _cargoInfo.Initialize();
 
         CollectBoundPopups();
     }
@@ -97,7 +97,7 @@ public class GamePlayUI : UIBase
         {
             _lastCargoCount = _cargo.Count;
             _lastCargoCapacity = _cargo.Capacity;
-            _cargoPanel.RefreshCargo(
+            _cargoInfo.RefreshCargo(
                 _cargo.CountOf(ShipInventory.CargoType.Food),
                 _cargo.CountOf(ShipInventory.CargoType.Ore),
                 _lastCargoCount,

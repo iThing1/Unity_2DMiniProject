@@ -5,7 +5,7 @@ using GameData;
 // 우주선 업그레이드 트리
 // 각 업그레이드 행은 링크드리스트로 노드를 관리
 // Head 노드에서 Next를 따라 순회하며 연결선 생성
-public class ShipUpgrade : UIBase
+public class ShipUpgrade : MonoBehaviour
 {
     // =========================================================================
     // Inspector 연결
@@ -43,15 +43,16 @@ public class ShipUpgrade : UIBase
     // =========================================================================
     // 외부 API
     // =========================================================================
-    public override void Open()
+    public void Open()
     {
         SpawnTree();
-        base.Open();
+        gameObject.SetActive(true);
     }
 
-    protected override void OnBeforeClose()
+    public void Close()
     {
         ClearTree();
+        gameObject.SetActive(false);
     }
 
     // =========================================================================
