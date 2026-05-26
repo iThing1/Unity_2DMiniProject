@@ -9,15 +9,15 @@ public class StationMarket : UIBase
     // =========================================================================
     // Inspector 연결
     // =========================================================================
-    [Header("지불 금액")]
-    [SerializeField] private TMP_Text _txtLeftSmall;
-    [SerializeField] private TMP_Text _txtLeftMedium;
-    [SerializeField] private TMP_Text _txtLeftLarge;
+    [Header("골드 수량 텍스트")]
+    [SerializeField] private TMP_Text _txtGoldSmall;
+    [SerializeField] private TMP_Text _txtGoldMedium;
+    [SerializeField] private TMP_Text _txtGoldLarge;
 
-    [Header("교환 대상")]
-    [SerializeField] private TMP_Text _txtRightSmall;
-    [SerializeField] private TMP_Text _txtRightMedium;
-    [SerializeField] private TMP_Text _txtRightLarge;
+    [Header("주괴 수량 텍스트")]
+    [SerializeField] private TMP_Text _txtIngotSmall;
+    [SerializeField] private TMP_Text _txtIngotMedium;
+    [SerializeField] private TMP_Text _txtIngotLarge;
 
     [Header("탭 버튼")]
     [SerializeField] private Button _btnBuy;
@@ -40,8 +40,7 @@ public class StationMarket : UIBase
     // =========================================================================
     // 내부 상태
     // =========================================================================
-    private List<ExchangeData> _buyList = new List<ExchangeData>();
-    private List<ExchangeData> _sellList = new List<ExchangeData>();
+    private List<ExchangeData> _exchangeList = new List<ExchangeData>();
     private bool _isBuyMode = true;
     private Vector2 _goldPos;
     private Vector2 _ingotPos;
@@ -92,20 +91,12 @@ public class StationMarket : UIBase
     // =========================================================================
     private void LoadExchangeData()
     {
-        _buyList.Clear();
-        _sellList.Clear();
+        _exchangeList.Clear();
 
         foreach (ExchangeData data in GameDataManager.Instance.GetAll<ExchangeData>())
-        {
-            if (data.Id.Contains("gold_to_ingot"))
-                _buyList.Add(data);
-            else if (data.Id.Contains("ingot_to_gold"))
-                _sellList.Add(data);
-        }
+            _exchangeList.Add(data);
 
-        // Id 기준 정렬
-        _buyList.Sort(SortById);
-        _sellList.Sort(SortById);
+        _exchangeList.Sort(SortById);
     }
 
     private int SortById(ExchangeData a, ExchangeData b)
@@ -118,24 +109,22 @@ public class StationMarket : UIBase
     // =========================================================================
     private void RefreshCurrencyUI()
     {
-        List<ExchangeData> currentList = _isBuyMode ? _buyList : _sellList;
+        TMP_Text[] goldTexts = { _txtGoldSmall, _txtGoldMedium, _txtGoldLarge };
+        TMP_Text[] ingotTexts = { _txtIngotSmall, _txtIngotMedium, _txtIngotLarge };
 
-        TMP_Text[] leftTexts = { _txtLeftSmall, _txtLeftMedium, _txtLeftLarge };
-        TMP_Text[] rightTexts = { _txtRightSmall, _txtRightMedium, _txtRightLarge };
-
-        for (int i = 0; i < leftTexts.Length; i++)
+        for (int i = 0; i < goldTexts.Length; i++)
         {
-            if (i >= currentList.Count)
+            if (i >= _exchangeList.Count)
             {
-                if (leftTexts[i] != null) leftTexts[i].text = "-";
-                if (rightTexts[i] != null) rightTexts[i].text = "-";
+                if (goldTexts[i] != null) goldTexts[i].text = "-";
+                if (ingotTexts[i] != null) ingotTexts[i].text = "-";
                 continue;
             }
 
-            if (leftTexts[i] != null)
-                leftTexts[i].text = currentList[i].Value.ToString("N0");
-            if (rightTexts[i] != null)
-                rightTexts[i].text = currentList[i].Exchanges.ToString("N0");
+            if (goldTexts[i] != null)
+                goldTexts[i].text = _exchangeList[i].GoldValue.ToString("N0");
+            if (ingotTexts[i] != null)
+                ingotTexts[i].text = _exchangeList[i].IngotValue.ToString("N0");
         }
 
         if (_imgGold != null)
@@ -164,17 +153,16 @@ public class StationMarket : UIBase
 
     private void RefreshExchangeButtons()
     {
-        List<ExchangeData> currentList = _isBuyMode ? _buyList : _sellList;
         ExchangeButton[] buttons = { _exchangeBtn1, _exchangeBtn2, _exchangeBtn3 };
 
         for (int i = 0; i < buttons.Length; i++)
         {
             if (buttons[i] == null) continue;
 
-            if (i < currentList.Count)
+            if (i < _exchangeList.Count)
             {
                 buttons[i].gameObject.SetActive(true);
-                buttons[i].Setup(currentList[i], OnExchange);
+                buttons[i].Setup(_exchangeList[i], OnExchange);
             }
             else
             {
@@ -188,37 +176,20 @@ public class StationMarket : UIBase
     // =========================================================================
     private void OnExchange(ExchangeData data)
     {
-        bool success = false;
-
         if (_isBuyMode)
         {
-            // 골드 -> 주괴
-            if (GameManager.Instance.TrySpendGold(data.Value))
-            {
-                GameManager.Instance.AddIngot(data.Exchanges);
-                success = true;
-            }
+            if (GameManager.Instance.TrySpendGold(data.GoldValue))
+                GameManager.Instance.AddIngot(data.IngotValue);
             else
-            {
                 Debug.Log("[StationMarket] 골드가 부족합니다.");
-            }
         }
         else
         {
-            // 주괴 -> 골드
-            if (GameManager.Instance.TrySpendIngot(data.Value))
-            {
-                GameManager.Instance.AddGold(data.Exchanges);
-                success = true;
-            }
+            if (GameManager.Instance.TrySpendIngot(data.IngotValue))
+                GameManager.Instance.AddGold(data.GoldValue);
             else
-            {
                 Debug.Log("[StationMarket] 주괴가 부족합니다.");
-            }
         }
-
-        if (success)
-            RefreshCurrencyUI();
     }
 
     // =========================================================================

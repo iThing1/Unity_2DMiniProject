@@ -224,6 +224,7 @@ public class ShipInventory : MonoBehaviour
         {
             StopTransfer();
             _cargo.Clear();
+            RaiseCargoChanged();
         }  
     }
 

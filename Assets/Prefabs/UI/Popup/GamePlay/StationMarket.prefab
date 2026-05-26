@@ -1609,13 +1609,13 @@ MonoBehaviour:
   _uiId: UI_Popup_08
   _btnClose: {fileID: 0}
   _slideDirection: 2
-  _slideDuration: 0.25
-  _txtLeftSmall: {fileID: 7892457189887906923}
-  _txtLeftMedium: {fileID: 1711189196639300120}
-  _txtLeftLarge: {fileID: 9188869248588511423}
-  _txtRightSmall: {fileID: 9041557047174570978}
-  _txtRightMedium: {fileID: 2402192549496464210}
-  _txtRightLarge: {fileID: 4059264122121821994}
+  _slideDuration: 0.1
+  _txtGoldSmall: {fileID: 7892457189887906923}
+  _txtGoldMedium: {fileID: 1711189196639300120}
+  _txtGoldLarge: {fileID: 9188869248588511423}
+  _txtIngotSmall: {fileID: 9041557047174570978}
+  _txtIngotMedium: {fileID: 2402192549496464210}
+  _txtIngotLarge: {fileID: 4059264122121821994}
   _btnBuy: {fileID: 1917357193542873559}
   _btnSell: {fileID: 3492118312504250680}
   _buyActiveColor: {r: 0.2, g: 0.8, b: 0.3, a: 1}

@@ -85,8 +85,8 @@ namespace GameData
     {
         public string Id;
         public string Name;
-        public int Value;
-        public int Exchanges;
+        public int GoldValue;
+        public int IngotValue;
         public string Desc;
 
         string IGameData.Id => Id;

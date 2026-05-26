@@ -1,44 +1,23 @@
 [
   {
-    "Id": "ex_gold_to_ingot_01",
-    "Name": "Buy a Ingot",
-    "Value": 20,
-    "Exchanges": 1,
-    "Desc": "골드를 주고 주괴를 하나 구입합니다"
+    "Id": "ex_01",
+    "Name": "Small Exchange",
+    "GoldValue": 20,
+    "IngotValue": 1,
+    "Desc": "소량 교환"
   },
   {
-    "Id": "ex_gold_to_ingot_02",
-    "Name": "Buy IngotPack",
-    "Value": 100,
-    "Exchanges": 5,
-    "Desc": "골드를 좀 더 내고 주괴 묶음을 구입합니다"
+    "Id": "ex_02",
+    "Name": "Medium Exchange",
+    "GoldValue": 100,
+    "IngotValue": 5,
+    "Desc": "적당량 교환"
   },
   {
-    "Id": "ex_gold_to_ingot_03",
-    "Name": "Buy IngotBox",
-    "Value": 200,
-    "Exchanges": 10,
-    "Desc": "골드를 많이 주고 주괴 박스를 구입합니다"
-  },
-  {
-    "Id": "ex_ingot_to_gold_01",
-    "Name": "Sell a Ingot",
-    "Value": 1,
-    "Exchanges": 10,
-    "Desc": "주괴를 판매합니다"
-  },
-  {
-    "Id": "ex_ingot_to_gold_02",
-    "Name": "Sell IngotPack",
-    "Value": 5,
-    "Exchanges": 55,
-    "Desc": "주괴 묶음을 판매합니다"
-  },
-  {
-    "Id": "ex_ingot_to_gold_03",
-    "Name": "Sell IngotBox",
-    "Value": 10,
-    "Exchanges": 110,
-    "Desc": "주괴 박스를 판매합니다"
+    "Id": "ex_03",
+    "Name": "Large Exchange",
+    "GoldValue": 200,
+    "IngotValue": 10,
+    "Desc": "대량 교환"
   }
 ]
