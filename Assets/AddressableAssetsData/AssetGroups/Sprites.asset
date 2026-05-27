@@ -100,8 +100,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a749b3414ab64ff47947e84daba3dd7f
+    m_Address: Upgrade/MagneticDockingSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a8913844dd194d742a85f99f6bfaba83
     m_Address: Upgrade/EnhancedNozzle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4164995fc44da8459687c1f3616c9b2
+    m_Address: Upgrade/VoidCrystalResonator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8608a9fd31ef614786f1093654376e7
+    m_Address: Upgrade/GravitonCargoManipulator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

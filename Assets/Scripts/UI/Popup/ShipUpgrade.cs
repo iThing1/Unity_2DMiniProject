@@ -30,7 +30,10 @@ public class ShipUpgrade : MonoBehaviour
         Upgrade.StatCargo,
         Upgrade.StatSpeed,
         Upgrade.StatAccel,
-        Upgrade.StatMaxFuel
+        Upgrade.StatMaxFuel,
+        Upgrade.StatFuelRegen,
+        Upgrade.StatDockingSpeed,
+        Upgrade.StatLoaderSpeed
     };
 
     // =========================================================================
