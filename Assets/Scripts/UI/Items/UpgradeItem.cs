@@ -101,7 +101,7 @@ public class UpgradeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             return;
         }
         
-        SoundManager.Instance.PlaySFX("success");
+        SoundManager.Instance.PlaySFX("Sounds/SFX/Success");
     }
 
     // =========================================================================

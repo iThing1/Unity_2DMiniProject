@@ -56,6 +56,13 @@
     "Auto": false
   },
   {
+    "Id": "UI_Popup_09",
+    "Name": "Scoreboard",
+    "Type": "Popup",
+    "BindState": "Lobby",
+    "Auto": false
+  },
+  {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",

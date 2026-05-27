@@ -15,10 +15,38 @@
   },
   {
     "Id": "BGM_sound_03",
-    "Name": "GameLobby",
+    "Name": "GamePlay_03",
+    "Type": "BGM",
+    "BindState": "GamePlay",
+    "SoundPath": "Sounds/BGM/GamePlay_03"
+  },
+  {
+    "Id": "BGM_sound_04",
+    "Name": "Lobby_01",
     "Type": "BGM",
     "BindState": "Lobby",
-    "SoundPath": "Sounds/BGM/Lobby"
+    "SoundPath": "Sounds/BGM/Lobby_01"
+  },
+  {
+    "Id": "BGM_sound_05",
+    "Name": "Lobby_02",
+    "Type": "BGM",
+    "BindState": "Lobby",
+    "SoundPath": "Sounds/BGM/Lobby_02"
+  },
+  {
+    "Id": "BGM_sound_06",
+    "Name": "Lobby_03",
+    "Type": "BGM",
+    "BindState": "Lobby",
+    "SoundPath": "Sounds/BGM/Lobby_03"
+  },
+  {
+    "Id": "BGM_sound_07",
+    "Name": "MainMenu_01",
+    "Type": "BGM",
+    "BindState": "MainMenu",
+    "SoundPath": "Sounds/BGM/MainMenu_01"
   },
   {
     "Id": "SFX_sound_01",

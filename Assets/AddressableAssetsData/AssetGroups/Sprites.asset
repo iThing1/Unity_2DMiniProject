@@ -126,7 +126,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e55bfba1959fd884c8c8a5d400fd172d
-    m_Address: UI/Container
+    m_Address: UI/ContainerPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

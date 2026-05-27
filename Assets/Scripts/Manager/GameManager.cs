@@ -98,6 +98,8 @@ public class GameManager : MonoBehaviour
             _stageStartTime = Time.realtimeSinceStartup;
             _stageEarnedGold = 0;
             _stageEarnedIngot = 0;
+
+            CheckStageClear();
         }
 
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
@@ -233,8 +235,6 @@ public class GameManager : MonoBehaviour
         string stageId = Context.LastSelectedStageId;
         if (string.IsNullOrEmpty(stageId)) return;
 
-        if (Context.StageClearStatus.TryGetValue(stageId, out bool isClear) && isClear) return;
-
         StageData data = GameDataManager.Instance.Get<StageData>(stageId);
         if (data == null) return;
 
@@ -339,6 +339,9 @@ public class GameManager : MonoBehaviour
         string bindState;
         switch (next)
         {
+            case GameState.MainMenu:
+                bindState = "MainMenu";
+                break;
             case GameState.Lobby:
                 bindState = "Lobby";
                 break;
@@ -368,13 +371,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogWarning($"[GameManager] '{bindState}'에 바인딩된 BGM 없음");
         }
-    }
-
-    public void RequestSFX(string soundId)
-    {
-        var data = GameDataManager.Instance.Get<SoundData>(soundId);
-        if (data != null)
-            GameEventBus.Publish(GameEventType.SFXPlayRequested, data.SoundPath);
     }
 
     private string StateToString(GameState state)

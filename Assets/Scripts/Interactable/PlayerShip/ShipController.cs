@@ -166,7 +166,7 @@ public class ShipController : MonoBehaviour
     {
         IsBoosting = false;
         IsOverheat = true;
-        SoundManager.Instance.PlaySFX("PowerOff");
+        SoundManager.Instance.PlaySFX("Sounds/SFX/PowerOff");
         if (_overheatCoroutine != null)
             StopCoroutine(_overheatCoroutine);
 

@@ -195,7 +195,6 @@ public class GamePlayUI : UIBase
         string stageId = GameManager.Instance.Context.LastSelectedStageId;
         if (string.IsNullOrEmpty(stageId)) return;
 
-        SoundManager.Instance.PlaySFX("sucess");
         GameEventBus.Publish(GameEventType.StageClear, stageId);
     }
 
