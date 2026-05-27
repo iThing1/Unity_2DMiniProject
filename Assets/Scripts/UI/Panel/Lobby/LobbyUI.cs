@@ -50,6 +50,13 @@ public class LobbyUI : UIBase
     {
         _currentStageId = stageData?.Id;
         _planetList.Refresh(stageData);
+
+        if (UIManager.Instance.IsOpen(UIId.Popup.Scoreboard))
+        {
+            Scoreboard scoreboard = UIManager.Instance.GetUI<Scoreboard>(UIId.Popup.Scoreboard);
+            if (scoreboard != null)
+                scoreboard.Setup(_currentStageId);
+        }
     }
 
     // =========================================================================
