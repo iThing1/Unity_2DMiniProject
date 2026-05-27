@@ -106,16 +106,4 @@ namespace GameData
 
         string IGameData.Id => Id;
     }
-
-    [Serializable]
-    public class UIData : IGameData
-    {
-        public string Id = null!;
-        public string Name = null!;
-        public UIType Type;
-        public string BindState = null!;
-        public bool Auto;
-
-        string IGameData.Id => Id;
-    }
 }

@@ -13,6 +13,12 @@ namespace GameData
     public enum UIType { Popup, Main, VeryFront }
     public enum SoundType { BGM, SFX }
 
+    public enum AchievementType
+    {
+        Stacked,
+        Acomplished
+    }
+
     public struct UIId
     {
         public struct Panel
@@ -21,6 +27,7 @@ namespace GameData
             public const string GamePlay = "UI_Panel_02";
             public const string GameLobby = "UI_Panel_03";
             public const string Upgrade = "UI_Panel_04";
+            public const string Achievement = "UI_Panel_05";
         }
 
         public struct Popup
@@ -43,5 +50,33 @@ namespace GameData
         {
             public const string Loading = "UI_Loading_01";
         }
+    }
+
+    [Serializable]
+    public class UIData : IGameData
+    {
+        public string Id = null!;
+        public string Name = null!;
+        public UIType Type;
+        public string BindState = null!;
+        public bool Auto;
+
+        string IGameData.Id => Id;
+    }
+
+    [Serializable]
+    public class AchievementData : IGameData
+    {
+        public string Id = null!;
+        public string Name = null!;
+        public string Description = null!;
+        public AchievementType AchievementType;
+        public int? TargetValue;
+        public int Score;
+        public string StageId;
+        public string NextId;
+        public string SpritePath;
+
+        string IGameData.Id => Id;
     }
 }

@@ -16,6 +16,9 @@ public class LobbyUI : UIBase
     [Header("통계 버튼")]
     [SerializeField] private Button _btnScoreboard;
 
+    [Header("업적 버튼")]
+    [SerializeField] private Button _btnAchievement;
+
     private string _currentStageId;
     // =========================================================================
     // Unity 생명주기
@@ -32,6 +35,9 @@ public class LobbyUI : UIBase
 
         if (_btnScoreboard != null)
             _btnScoreboard.onClick.AddListener(OnClickScoreboard);
+
+        if (_btnAchievement != null)
+            _btnAchievement.onClick.AddListener(OnClickAchievement);
     }
 
     private void OnDestroy()
@@ -41,6 +47,9 @@ public class LobbyUI : UIBase
 
         if (_btnScoreboard != null)
             _btnScoreboard.onClick.RemoveListener(OnClickScoreboard);
+
+        if (_btnAchievement != null)
+            _btnAchievement.onClick.RemoveListener(OnClickAchievement);
     }
 
     // =========================================================================
@@ -77,5 +86,10 @@ public class LobbyUI : UIBase
             scoreboard.Setup(_currentStageId);
             UIManager.Instance.OpenUI(UIId.Popup.Scoreboard);
         }
+    }
+
+    private void OnClickAchievement()
+    {
+        UIManager.Instance.OpenUI(UIId.Panel.Achievement);
     }
 }

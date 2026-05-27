@@ -120,6 +120,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9519fe567300f741a5e78f6f693ea4e
+    m_Address: UI/ContainerMessage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ddbf3a8c7e557d8419cc3d7692a3376a
     m_Address: Background/MainMenu_01
     m_ReadOnly: 0

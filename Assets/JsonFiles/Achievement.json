@@ -1,0 +1,101 @@
+[
+  {
+    "Id": "Achievement_101",
+    "Name": "초보 식량 배달부",
+    "AchievementType": "Stacked",
+    "Score": 10,
+    "TargetValue": "100",
+    "StageId": null,
+    "NextId": "Achievement_102",
+    "Description": "행성에 식량을 총 100개 배달한다.",
+    "SpritePath": "Achievement_0"
+  },
+  {
+    "Id": "Achievement_102",
+    "Name": "이 정도면 나도 배달 좀 하는데?",
+    "AchievementType": "Stacked",
+    "Score": 50,
+    "TargetValue": "500",
+    "StageId": null,
+    "NextId": "Achievement_103",
+    "Description": "행성에 식량을 총 500개 배달한다.",
+    "SpritePath": "Achievement_1"
+  },
+  {
+    "Id": "Achievement_103",
+    "Name": "밥은 내가 책임진다",
+    "AchievementType": "Stacked",
+    "Score": 200,
+    "TargetValue": "1000",
+    "StageId": null,
+    "NextId": null,
+    "Description": "행성에 식량을 총 1000개 배달한다.",
+    "SpritePath": "Achievement_2"
+  },
+  {
+    "Id": "Achievement_111",
+    "Name": "제련이 뭔지는 알아",
+    "AchievementType": "Stacked",
+    "Score": 10,
+    "TargetValue": "100",
+    "StageId": null,
+    "NextId": "Achievement_112",
+    "Description": "주괴를 총 100개 제련한다.",
+    "SpritePath": "Achievement_3"
+  },
+  {
+    "Id": "Achievement_112",
+    "Name": "이제 대장장이가 뭔지 깨달았어",
+    "AchievementType": "Stacked",
+    "Score": 50,
+    "TargetValue": "500",
+    "StageId": null,
+    "NextId": "Achievement_113",
+    "Description": "주괴를 총 500개 제련한다.",
+    "SpritePath": "Achievement_4"
+  },
+  {
+    "Id": "Achievement_113",
+    "Name": "우리 동네 대장장이",
+    "AchievementType": "Stacked",
+    "Score": 200,
+    "TargetValue": "1000",
+    "StageId": null,
+    "NextId": null,
+    "Description": "주괴를 총 1000개 제련한다.",
+    "SpritePath": "Achievement_5"
+  },
+  {
+    "Id": "Achievement_201",
+    "Name": "초보 운전",
+    "AchievementType": "Acomplished",
+    "Score": 10,
+    "TargetValue": null,
+    "StageId": "Stage_normal_00",
+    "NextId": "Achievement_202",
+    "Description": "튜토리얼 스테이지를 클리어한다",
+    "SpritePath": "Achievement_6"
+  },
+  {
+    "Id": "Achievement_202",
+    "Name": "나도 이제 어엿한 배달부",
+    "AchievementType": "Acomplished",
+    "Score": 100,
+    "TargetValue": null,
+    "StageId": "Stage_normal_05",
+    "NextId": "Achievement_203",
+    "Description": "노말 스테이지 5를 클리어한다.",
+    "SpritePath": "Achievement_7"
+  },
+  {
+    "Id": "Achievement_203",
+    "Name": "스피드 레이서",
+    "AchievementType": "Acomplished",
+    "Score": 300,
+    "TargetValue": null,
+    "StageId": "Stage_normal_10",
+    "NextId": null,
+    "Description": "노말 스테이지를 모두 클리어한다.",
+    "SpritePath": "Achievement_8"
+  }
+]

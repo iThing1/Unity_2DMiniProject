@@ -12,7 +12,7 @@ public enum GameEventType
     GameStateChanged = 101,
     NewGameRequested = 102,
     ContinueRequested = 103,
-    
+    AchievementCompleted = 104,
     // ==========================================
     // [사운드] 200번대
     // ==========================================

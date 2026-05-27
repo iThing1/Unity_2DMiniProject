@@ -28,6 +28,48 @@ namespace GameData
         public Dictionary<string, List<StageClearRecord>> ClearRecords 
             = new Dictionary<string, List<StageClearRecord>>();
 
+        public Dictionary<string, bool> AchievementStatus = new Dictionary<string, bool>();
+        public Dictionary<string, int> AchievementProgress = new Dictionary<string, int>();
+
+        public bool IsAchievementCompleted(string achievementId)
+        {
+            return AchievementStatus.TryGetValue(achievementId, out bool completed) && completed;
+        }
+
+        public int GetAchievementProgress(string achievementId)
+        {
+            return AchievementProgress.TryGetValue(achievementId, out int value) ? value : 0;
+        }
+
+        public bool UpdateAchievementProgress(string achievementId, int addValue)
+        {
+            if (IsAchievementCompleted(achievementId)) return false;
+
+            AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
+            if (data == null) return false;
+
+            if (!AchievementProgress.ContainsKey(achievementId))
+                AchievementProgress[achievementId] = 0;
+
+            AchievementProgress[achievementId] += addValue;
+
+            if (AchievementProgress[achievementId] >= (data.TargetValue ?? 0))
+            {
+                AchievementStatus[achievementId] = true;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CompleteAchievement(string achievementId)
+        {
+            if (IsAchievementCompleted(achievementId)) return false;
+
+            AchievementStatus[achievementId] = true;
+            return true;
+        }
+
         public string SavedAt;
         public int LastLoadedSlot = 0;
     }

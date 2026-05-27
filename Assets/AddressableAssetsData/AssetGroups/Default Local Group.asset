@@ -20,8 +20,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c9519fe567300f741a5e78f6f693ea4e
-    m_Address: UI/ContainerMessage
+  - m_GUID: 92b53094d6162c44b8228cb2dab1bf39
+    m_Address: Achievement
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

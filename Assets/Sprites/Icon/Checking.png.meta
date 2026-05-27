@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c9519fe567300f741a5e78f6f693ea4e
+guid: 1a05823818bdc2e438c522016f7ed7b3
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,9 +48,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -136,23 +136,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Container_Message_0
+      name: Checking_0
       rect:
         serializedVersion: 2
-        x: 536
-        y: 361
-        width: 1329
-        height: 860
+        x: 500
+        y: 332
+        width: 435
+        height: 427
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 77, y: 96, z: 80, w: 93}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ff7c61fc05352649b5cd103558d5b7d
-      internalID: 1800023983
+      spriteID: 874b79fd58a622e46875bbec84a56dd4
+      internalID: 983404859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Checking_1
+      rect:
+        serializedVersion: 2
+        x: 1119
+        y: 331
+        width: 381
+        height: 389
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d824dd093566d7548a7cea812b5edab1
+      internalID: 367161312
       vertices: []
       indices: 
       edges: []
@@ -161,7 +183,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: e99bfbc936a72434fa07692cbb4d4dc7
+    spriteID: 8846d09574bcb2e46abda7d48b1840f0
     internalID: 0
     vertices: []
     indices: 
@@ -173,7 +195,8 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Container_Message_0: 1800023983
+      Checking_0: 983404859
+      Checking_1: 367161312
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

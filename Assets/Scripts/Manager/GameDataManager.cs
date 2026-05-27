@@ -50,7 +50,8 @@ public class GameDataManager : MonoBehaviour
             RegisterTable<UpgradeData>("Data/Upgrade"),
             RegisterTable<ExchangeData>("Data/Exchange"),
             RegisterTable<SoundData>("Data/Sound"),
-            RegisterTable<UIData>("Data/UI")
+            RegisterTable<UIData>("Data/UI"),
+            RegisterTable<AchievementData>("Data/Achievement")
         };
 
         while (!AllTasksDone(tasks))
