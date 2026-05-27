@@ -17,6 +17,9 @@ public class StationController : InteractableBase
     [Header("스폰 포인트")]
     [SerializeField] private Transform _spawnPoint;
 
+    [Header("타이머 UI")]
+    [SerializeField] private StationTimer _timerUI;
+
     public float StoredFood => _simulator.StoredFood;
     public float StoredOre => _simulator.StoredOre;
     public float StoredIngot => _simulator.StoredIngot;
@@ -72,6 +75,7 @@ public class StationController : InteractableBase
     {
         _isGamePlay = true;
         _simulator.Initialize();
+        _timerUI?.Initialize(_simulator);
     }
 
     public void StopSimulation()
@@ -96,11 +100,6 @@ public class StationController : InteractableBase
     public bool TryStationUpgrade(string upgradeId)
     {
         return GameManager.Instance.TryUpgrade(upgradeId);
-    }
-
-    public void SellIngot()
-    {
-        _simulator.SellIngot();
     }
 
     // =========================================================================

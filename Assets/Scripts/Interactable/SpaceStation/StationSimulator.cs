@@ -13,6 +13,10 @@ public class StationSimulator : MonoBehaviour
     public float StoredOre { get; private set; }
     public float StoredIngot { get; private set; }
 
+    public float FarmProgress => _farmRate > 0f ? Mathf.Repeat(StoredFood, 1f) : 0f;
+    public float RefineProgress => _oreToIngotRatio > 0f ? Mathf.Clamp01(_refineAccumulator / _oreToIngotRatio) : 0f;
+    public bool IsRefining => StoredOre >= _oreToIngotRatio;
+
     // =========================================================================
     // 내부 스탯
     // =========================================================================
@@ -89,24 +93,6 @@ public class StationSimulator : MonoBehaviour
     public void UnloadOre(float amount)
     {
         StoredOre += amount;
-    }
-
-    public void SellIngot()
-    {
-        if (StoredIngot < 1f)
-        {
-            Debug.Log("[StationSimulator] 판매할 주괴가 없습니다.");
-            return;
-        }
-
-        int ingotToSell = Mathf.FloorToInt(StoredIngot);
-        int goldEarned = ingotToSell * 10;  // TODO: 1 주괴당 10 골드로 고정. 밸런스 확인 후 데이터로 이동
-
-        StoredIngot -= ingotToSell;
-        GameManager.Instance.TrySpendIngot(ingotToSell);
-        GameManager.Instance.AddGold(goldEarned);
-
-        Debug.Log($"[StationSimulator] 주괴 {ingotToSell:F0}개 판매 → 골드 +{goldEarned:F0}");
     }
 
     // =========================================================================
