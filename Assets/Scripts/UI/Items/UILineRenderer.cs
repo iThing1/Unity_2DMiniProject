@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasRenderer))]
-public class UILineRenderer : Graphic
+public class UILineRenderer : MaskableGraphic
 {
     // =========================================================================
     // Inspector 연결
