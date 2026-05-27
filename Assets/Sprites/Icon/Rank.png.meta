@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e55bfba1959fd884c8c8a5d400fd172d
+guid: 7633329333f683f4583bfe732d530c95
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -50,7 +50,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -136,23 +136,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Container_Popup_0
+      name: Rank_0
       rect:
         serializedVersion: 2
-        x: 275
-        y: 189
-        width: 678
-        height: 443
+        x: 121
+        y: 357
+        width: 578
+        height: 578
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 62, y: 46, z: 62, w: 76}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aab30ac898078764e8ef155b9948ebfc
-      internalID: -1065427532
+      spriteID: 03609e798d1ba47468b6f755688c1504
+      internalID: 1135056688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rank_1
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 357
+        width: 578
+        height: 578
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6f46944f30b7b64a81d52390ce3caca
+      internalID: 2052479076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rank_2
+      rect:
+        serializedVersion: 2
+        x: 1713
+        y: 357
+        width: 578
+        height: 578
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 33f9fe731a188ef4d89dd624380d0bff
+      internalID: -2002911980
       vertices: []
       indices: 
       edges: []
@@ -161,7 +205,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d46012c272ddab342adad0ed32c21ca1
+    spriteID: d9d36c541432c2d4db0d61f1c92c45c2
     internalID: 0
     vertices: []
     indices: 
@@ -173,7 +217,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Container_Popup_0: -1065427532
+      Rank_0: 1135056688
+      Rank_1: 2052479076
+      Rank_2: -2002911980
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

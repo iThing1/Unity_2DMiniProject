@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e55bfba1959fd884c8c8a5d400fd172d
+guid: a50008d627bda364bbe063d1bc90ec0c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -50,7 +50,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -136,23 +136,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Container_Popup_0
+      name: Junior_person_0
       rect:
         serializedVersion: 2
-        x: 275
-        y: 189
-        width: 678
-        height: 443
+        x: 422
+        y: 0
+        width: 1600
+        height: 1599
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 62, y: 46, z: 62, w: 76}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: aab30ac898078764e8ef155b9948ebfc
-      internalID: -1065427532
+      spriteID: de09e1bad87d78d49bf23313e221c531
+      internalID: 1441551751
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: d46012c272ddab342adad0ed32c21ca1
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -173,7 +173,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Container_Popup_0: -1065427532
+      Junior_person_0: 1441551751
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
