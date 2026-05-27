@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using GameData;
 
 public class GamePlayUI : UIBase
@@ -10,7 +11,7 @@ public class GamePlayUI : UIBase
     [SerializeField] private FuelGauge _fuelGauge;
     [SerializeField] private CargoInfo _cargoInfo;
     [SerializeField] private AlertBorder _alertBorder;
-
+    [SerializeField] private Button _btnClear;
     // =========================================================================
     // 직접 참조
     // =========================================================================
@@ -43,6 +44,7 @@ public class GamePlayUI : UIBase
         GameEventBus.Subscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
         GameEventBus.Subscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
         GameEventBus.Subscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
+        GameEventBus.Subscribe(GameEventType.StageClearCondition, HandleStageClearCondition);
     }
 
     protected override void UnregisterEvents()
@@ -52,6 +54,7 @@ public class GamePlayUI : UIBase
         GameEventBus.Unsubscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
         GameEventBus.Unsubscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
         GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
+        GameEventBus.Unsubscribe(GameEventType.StageClearCondition, HandleStageClearCondition);
     }
 
     protected override void Start()
@@ -59,6 +62,12 @@ public class GamePlayUI : UIBase
         base.Start();
         _fuelGauge.Initialize();
         _cargoInfo.Initialize();
+
+        if (_btnClear != null)
+        {
+            _btnClear.gameObject.SetActive(false);
+            _btnClear.onClick.AddListener(OnClickClear);
+        }
 
         CollectBoundPopups();
     }
@@ -175,6 +184,20 @@ public class GamePlayUI : UIBase
             _alertBorder.StopAlert();
     }
 
+    private void HandleStageClearCondition()
+    {
+        if (_btnClear != null)
+            _btnClear.gameObject.SetActive(true);
+    }
+
+    private void OnClickClear()
+    {
+        string stageId = GameManager.Instance.Context.LastSelectedStageId;
+        if (string.IsNullOrEmpty(stageId)) return;
+
+        GameEventBus.Publish(GameEventType.StageClear, stageId);
+    }
+
     // =========================================================================
     // 내부 유틸
     // =========================================================================
@@ -210,6 +233,12 @@ public class GamePlayUI : UIBase
         _hoveredPlanet = null;
         _warningPlanetCount = 0;
         _alertBorder.StopAlert();
+
+        if (_btnClear != null)
+        {
+            _btnClear.onClick.RemoveListener(OnClickClear);
+            _btnClear.gameObject.SetActive(false);
+        }
 
         foreach (string popupId in _boundPopupIds)
             UIManager.Instance.CloseUI(popupId);

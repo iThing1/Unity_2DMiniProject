@@ -12,7 +12,7 @@ public enum GameEventType
     GameStateChanged = 101,
     NewGameRequested = 102,
     ContinueRequested = 103,
-
+    
     // ==========================================
     // [사운드] 200번대
     // ==========================================
@@ -39,7 +39,7 @@ public enum GameEventType
     StageStartRequested = 501,
     StageClear = 502,
     StageFailed = 503,
-
+    StageClearCondition = 504,
     // ==========================================
     // [행성] 600번대
     // ==========================================

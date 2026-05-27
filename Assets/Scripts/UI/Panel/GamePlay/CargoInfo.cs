@@ -45,7 +45,11 @@ public class CargoInfo : MonoBehaviour
     public void RefreshCargo(int food, int ore, int total, int capacity)
     {
         if (_txtCargoInfo != null)
+        {
             _txtCargoInfo.text = $"{total} / {capacity}";
+            _txtCargoInfo.color = total == capacity ? Color.red : Color.white;
+        }
+            
 
         if (_txtFood != null)
             _txtFood.text = food.ToString();

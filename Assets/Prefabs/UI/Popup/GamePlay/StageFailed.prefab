@@ -404,9 +404,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4430741203667568672}
-  - component: {fileID: 7296691096661466930}
   - component: {fileID: 597194178604531138}
   - component: {fileID: 3004804508149539609}
+  - component: {fileID: 7418193832521864848}
   m_Layer: 5
   m_Name: StageFailed
   m_TagString: Untagged
@@ -435,23 +435,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7296691096661466930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6868254862704934756}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308e9a3e134a867468a072fd2a772b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StageClearUI
-  _uiId: UI_Popup_04
-  _btnClose: {fileID: 0}
-  _btnGoLobby: {fileID: 7041541030468461843}
-  _txtClearTime: {fileID: 0}
-  _txtScore: {fileID: 0}
 --- !u!222 &597194178604531138
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -490,3 +473,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &7418193832521864848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868254862704934756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2384b17d09d2645aad839f4713b2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageFailed
+  _uiId: UI_Popup_04
+  _btnClose: {fileID: 0}
+  _slideDirection: 0
+  _slideDuration: 0.25
+  _btnGoLobby: {fileID: 7041541030468461843}

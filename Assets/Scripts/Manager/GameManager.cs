@@ -195,7 +195,11 @@ public class GameManager : MonoBehaviour
         Context.CurrentGold += amount;
         GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
         if (CurrentState == GameState.GamePlay)
+        {
             _stageEarnedGold += amount;
+            GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
+            CheckStageClear();
+        }   
     }
 
     public bool TrySpendGold(int amount)
@@ -235,7 +239,7 @@ public class GameManager : MonoBehaviour
         if (data == null) return;
 
         if (Context.CurrentGold >= data.ReqGold)
-            GameEventBus.Publish(GameEventType.StageClear, stageId);
+            GameEventBus.Publish(GameEventType.StageClearCondition);
     }
 
     // =========================================================================
