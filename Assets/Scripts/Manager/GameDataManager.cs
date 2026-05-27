@@ -109,11 +109,9 @@ public class GameDataManager : MonoBehaviour
         {
             // 우주선
             FuelConsumeRate = GetConstant("FUEL_CONSUME_RATE", 50f),
-            FuelRegenRate = GetConstant("FUEL_REGEN_RATE", 20f),
             OverheatDuration = GetConstant("OVERHEAT_DURATION", 5f),
             ShipAcceleration = GetConstant("SHIP_ACCELERATION", 5f),
             ShipBoostAccel = GetConstant("SHIP_BOOST_ACCELERATION", 20f),
-            DockingSpeed = GetConstant("STATION_DOCKING_SPEED", 0.5f),
 
             // 행성
             ProsperityChangeRate = GetConstant("PROSPERITY_CHANGE_RATE", 0.15f),
@@ -125,7 +123,6 @@ public class GameDataManager : MonoBehaviour
             PlanetProsperityMax = GetConstant("PLANET_PROSPERITY_MAX", 100f),
 
             // 정거장 / 화물
-            CargoTransferInterval = GetConstant("CARGO_TRANSFER_INTERVAL", 0.2f),
             OreToIngotRatio = GetConstant("ORE_TO_INGOT_RATIO", 10f),
             StationDockingRange = GetConstant("STATION_DOCKING_RANGE", 5f),
 

@@ -10,6 +10,9 @@ namespace GameData
         public const string StatMaxFuel = "UP_Ship_MaxFuel";
         public const string StatFarm = "UP_Stat_Farm";
         public const string StatRefine = "UP_Stat_Refine";
+        public const string StatFuelRegen = "UP_Ship_FuelRegen";
+        public const string StatDockingSpeed = "UP_Ship_DockingSpeed";
+        public const string StatLoaderSpeed = "UP_Ship_LoaderSpeed";
     }
 
     [Serializable]

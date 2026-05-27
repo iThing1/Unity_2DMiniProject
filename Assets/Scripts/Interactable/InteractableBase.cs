@@ -6,17 +6,13 @@ public abstract class InteractableBase : MonoBehaviour
     protected ShipController _shipController;
     protected ShipInventory _shipInventory;
 
-    private float _dockingSpeedThreshold;
     protected bool _isPlayerInside = false;
     private bool _isInteracting = false;
 
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    protected virtual void Awake()
-    {
-        InitializeData();
-    }
+    protected virtual void Awake() { }
 
     protected virtual void OnEnable()
     {
@@ -82,11 +78,6 @@ public abstract class InteractableBase : MonoBehaviour
     protected abstract void OnActivate();
     protected abstract void OnDeactivate();
     protected virtual bool CanInteract() => true;
-
-    private void InitializeData()
-    {
-        _dockingSpeedThreshold = GameDataManager.Instance.Constants.DockingSpeed;
-    }
 
     private void HandleShipSpawned(Transform shipTransform)
     {

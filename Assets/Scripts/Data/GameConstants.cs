@@ -6,11 +6,9 @@ namespace GameData
     {
         // 우주선
         public float FuelConsumeRate;
-        public float FuelRegenRate;
         public float OverheatDuration;
         public float ShipAcceleration;
         public float ShipBoostAccel;
-        public float DockingSpeed;
 
         // 행성
         public float ProsperityChangeRate;
@@ -22,7 +20,6 @@ namespace GameData
         public float PlanetProsperityMax;
 
         // 정거장 / 화물
-        public float CargoTransferInterval;
         public float OreToIngotRatio;
         public float StationDockingRange;
 

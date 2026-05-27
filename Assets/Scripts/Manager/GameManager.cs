@@ -279,6 +279,9 @@ public class GameManager : MonoBehaviour
             case Upgrade.StatAccel:
             case Upgrade.StatMaxFuel:
             case Upgrade.StatCargo:
+            case Upgrade.StatFuelRegen:
+            case Upgrade.StatDockingSpeed:
+            case Upgrade.StatLoaderSpeed:
                 GameEventBus.Publish(GameEventType.ShipStatsChanged, SetShipStats());
                 break;
 
@@ -297,6 +300,9 @@ public class GameManager : MonoBehaviour
             BoostAcceleration = GetUpgradeStat(Upgrade.StatAccel),
             MaxFuel = GetUpgradeStat(Upgrade.StatMaxFuel),
             Capacity = Mathf.RoundToInt(GetUpgradeStat(Upgrade.StatCargo)),
+            FuelRegenRate = GetUpgradeStat(Upgrade.StatFuelRegen),
+            DockingSpeedThreshold = GetUpgradeStat(Upgrade.StatDockingSpeed),
+            LoaderSpeed = GetUpgradeStat(Upgrade.StatLoaderSpeed),
         };
     }
 

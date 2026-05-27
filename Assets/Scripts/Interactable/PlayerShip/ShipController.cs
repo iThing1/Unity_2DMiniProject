@@ -8,6 +8,9 @@ public struct ShipStats
     public float BoostAcceleration;
     public float MaxFuel;
     public int Capacity;
+    public float FuelRegenRate;
+    public float DockingSpeedThreshold;
+    public float LoaderSpeed;
 }
 
 [RequireComponent(typeof(Rigidbody2D))]

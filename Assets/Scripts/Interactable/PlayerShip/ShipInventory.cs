@@ -67,8 +67,10 @@ public class ShipInventory : MonoBehaviour
     // =========================================================================
     public void InitializeData()
     {
-        _transferInterval = GameDataManager.Instance.Constants.CargoTransferInterval;
-        ApplyCapacity(GameManager.Instance.SetShipStats().Capacity);
+        ShipStats stats = GameManager.Instance.SetShipStats();
+        _transferInterval = stats.LoaderSpeed > 0f
+            ? stats.LoaderSpeed : 0.1f;
+        ApplyCapacity(stats.Capacity);
     }
 
     private void ApplyCapacity(int capacity)
@@ -215,6 +217,8 @@ public class ShipInventory : MonoBehaviour
     private void HandleShipStatsChanged(ShipStats stats)
     {
         ApplyCapacity(stats.Capacity);
+        if (stats.LoaderSpeed > 0f)
+            _transferInterval = stats.LoaderSpeed;
         Debug.Log($"[ShipInventory] 용량 갱신. {Capacity}");
     }
 

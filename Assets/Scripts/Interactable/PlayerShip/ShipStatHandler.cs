@@ -27,13 +27,13 @@ public class ShipStatHandler : MonoBehaviour
     public float BaseSpeed { get; private set; }
     public float BoostAcceleration { get; private set; }
     public float MaxFuel { get; private set; }
+    public float FuelRegenRate { get; private set; }
+    public float DockingSpeedThreshold { get; private set; }
 
     // 상수 스탯
     public float Acceleration { get; private set; }
     public float FuelConsumeRate { get; private set; }
-    public float FuelRegenRate { get; private set; }
     public float OverheatDuration { get; private set; }
-    public float DockingSpeedThreshold { get; private set; }
 
     private float _baseBoostAcceleration;
 
@@ -64,9 +64,7 @@ public class ShipStatHandler : MonoBehaviour
         var c = GameDataManager.Instance.Constants;
 
         FuelConsumeRate = c.FuelConsumeRate != 0f ? c.FuelConsumeRate : _defaultFuelConsumeRate;
-        FuelRegenRate = c.FuelRegenRate != 0f ? c.FuelRegenRate : _defaultFuelRegenRate;
         OverheatDuration = c.OverheatDuration != 0f ? c.OverheatDuration : _defaultOverheatDuration;
-        DockingSpeedThreshold = c.DockingSpeed != 0f ? c.DockingSpeed : _defaultDockingSpeedThreshold;
         Acceleration = c.ShipAcceleration != 0f ? c.ShipAcceleration : _defaultAcceleration;
         _baseBoostAcceleration = c.ShipBoostAccel != 0f ? c.ShipBoostAccel : _defaultBoostAcceleration;
     }
@@ -80,6 +78,9 @@ public class ShipStatHandler : MonoBehaviour
             : _baseBoostAcceleration;
 
         MaxFuel = stats.MaxFuel > 0f ? stats.MaxFuel : _defaultMaxFuel;
+
+        FuelRegenRate = stats.FuelRegenRate > 0f ? stats.FuelRegenRate : _defaultFuelRegenRate;
+        DockingSpeedThreshold = stats.DockingSpeedThreshold > 0f ? stats.DockingSpeedThreshold : _defaultDockingSpeedThreshold;
     }
 
     // =========================================================================

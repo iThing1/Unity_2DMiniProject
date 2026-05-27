@@ -13,7 +13,7 @@
     "UpgradeValue": 10,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/CargoExpand",
-    "Description": "Expand Ship Storage"
+    "Description": "Modular cargo bay expansion using advanced polymer alloy frames"
   },
   {
     "Id": "UP_Ship_Speed",
@@ -29,7 +29,7 @@
     "UpgradeValue": 5,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/EngineOverclock",
-    "Description": "Improve Speed Limit"
+    "Description": "Overclock engine output beyond factory limits for higher top speed"
   },
   {
     "Id": "UP_Ship_Accel",
@@ -45,7 +45,7 @@
     "UpgradeValue": 30,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/EnhancedNozzle",
-    "Description": "Add Nozzle to Accelate Much Faster"
+    "Description": "Retrofitted plasma nozzle array delivers explosive burst acceleration"
   },
   {
     "Id": "UP_Ship_MaxFuel",
@@ -61,7 +61,7 @@
     "UpgradeValue": 100,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/ExtraFuelTank",
-    "Description": "Can Store More Fuel"
+    "Description": "High-pressure void fuel cells extend operational range significantly"
   },
   {
     "Id": "UP_Stat_Refine",
@@ -77,7 +77,7 @@
     "UpgradeValue": 5,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/NanoRefiner",
-    "Description": "Apply Nano Technology in Refiner"
+    "Description": "Nanoscale refinery bots process raw ore with unprecedented efficiency"
   },
   {
     "Id": "UP_Stat_Farm",
@@ -93,6 +93,54 @@
     "UpgradeValue": 30,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/Hydroponics",
-    "Description": "Upgrade Food ValueChain"
+    "Description": "Zero-gravity hydroponic systems maximize food production yield"
+  },
+  {
+    "Id": "UP_Ship_FuelRegen",
+    "Target": "Ship",
+    "UpgradeType": "PERM",
+    "Name": "VoidCrystalResonator",
+    "MaxLevel": 10,
+    "BaseGoldCost": 2000,
+    "CostIncrease": 2000,
+    "BaseIngotCost": 0,
+    "IngotIncrease": 0,
+    "BaseStats": 20,
+    "UpgradeValue": 10,
+    "CalcType": "Sum",
+    "SpritePath": "Upgrade/VoidCrystalResonator",
+    "Description": "Harness crystallized void energy to accelerate fuel regeneration"
+  },
+  {
+    "Id": "UP_Ship_DockingSpeed",
+    "Target": "Ship",
+    "UpgradeType": "PERM",
+    "Name": "MagneticDockingSystem",
+    "MaxLevel": 10,
+    "BaseGoldCost": 0,
+    "CostIncrease": 0,
+    "BaseIngotCost": 20,
+    "IngotIncrease": 20,
+    "BaseStats": 1,
+    "UpgradeValue": 0.5,
+    "CalcType": "Sum",
+    "SpritePath": "Upgrade/MagneticDockingSystem",
+    "Description": "Electromagnetic lock system pulls your ship into dock at high speed"
+  },
+  {
+    "Id": "UP_Ship_LoaderSpeed",
+    "Target": "Ship",
+    "UpgradeType": "PERM",
+    "Name": "GravitonCargoManipulator",
+    "MaxLevel": 10,
+    "BaseGoldCost": 0,
+    "CostIncrease": 0,
+    "BaseIngotCost": 25,
+    "IngotIncrease": 25,
+    "BaseStats": 0.1,
+    "UpgradeValue": -0.005,
+    "CalcType": "Sum",
+    "SpritePath": "Upgrade/GravitonCargoManipulator",
+    "Description": "Graviton field technology dramatically speeds up cargo loading and unloading"
   }
 ]
