@@ -110,11 +110,11 @@ RectTransform:
   - {fileID: 4744687561674779198}
   m_Father: {fileID: 1374889263201636858}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 1}
+  m_SizeDelta: {x: 1720, y: 500}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6855403349783986511
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -839,12 +839,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipUpgrade
   _nodePrefab: {fileID: 7493550303488247501, guid: 382c412fa8a558847a9341c88db5229d, type: 3}
   _linePrefab: {fileID: 8280225318822558071, guid: 56c3e13bc277f354ab3a0881bb667987, type: 3}
-  _container: {fileID: 7325029702467501811}
+  _container: {fileID: 4744687561674779198}
   _upgradeInfo: {fileID: 5300143639377443230}
   _nodeSize: 80
-  _nodeSpacingX: 120
+  _nodeSpacingX: 130
   _rowSpacingY: 150
-  _startOffset: {x: 0, y: 0}
+  _startOffset: {x: 30, y: -30}
 --- !u!1 &4695463106234975518
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,11 +876,11 @@ RectTransform:
   - {fileID: 1374889263201636858}
   m_Father: {fileID: 4285166997942656214}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -150}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 120}
   m_SizeDelta: {x: 1720, y: 500}
-  m_Pivot: {x: 0, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4813205436253777291
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,8 +1034,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeUI
   _uiId: UI_Panel_04
   _btnClose: {fileID: 1115873057128658500}
-  _slideDirection: 0
-  _slideDuration: 0.25
+  _slideDirection: 4
+  _slideDuration: 0.2
   _shipUpgrade: {fileID: 6145360576247145808}
 --- !u!222 &184242332252362603
 CanvasRenderer:
@@ -1242,11 +1242,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 307171953616684825}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_SizeDelta: {x: 0, y: 1100}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &8445472282440132798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,10 +1417,10 @@ RectTransform:
   - {fileID: 307171953616684825}
   m_Father: {fileID: 7325029702467501811}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1720, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5384883128177642334
 CanvasRenderer:
@@ -1443,7 +1443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ScrollRect
   m_Content: {fileID: 4744687561674779198}
-  m_Horizontal: 0
+  m_Horizontal: 1
   m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1

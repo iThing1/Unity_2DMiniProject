@@ -19,8 +19,8 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     [Header("상태 색상")]
     [SerializeField] private Color _colorUnlocked = Color.white;
-    [SerializeField] private Color _colorLocked = new Color(0.3f, 0.3f, 0.3f, 1f);
-    [SerializeField] private Color _colorDone = new Color(0.4f, 0.8f, 0.4f, 1f);
+    [SerializeField] private Color _colorLocked = new Color(0.15f, 0.15f, 0.15f, 1f);
+    [SerializeField] private Color _colorDone = new Color(0.2f, 0.9f, 0.2f, 1f);
 
     // =========================================================================
     // 링크드리스트
