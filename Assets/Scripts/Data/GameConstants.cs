@@ -26,7 +26,6 @@ namespace GameData
         // 행성 생산/소비 계수
         public float FoodConsumeBase;
         public float FoodConsumeRate;
-        public float OreProdBase;
         public float OreProdRate;
     }
 

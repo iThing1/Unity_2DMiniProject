@@ -128,8 +128,7 @@ public class GameDataManager : MonoBehaviour
             StationDockingRange = GetConstant("STATION_DOCKING_RANGE", 5f),
 
             FoodConsumeBase = GetConstant("FOOD_CONSUME_BASE", 0f),
-            FoodConsumeRate = GetConstant("FOOD_CONSUME_RATE", 0.0001f),
-            OreProdBase = GetConstant("ORE_PRODUCE_BASE", 3f),
+            FoodConsumeRate = GetConstant("FOOD_CONSUME_RATE", 0.00005f),
             OreProdRate = GetConstant("ORE_PRODUCE_RATE", 0.00005f),
         };
     }

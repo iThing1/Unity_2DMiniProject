@@ -71,13 +71,8 @@
   },
   {
     "Id": "FOOD_CONSUME_RATE",
-    "Value": 0.0001,
+    "Value": 5E-05,
     "Desc": "식량 초당 소비량 조절계수"
-  },
-  {
-    "Id": "ORE_PRODUCE_BASE",
-    "Value": 1,
-    "Desc": "광석 초당 생산량 기본"
   },
   {
     "Id": "ORE_PRODUCE_RATE",

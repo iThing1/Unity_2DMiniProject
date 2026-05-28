@@ -152,6 +152,7 @@ public class StationController : InteractableBase
         if (_activeZone == null) return;
 
         StopInteractCoroutine();
+        _shipInventory.StopTransfer();
 
         IEnumerator routine = null;
 

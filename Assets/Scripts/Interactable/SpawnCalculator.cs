@@ -35,6 +35,7 @@ public static class SpawnCalculator
 
             // 겹침이더라도 정거장으로부터 거리 기록 (fallback 후보)
             float distFromStation = GetDistanceFromStation(cx, cy, stationCollider);
+            bool isInsideCamera = IsCameraInside(cx, cy, colliderRadius, spawnPadding, cameraController);
             if (distFromStation > bestDist)
             {
                 bestDist = distFromStation;
@@ -115,6 +116,15 @@ public static class SpawnCalculator
         }
 
         return false;
+    }
+
+    private static bool IsCameraInside(float cx, float cy, float colliderRadius, float spawnPadding, CameraController cameraController)
+    {
+        if (cameraController == null) return true;
+
+        float halfW = cameraController.ViewHalfWidth - colliderRadius - spawnPadding;
+        float halfH = cameraController.ViewHalfHeight - colliderRadius - spawnPadding;
+        return MathUtility.IsPointInRect(cx, cy, halfW, halfH);
     }
 
     private static float GetColliderRadius(Collider2D col)

@@ -5,7 +5,7 @@
     "Name": "velora",
     "BasePop": 13000,
     "BaseFood": 26,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 1,
     "PlanetSprite": "Planet/Planet_0"
@@ -16,7 +16,7 @@
     "Name": "cindara",
     "BasePop": 18000,
     "BaseFood": 36,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 1,
     "PlanetSprite": "Planet/Planet_1"
@@ -27,7 +27,7 @@
     "Name": "virena",
     "BasePop": 25000,
     "BaseFood": 50,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 1,
     "PlanetSprite": "Planet/Planet_2"
@@ -38,7 +38,7 @@
     "Name": "crysalis",
     "BasePop": 30000,
     "BaseFood": 60,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 1,
     "PlanetSprite": "Planet/Planet_3"
@@ -49,7 +49,7 @@
     "Name": "dravos",
     "BasePop": 38000,
     "BaseFood": 76,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_4"
@@ -60,7 +60,7 @@
     "Name": "seradon",
     "BasePop": 45000,
     "BaseFood": 90,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_5"
@@ -71,7 +71,7 @@
     "Name": "velora_minor",
     "BasePop": 48500,
     "BaseFood": 98,
-    "BaseOre": 0,
+    "BaseOre": 5,
     "Properity": 80,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_6"
@@ -82,7 +82,7 @@
     "Name": "joralis",
     "BasePop": 55000,
     "BaseFood": 110,
-    "BaseOre": 5,
+    "BaseOre": 10,
     "Properity": 70,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_7"
@@ -93,7 +93,7 @@
     "Name": "mekaron",
     "BasePop": 78000,
     "BaseFood": 156,
-    "BaseOre": 5,
+    "BaseOre": 10,
     "Properity": 70,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_8"
@@ -104,7 +104,7 @@
     "Name": "talmeris",
     "BasePop": 110000,
     "BaseFood": 220,
-    "BaseOre": 5,
+    "BaseOre": 10,
     "Properity": 70,
     "Grade": 2,
     "PlanetSprite": "Planet/Planet_9"
@@ -115,7 +115,7 @@
     "Name": "pyrenox",
     "BasePop": 135000,
     "BaseFood": 270,
-    "BaseOre": 5,
+    "BaseOre": 10,
     "Properity": 70,
     "Grade": 3,
     "PlanetSprite": "Planet/Planet_10"
@@ -126,7 +126,7 @@
     "Name": "nereth",
     "BasePop": 148000,
     "BaseFood": 296,
-    "BaseOre": 5,
+    "BaseOre": 10,
     "Properity": 70,
     "Grade": 3,
     "PlanetSprite": "Planet/Planet_11"
@@ -137,7 +137,7 @@
     "Name": "frosena",
     "BasePop": 165000,
     "BaseFood": 330,
-    "BaseOre": 10,
+    "BaseOre": 20,
     "Properity": 60,
     "Grade": 3,
     "PlanetSprite": "Planet/Planet_12"
@@ -148,7 +148,7 @@
     "Name": "peloris",
     "BasePop": 195000,
     "BaseFood": 390,
-    "BaseOre": 10,
+    "BaseOre": 20,
     "Properity": 60,
     "Grade": 3,
     "PlanetSprite": "Planet/Planet_13"
@@ -159,7 +159,7 @@
     "Name": "orbion",
     "BasePop": 240000,
     "BaseFood": 480,
-    "BaseOre": 10,
+    "BaseOre": 20,
     "Properity": 60,
     "Grade": 4,
     "PlanetSprite": "Planet/Planet_14"
@@ -170,7 +170,7 @@
     "Name": "castren",
     "BasePop": 275000,
     "BaseFood": 550,
-    "BaseOre": 10,
+    "BaseOre": 20,
     "Properity": 60,
     "Grade": 4,
     "PlanetSprite": "Planet/Planet_15"
@@ -181,7 +181,7 @@
     "Name": "umbraka",
     "BasePop": 298000,
     "BaseFood": 596,
-    "BaseOre": 10,
+    "BaseOre": 20,
     "Properity": 60,
     "Grade": 4,
     "PlanetSprite": "Planet/Planet_16"
@@ -192,7 +192,7 @@
     "Name": "lumiris",
     "BasePop": 320000,
     "BaseFood": 640,
-    "BaseOre": 20,
+    "BaseOre": 30,
     "Properity": 50,
     "Grade": 5,
     "PlanetSprite": "Planet/Planet_17"
@@ -203,7 +203,7 @@
     "Name": "mordaris",
     "BasePop": 365000,
     "BaseFood": 730,
-    "BaseOre": 20,
+    "BaseOre": 30,
     "Properity": 50,
     "Grade": 5,
     "PlanetSprite": "Planet/Planet_18"
@@ -214,7 +214,7 @@
     "Name": "rathen",
     "BasePop": 410000,
     "BaseFood": 820,
-    "BaseOre": 20,
+    "BaseOre": 30,
     "Properity": 50,
     "Grade": 6,
     "PlanetSprite": "Planet/Planet_19"
@@ -225,7 +225,7 @@
     "Name": "volkris",
     "BasePop": 460000,
     "BaseFood": 920,
-    "BaseOre": 20,
+    "BaseOre": 30,
     "Properity": 50,
     "Grade": 6,
     "PlanetSprite": "Planet/Planet_20"
@@ -236,7 +236,7 @@
     "Name": "eldara",
     "BasePop": 495000,
     "BaseFood": 990,
-    "BaseOre": 20,
+    "BaseOre": 30,
     "Properity": 50,
     "Grade": 6,
     "PlanetSprite": "Planet/Planet_21"
@@ -247,7 +247,7 @@
     "Name": "shardon",
     "BasePop": 530000,
     "BaseFood": 1060,
-    "BaseOre": 25,
+    "BaseOre": 40,
     "Properity": 50,
     "Grade": 7,
     "PlanetSprite": "Planet/Planet_22"
@@ -258,7 +258,7 @@
     "Name": "nyxor",
     "BasePop": 565000,
     "BaseFood": 1130,
-    "BaseOre": 25,
+    "BaseOre": 40,
     "Properity": 50,
     "Grade": 7,
     "PlanetSprite": "Planet/Planet_23"

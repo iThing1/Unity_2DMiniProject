@@ -109,6 +109,6 @@
     "Name": "DebugUI",
     "Type": "Popup",
     "BindState": "Lobby",
-    "Auto": true
+    "Auto": false
   }
 ]

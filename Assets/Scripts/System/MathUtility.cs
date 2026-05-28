@@ -28,17 +28,13 @@ public static class MathUtility
     // =========================================================================
 
     // 원형 궤도 위 랜덤 좌표 생성.
-    public static (float x, float y) RandomPointOnRing(
-        float minDist, float maxDist, float gradeWeight,
-        float randomValue, float randomAngle)
+    public static (float x, float y) RandomPointOnRing(float minDist, float maxDist, float gradeWeight, float randomValue, float randomAngle)
     {
-        float t = (float)Math.Pow(randomValue, 1f - gradeWeight);
+        float t = (float)Math.Pow(randomValue, gradeWeight > 0f ? gradeWeight : 0.5f);
         float distance = Lerp(minDist, maxDist, t);
         float angleRad = randomAngle * (float)(Math.PI / 180.0);
-        return (
-            (float)Math.Cos(angleRad) * distance,
-            (float)Math.Sin(angleRad) * distance
-        );
+
+        return ((float)Math.Cos(angleRad) * distance, (float)Math.Sin(angleRad) * distance );
     }
 
     // 원형 궤도 위 폴백 좌표 생성.
