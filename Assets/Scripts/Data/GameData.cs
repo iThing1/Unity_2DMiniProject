@@ -57,6 +57,7 @@ namespace GameData
         public struct VeryFront
         {
             public const string Loading = "UI_Loading_01";
+            public const string Intro = "UI_Intro_01";
         }
     }
 
@@ -85,6 +86,16 @@ namespace GameData
         public string StageId;
         public string NextId;
         public string SpritePath;
+
+        string IGameData.Id => Id;
+    }
+
+    [Serializable]
+    public class IntroData : IGameData
+    {
+        public string Id = null!;
+        public string Message = null!;
+        public string BackgroundPath = null!;
 
         string IGameData.Id => Id;
     }

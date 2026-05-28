@@ -148,9 +148,10 @@ public class SlotSelectUI : UIBase
         SaveLoadController.DeleteSlot(_selectedSlotIndex);
         GameManager.Instance.ResetContext(_selectedSlotIndex);
         GameEventBus.Publish(GameEventType.NewGameRequested);
-        GameManager.Instance.ChangeState(GameState.Lobby);
+        SoundManager.Instance.StopBGM();
+        UIManager.Instance.OpenIntroUI();
+        Close();
     }
-
 
     // =========================================================================
     // 내부 유틸

@@ -361,7 +361,7 @@ public class GameManager : MonoBehaviour
         foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
         {
             if (sound.Type == SoundType.BGM && sound.BindState == bindState)
-                candidates.Add(sound.Id);
+                candidates.Add(sound.SoundPath);
         }
 
         if (candidates.Count > 0)

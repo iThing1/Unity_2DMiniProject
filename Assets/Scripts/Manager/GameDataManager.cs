@@ -51,6 +51,7 @@ public class GameDataManager : MonoBehaviour
             RegisterTable<ExchangeData>("Data/Exchange"),
             RegisterTable<SoundData>("Data/Sound"),
             RegisterTable<UIData>("Data/UI"),
+            RegisterTable<IntroData>("Data/Intro"),
             RegisterTable<AchievementData>("Data/Achievement")
         };
 

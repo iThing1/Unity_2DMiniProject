@@ -20,7 +20,10 @@ public class UIManager : MonoBehaviour
     [Header("Loading UI")]
     [SerializeField] private GameObject _loadingUIPrefab;
 
-    [Header("HUD")]
+    [Header("Intro UI")]
+    [SerializeField] private GameObject _introUIPrefab;
+
+    [Header("재화 표기")]
     [SerializeField] private GameObject _currencyUIPrefab;
 
     // =========================================================================
@@ -158,6 +161,22 @@ public class UIManager : MonoBehaviour
 
         instance.SetActive(false);
         _createdUIDic[uiId] = instance;
+    }
+
+    public void OpenIntroUI()
+    {
+        if (_introUIPrefab == null)
+        {
+            Debug.LogWarning("[UIManager] IntroUIPrefab이 연결되지 않았습니다.");
+            return;
+        }
+
+        GameObject instance = Instantiate(_introUIPrefab, _veryFrontRoot);
+        IntroUI introUI = instance.GetComponent<IntroUI>();
+        if (introUI != null)
+            introUI.Open();
+
+        SoundManager.Instance.PlayBGM("Sounds/BGM/Intro");
     }
 
     private void SpawnCurrencyUI()

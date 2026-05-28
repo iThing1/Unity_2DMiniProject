@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour
         foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
         {
             if (sound.Type == SoundType.BGM)
-                _bgmAddressMap[sound.Id] = sound.SoundPath;
+                _bgmAddressMap[sound.SoundPath] = sound.SoundPath;
         }
     }
 

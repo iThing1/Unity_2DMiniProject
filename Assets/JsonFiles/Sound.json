@@ -49,6 +49,13 @@
     "SoundPath": "Sounds/BGM/MainMenu_01"
   },
   {
+    "Id": "BGM_sound_08",
+    "Name": "Intro",
+    "Type": "BGM",
+    "BindState": null,
+    "SoundPath": "Sounds/BGM/Intro"
+  },
+  {
     "Id": "SFX_sound_01",
     "Name": "PowerOff",
     "Type": "SFX",

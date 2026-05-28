@@ -106,7 +106,7 @@ public class AchievementItem : MonoBehaviour
             _txtDesc.text = _currentData.Description;
 
         if (_imgAchievement != null && !string.IsNullOrEmpty(_currentData.SpritePath))
-            ResourceManager.Instance.LoadSpriteFromSheet("Achievement", _currentData.SpritePath, OnSpriteLoaded);
+            ResourceManager.Instance.LoadSpriteFromSheet("AchievementInfo", _currentData.SpritePath, OnSpriteLoaded);
 
         if (_imgCompleted != null)
             _imgCompleted.gameObject.SetActive(isCompleted);

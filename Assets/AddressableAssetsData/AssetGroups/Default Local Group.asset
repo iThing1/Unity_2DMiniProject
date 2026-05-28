@@ -20,8 +20,23 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 532ff05f70d6b3246af9f7a1d6e9c2c4
+    m_Address: Data/Intro
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78958d870bb09994faa46ce04675116f
+    m_Address: Sounds/BGM/Intro
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 92b53094d6162c44b8228cb2dab1bf39
     m_Address: AchievementInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a09c579d777ef4c4f96bded4f4e9fbdb
+    m_Address: Intro
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -31,17 +46,17 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2057cde9563007419543f5a7d0609b5
-    m_Address: Background/intro_bg1
+    m_Address: Background/Intro_bg1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e211c616af30e8c4daf8a28decff2a87
-    m_Address: Background/intro_bg2
+    m_Address: Background/Intro_bg2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fa8bd40a0d4d8b7468b5db190ef26b53
-    m_Address: Background/intro_bg4
+    m_Address: Background/Intro_bg4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

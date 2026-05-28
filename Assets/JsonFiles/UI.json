@@ -110,5 +110,12 @@
     "Type": "Popup",
     "BindState": "Lobby",
     "Auto": false
+  },
+  {
+    "Id": "UI_Intro_01",
+    "Name": "Intro",
+    "Type": "VeryFront",
+    "BindState": null,
+    "Auto": false
   }
 ]
