@@ -155,7 +155,7 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
         // 레벨 표시
         if (_txtLevel != null)
-            _txtLevel.text = $"{_slotLevel}";
+            _txtLevel.text = $"Lv.{_slotLevel}";
 
         // 스프라이트 로드
         if (_imgNode != null && !string.IsNullOrEmpty(data.SpritePath))

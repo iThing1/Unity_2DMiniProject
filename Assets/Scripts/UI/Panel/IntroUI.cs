@@ -1,11 +1,10 @@
 ﻿using GameData;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 인트로 연출 UI
-// NewGame 시 1회만 재생 후 Destroy
 public class IntroUI : UIBase
 {
     // =========================================================================
@@ -21,12 +20,20 @@ public class IntroUI : UIBase
     [Header("스킵")]
     [SerializeField] private Button _btnSkip;
 
+    private const float TYPING_INTERVAL = 0.05f;
+
     // =========================================================================
     // 내부 상태
     // =========================================================================
     private List<IntroData> _introDataList = new List<IntroData>();
     private int _currentIndex = 0;
-    private bool _isMessageDone = false;
+
+    private string[] _currentLines;
+    private int _currentLineIndex = 0;
+    private bool _isTyping = false;
+    private bool _isLineComplete = false;
+
+    private Coroutine _typingCoroutine;
 
     // =========================================================================
     // Unity 생명주기
@@ -50,7 +57,7 @@ public class IntroUI : UIBase
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
-            OnPressNext();
+            OnPressSpace();
     }
 
     // =========================================================================
@@ -60,7 +67,33 @@ public class IntroUI : UIBase
     {
         base.Open();
         LoadIntroData();
-        ShowCurrent();
+        ShowCurrentScene();
+    }
+
+    // =========================================================================
+    // 입력 처리
+    // =========================================================================
+    private void OnPressSpace()
+    {
+        if (_isTyping)
+        {
+            CompleteCurrentLine();
+            return;
+        }
+
+        if (!_isLineComplete) return;
+
+        _currentLineIndex++;
+
+        if (_currentLineIndex >= _currentLines.Length)
+        {
+            _currentIndex++;
+            ShowCurrentScene();
+        }
+        else
+        {
+            StartTypingCurrentLine();
+        }
     }
 
     // =========================================================================
@@ -72,7 +105,6 @@ public class IntroUI : UIBase
         foreach (IntroData data in GameDataManager.Instance.GetAll<IntroData>())
             _introDataList.Add(data);
 
-        // Id 기준 정렬
         _introDataList.Sort(CompareIntroDataById);
         _currentIndex = 0;
     }
@@ -85,7 +117,7 @@ public class IntroUI : UIBase
     // =========================================================================
     // 현재 장면 표시
     // =========================================================================
-    private void ShowCurrent()
+    private void ShowCurrentScene()
     {
         if (_currentIndex >= _introDataList.Count)
         {
@@ -95,18 +127,19 @@ public class IntroUI : UIBase
 
         IntroData data = _introDataList[_currentIndex];
 
-        if (_txtMessage != null)
-            _txtMessage.text = data.Message.Replace("/", "\n");
+        _currentLines = data.Message.Split('/');
+        _currentLineIndex = 0;
 
         if (_txtNext != null)
             _txtNext.gameObject.SetActive(false);
 
-        _isMessageDone = false;
+        if (_txtMessage != null)
+            _txtMessage.text = string.Empty;
 
         if (_imgBackground != null && !string.IsNullOrEmpty(data.BackgroundPath))
             ResourceManager.Instance.LoadAsset<Sprite>(data.BackgroundPath, OnBackgroundLoaded);
 
-        SetMessageDone();
+        StartTypingCurrentLine();
     }
 
     private void OnBackgroundLoaded(Sprite sprite)
@@ -115,25 +148,66 @@ public class IntroUI : UIBase
             _imgBackground.sprite = sprite;
     }
 
-    private void SetMessageDone()
+    // =========================================================================
+    // 타이핑 처리
+    // =========================================================================
+    private void StartTypingCurrentLine()
     {
-        _isMessageDone = true;
+        _isLineComplete = false;
+
+        if (_txtNext != null)
+            _txtNext.gameObject.SetActive(false);
+
+        if (_typingCoroutine != null)
+            StopCoroutine(_typingCoroutine);
+
+        _typingCoroutine = StartCoroutine(TypingRoutine(_currentLines[_currentLineIndex]));
+    }
+
+    private IEnumerator TypingRoutine(string line)
+    {
+        _isTyping = true;
+
+        if (_txtMessage != null)
+            _txtMessage.text = string.Empty;
+
+        for (int i = 0; i < line.Length; i++)
+        {
+            if (_txtMessage != null)
+                _txtMessage.text += line[i];
+
+            yield return new WaitForSeconds(TYPING_INTERVAL);
+        }
+
+        _typingCoroutine = null;
+        _isTyping = false;
+        _isLineComplete = true;
+
+        if (_txtNext != null)
+            _txtNext.gameObject.SetActive(true);
+    }
+
+    private void CompleteCurrentLine()
+    {
+        if (_typingCoroutine != null)
+        {
+            StopCoroutine(_typingCoroutine);
+            _typingCoroutine = null;
+        }
+
+        if (_txtMessage != null && _currentLines != null && _currentLineIndex < _currentLines.Length)
+            _txtMessage.text = _currentLines[_currentLineIndex];
+
+        _isTyping = false;
+        _isLineComplete = true;
 
         if (_txtNext != null)
             _txtNext.gameObject.SetActive(true);
     }
 
     // =========================================================================
-    // 입력 처리
+    // 버튼 핸들러
     // =========================================================================
-    private void OnPressNext()
-    {
-        if (!_isMessageDone) return;
-
-        _currentIndex++;
-        ShowCurrent();
-    }
-
     private void OnClickSkip()
     {
         FinishIntro();
@@ -144,6 +218,12 @@ public class IntroUI : UIBase
     // =========================================================================
     private void FinishIntro()
     {
+        if (_typingCoroutine != null)
+        {
+            StopCoroutine(_typingCoroutine);
+            _typingCoroutine = null;
+        }
+
         GameManager.Instance.ChangeState(GameState.Lobby);
         Destroy(gameObject);
     }
