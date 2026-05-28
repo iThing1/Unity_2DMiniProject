@@ -16,9 +16,9 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
-    private float _stageStartTime;
-    private int _stageEarnedGold;
-    private int _stageEarnedIngot;
+    public float StageStartTime { get; private set; }
+    public int StageEarnedGold { get; private set; }
+    public int StageEarnedIngot { get; private set; }
 
     private void Awake()
     {
@@ -95,9 +95,9 @@ public class GameManager : MonoBehaviour
         if (newState == GameState.GamePlay)
         {
             if (_stationSpawner != null) _stationSpawner.OnEnterGamePlay();
-            _stageStartTime = Time.realtimeSinceStartup;
-            _stageEarnedGold = 0;
-            _stageEarnedIngot = 0;
+            StageStartTime = Time.realtimeSinceStartup;
+            StageEarnedGold = 0;
+            StageEarnedIngot = 0;
 
             CheckStageClear();
         }
@@ -121,12 +121,12 @@ public class GameManager : MonoBehaviour
         if (!Context.UnlockedStageIds.Contains(stageId))
             Context.UnlockedStageIds.Add(stageId);
 
-        int goldEarned = _stageEarnedGold;
-        int ingotEarned = _stageEarnedIngot;
+        int goldEarned = StageEarnedGold;
+        int ingotEarned = StageEarnedIngot;
 
         StageClearRecord record = new StageClearRecord
         {
-            ClearTime = Time.realtimeSinceStartup - _stageStartTime,
+            ClearTime = Time.realtimeSinceStartup - StageStartTime,
             GoldEarned = goldEarned,
             IngotEarned = ingotEarned,
             Score = goldEarned * 1 + ingotEarned * 10,
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
         if (CurrentState == GameState.GamePlay)
         {
-            _stageEarnedGold += amount;
+            StageEarnedGold += amount;
             GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
             CheckStageClear();
         }   
@@ -218,7 +218,7 @@ public class GameManager : MonoBehaviour
         GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
         if (CurrentState == GameState.GamePlay)
         {
-            _stageEarnedIngot += amount;
+            StageEarnedIngot += amount;
         }
     }
 

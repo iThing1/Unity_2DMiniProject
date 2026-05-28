@@ -10,11 +10,19 @@ public class StageClear : UIBase
     // =========================================================================
     [Header("버튼")]
     [SerializeField] private Button _btnGoLobby;
+    [SerializeField] private Button _btnDetail;
 
-    [Header("클리어 기록")]
-    [SerializeField] private TMP_Text _txtClearTime;
-    [SerializeField] private TMP_Text _txtScore;
+    [Header("클리어 정보")]
+    [SerializeField] private TMP_Text _txtPlayTime;
+    [SerializeField] private TMP_Text _txtTotalScore;
 
+    [Header("점수 상세")]
+    [SerializeField] private GameObject _detail;
+    [SerializeField] private TMP_Text _txtEarnGold;
+    [SerializeField] private TMP_Text _txtEarnIngot;
+
+    private const int GoldScoreMultiplier = 1;
+    private const int IngotScoreMultiplier = 10;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -24,12 +32,21 @@ public class StageClear : UIBase
 
         if (_btnGoLobby != null)
             _btnGoLobby.onClick.AddListener(OnClickGoLobby);
+
+        if (_btnDetail != null)
+            _btnDetail.onClick.AddListener(OnClickDetail);
+
+        if (_detail != null)
+            _detail.SetActive(false);
     }
 
     private void OnDestroy()
     {
         if (_btnGoLobby != null)
             _btnGoLobby.onClick.RemoveListener(OnClickGoLobby);
+
+        if (_btnDetail != null)
+            _btnDetail.onClick.RemoveListener(OnClickDetail);
     }
 
     // =========================================================================
@@ -40,17 +57,22 @@ public class StageClear : UIBase
         base.Setup(data);
 
         if (data is StageClearRecord record)
-        {
-            if (_txtClearTime != null)
-            {
-                int minutes = Mathf.FloorToInt(record.ClearTime / 60f);
-                int seconds = Mathf.FloorToInt(record.ClearTime % 60f);
-                _txtClearTime.text = $"Clear Time : {minutes:00}:{seconds:00}";
-            }
+            Refresh(record);
+    }
 
-            if (_txtScore != null)
-                _txtScore.text = $"Score: {record.Score:N0}";
-        }
+    private void Refresh(StageClearRecord record)
+    {
+        if (_txtPlayTime != null)
+            _txtPlayTime.text = MathUtility.FormatTime(record.ClearTime);
+
+        if (_txtTotalScore != null)
+            _txtTotalScore.text = $"{record.Score:N0}";
+
+        if (_txtEarnGold != null)
+            _txtEarnGold.text = $"{record.GoldEarned:N0} x {GoldScoreMultiplier} = {record.GoldEarned * GoldScoreMultiplier:N0}";
+
+        if (_txtEarnIngot != null)
+            _txtEarnIngot.text = $"{record.IngotEarned:N0} x {IngotScoreMultiplier} = {record.IngotEarned * IngotScoreMultiplier:N0}";
     }
 
     // =========================================================================
@@ -61,5 +83,20 @@ public class StageClear : UIBase
         Time.timeScale = 1f;
         Close();
         GameManager.Instance.ChangeState(GameState.Lobby);
+    }
+
+    private void OnClickDetail()
+    {
+        if (_detail != null)
+            _detail.SetActive(!_detail.activeSelf);
+    }
+
+    // =========================================================================
+    // 닫기 전 정리
+    // =========================================================================
+    protected override void OnBeforeClose()
+    {
+        if (_detail != null)
+            _detail.SetActive(false);
     }
 }

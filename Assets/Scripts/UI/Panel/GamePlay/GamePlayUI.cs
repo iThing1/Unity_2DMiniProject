@@ -206,7 +206,11 @@ public class GamePlayUI : UIBase
         string stageId = GameManager.Instance.Context.LastSelectedStageId;
         if (string.IsNullOrEmpty(stageId)) return;
 
-        GameEventBus.Publish(GameEventType.StageClear, stageId);
+        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
+        if (data == null) return;
+
+        bool isclear = GameManager.Instance.TrySpendGold(data.ReqGold);
+        if (isclear) GameEventBus.Publish(GameEventType.StageClear, stageId);
     }
 
     // =========================================================================

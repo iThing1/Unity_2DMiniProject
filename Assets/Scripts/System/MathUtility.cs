@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public static class MathUtility
 {
@@ -73,5 +74,13 @@ public static class MathUtility
     {
         t = Math.Max(0f, Math.Min(1f, t));
         return a + (b - a) * t;
+    }
+
+    // 초를 00:00로 변환하여 표기
+    public static string FormatTime(float seconds)
+    {
+        int min = Mathf.FloorToInt(seconds / 60f);
+        int sec = Mathf.FloorToInt(seconds % 60f);
+        return $"{min:00}:{sec:00}";
     }
 }

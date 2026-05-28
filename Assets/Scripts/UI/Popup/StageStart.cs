@@ -64,6 +64,6 @@ public class StageStart : UIBase
             _txtName.text = data.Name;
 
         if (_txtReqGold != null)
-            _txtReqGold.text = $"Goal: {data.ReqGold:N0}";
+            _txtReqGold.text = $"{data.ReqGold:N0}";
     }
 }
