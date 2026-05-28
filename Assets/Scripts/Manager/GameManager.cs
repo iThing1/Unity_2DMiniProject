@@ -217,7 +217,9 @@ public class GameManager : MonoBehaviour
         Context.CurrentIngot += amount;
         GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
         if (CurrentState == GameState.GamePlay)
+        {
             _stageEarnedIngot += amount;
+        }
     }
 
     public bool TrySpendIngot(int amount)

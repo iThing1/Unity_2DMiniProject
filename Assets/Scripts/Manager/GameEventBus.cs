@@ -24,6 +24,8 @@ public enum GameEventType
     GoldChanged = 300,
     IngotChanged = 301,
     CargoChanged = 302,
+    FoodDelivered = 303,
+    IngotRefined = 304,
 
     // ==========================================
     // [성장 & 스탯] 400번대

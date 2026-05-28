@@ -146,6 +146,7 @@ public class PlanetController : InteractableBase
     private void OnFoodUnloadEach()
     {
         _simulator.DeliverFood(1);
+        GameEventBus.Publish(GameEventType.FoodDelivered, 1);
     }
 
     private void OnOreLoadEach()

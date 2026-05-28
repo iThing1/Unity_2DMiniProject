@@ -48,6 +48,11 @@ namespace GameData
             AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
             if (data == null) return false;
 
+            if (data.AchievementType == AchievementType.Stacked && (data.TargetValue == null || data.TargetValue <= 0))
+            {
+                return false;
+            }
+
             if (!AchievementProgress.ContainsKey(achievementId))
                 AchievementProgress[achievementId] = 0;
 

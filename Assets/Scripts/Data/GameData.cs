@@ -19,6 +19,14 @@ namespace GameData
         Acomplished
     }
 
+    public enum TriggerType
+    {
+        None,
+        FoodDelivered,
+        IngotRefined,
+        StageClear,
+    }
+
     public struct UIId
     {
         public struct Panel
@@ -71,6 +79,7 @@ namespace GameData
         public string Name = null!;
         public string Description = null!;
         public AchievementType AchievementType;
+        public TriggerType TriggerType;
         public int? TargetValue;
         public int Score;
         public string StageId;

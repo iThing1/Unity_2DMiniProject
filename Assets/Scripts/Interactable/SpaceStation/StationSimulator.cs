@@ -127,6 +127,7 @@ public class StationSimulator : MonoBehaviour
                     _refineAccumulator -= ingotGain * _oreToIngotRatio;
                     StoredIngot += ingotGain;
                     GameManager.Instance.AddIngot(ingotGain);
+                    GameEventBus.Publish(GameEventType.IngotRefined, ingotGain);
                 }
             }
 
