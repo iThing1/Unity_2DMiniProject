@@ -66,7 +66,6 @@ public class GamePlayUI : UIBase
         if (_btnClear != null)
         {
             _btnClear.gameObject.SetActive(false);
-            _btnClear.onClick.AddListener(OnClickClear);
         }
 
         CollectBoundPopups();
@@ -112,6 +111,18 @@ public class GamePlayUI : UIBase
                 _lastCargoCount,
                 _lastCargoCapacity
             );
+        }
+    }
+
+    public override void Open()
+    {
+        base.Open();
+
+        if (_btnClear != null)
+        {
+            _btnClear.onClick.RemoveListener(OnClickClear);
+            _btnClear.onClick.AddListener(OnClickClear);
+            _btnClear.gameObject.SetActive(false);
         }
     }
 

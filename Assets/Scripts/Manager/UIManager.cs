@@ -101,6 +101,9 @@ public class UIManager : MonoBehaviour
                 instance.SetActive(true);
 
             _openedUISet.Add(uiId);
+
+            if (_currencyUIInstance != null && _currencyUIInstance.activeSelf)
+                _currencyUIInstance.transform.SetAsLastSibling();
         }
     }
 

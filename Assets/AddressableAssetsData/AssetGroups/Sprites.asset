@@ -85,6 +85,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92b53094d6162c44b8228cb2dab1bf39
+    m_Address: AchievementInfo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99ca28cd618a43b4784ab4967c552cbb
     m_Address: UI/GUI
     m_ReadOnly: 0
@@ -110,6 +115,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6aee839027aaba40b6431dff9d7f5a3
+    m_Address: Background/Intro_bg3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4164995fc44da8459687c1f3616c9b2
     m_Address: Upgrade/VoidCrystalResonator
     m_ReadOnly: 0
@@ -125,13 +135,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2057cde9563007419543f5a7d0609b5
+    m_Address: Background/Intro_bg1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ddbf3a8c7e557d8419cc3d7692a3376a
     m_Address: Background/MainMenu_01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e211c616af30e8c4daf8a28decff2a87
+    m_Address: Background/Intro_bg2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e55bfba1959fd884c8c8a5d400fd172d
     m_Address: UI/ContainerPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa8bd40a0d4d8b7468b5db190ef26b53
+    m_Address: Background/Intro_bg4
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

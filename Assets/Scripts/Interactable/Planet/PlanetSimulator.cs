@@ -21,7 +21,7 @@ public class PlanetSimulator : MonoBehaviour
     private const float PROSPERITY_LOW = 20f;
     private const float PROSPERITY_CRITICAL = 1f;
 
-    private static readonly float[] ORE_MULTIPLIERS = { 1.5f, 1.3f, 1.0f, 0.8f, 0.6f };
+    private static readonly float[] ORE_MULTIPLIERS = { 1.3f, 1.1f, 1.0f, 0.7f, 0.5f };
 
     // =========================================================================
     // 런타임 상태 (외부 읽기용)
@@ -41,7 +41,6 @@ public class PlanetSimulator : MonoBehaviour
     private string _instanceId;
     private string _planetName;
     private float _basePop;
-    private int _grade;
 
     private float _prosperityMax;
     private float _prosperityChangeRate;
@@ -82,7 +81,6 @@ public class PlanetSimulator : MonoBehaviour
         StoredFood = data.BaseFood;
         StoredOre = data.BaseOre;
 
-        _grade = data.Grade;
         _foodDeliveredThisCycle = 0f;
         CycleProgress = 0f;
 
@@ -240,7 +238,7 @@ public class PlanetSimulator : MonoBehaviour
     // =========================================================================
     private float CalcFoodConsumePerSec() => _foodConsumeBase + (Population * _foodConsumeRate);
     private float CalcFoodRequired() => CalcFoodConsumePerSec() * _cycleDuration;
-    private float CalcOreProductionPerSec() => _grade + (Population * _oreProduceRate);
+    private float CalcOreProductionPerSec() => Population * _oreProduceRate;
 
     private PlanetState CalcPlanetState(float prosperity)
     {

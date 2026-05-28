@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78958d870bb09994faa46ce04675116f
+    m_Address: Sounds/BGM/Intro
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: af7771eade9dcb84eb5eadd5d03cec57
     m_Address: Sounds/BGM/GamePlay_03
     m_ReadOnly: 0

@@ -13,6 +13,9 @@ public class AchievementUI : UIBase
     [SerializeField] private GameObject _achievementItemPrefab;
     [SerializeField] private Transform _content;
 
+    [Header("업적 점수")]
+    [SerializeField] private TMP_Text _txtScore;
+
     [Header("치트 코드")]
     [SerializeField] private TMP_InputField _inputCheatCode;
     [SerializeField] private Button _btnConfirmCode;
@@ -41,6 +44,9 @@ public class AchievementUI : UIBase
 
         if (_btnConfirmCode != null)
             _btnConfirmCode.onClick.AddListener(OnClickConfirmCode);
+
+        if (_txtScore != null)
+            _txtScore.text = $"Score : {GameManager.Instance.Context.AchievementScore}";
     }
 
     protected override void OnBeforeClose()

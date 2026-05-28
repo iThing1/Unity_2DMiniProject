@@ -76,7 +76,7 @@
   },
   {
     "Id": "ORE_PRODUCE_RATE",
-    "Value": 1E-05,
+    "Value": 3E-05,
     "Desc": "광석 초당 생산량 조절계수"
   }
 ]

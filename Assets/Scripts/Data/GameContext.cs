@@ -28,6 +28,8 @@ namespace GameData
         public Dictionary<string, List<StageClearRecord>> ClearRecords 
             = new Dictionary<string, List<StageClearRecord>>();
 
+        public int AchievementScore;
+
         public Dictionary<string, bool> AchievementStatus = new Dictionary<string, bool>();
         public Dictionary<string, int> AchievementProgress = new Dictionary<string, int>();
 
@@ -61,6 +63,7 @@ namespace GameData
             if (AchievementProgress[achievementId] >= (data.TargetValue ?? 0))
             {
                 AchievementStatus[achievementId] = true;
+                AchievementScore += data.Score;
                 return true;
             }
 
@@ -72,6 +75,10 @@ namespace GameData
             if (IsAchievementCompleted(achievementId)) return false;
 
             AchievementStatus[achievementId] = true;
+            AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
+            if (data != null)
+                AchievementScore += data.Score;
+
             return true;
         }
 
