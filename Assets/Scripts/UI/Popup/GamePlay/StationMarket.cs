@@ -178,15 +178,15 @@ public class StationMarket : UIBase
     {
         if (_isBuyMode)
         {
-            if (GameManager.Instance.TrySpendGold(data.GoldValue))
-                GameManager.Instance.AddIngot(data.IngotValue);
+            if (CurrencyManager.Instance.TrySpendGold(data.GoldValue))
+                CurrencyManager.Instance.AddIngot(data.IngotValue);
             else
                 Debug.Log("[StationMarket] 골드가 부족합니다.");
         }
         else
         {
-            if (GameManager.Instance.TrySpendIngot(data.IngotValue))
-                GameManager.Instance.AddGold(data.GoldValue);
+            if (CurrencyManager.Instance.TrySpendIngot(data.IngotValue))
+                CurrencyManager.Instance.AddGold(data.GoldValue);
             else
                 Debug.Log("[StationMarket] 주괴가 부족합니다.");
         }

@@ -39,13 +39,13 @@ public class DebugUI : MonoBehaviour
 
     private void OnClickAddGold()
     {
-        GameManager.Instance.AddGold(_addGoldAmount);
+        CurrencyManager.Instance.AddGold(_addGoldAmount);
         Debug.Log($"[DebugUI] 골드 +{_addGoldAmount} (현재: {GameManager.Instance.Context.CurrentGold})");
     }
 
     private void OnClickAddIngot()
     {
-        GameManager.Instance.AddIngot(_addIngotAmount);
+        CurrencyManager.Instance.AddIngot(_addIngotAmount);
         Debug.Log($"[DebugUI] 주괴 +{_addIngotAmount} (현재: {GameManager.Instance.Context.CurrentIngot})");
     }
 }

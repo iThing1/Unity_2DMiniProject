@@ -1,5 +1,4 @@
 ﻿using GameData;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -16,32 +15,14 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
-    public float StageStartTime { get; private set; }
-    public int StageEarnedGold { get; private set; }
-    public int StageEarnedIngot { get; private set; }
-
     private void Awake()
     {
-        if (Instance != null) 
-        { 
-            Destroy(gameObject); 
+        if (Instance != null)
+        {
+            Destroy(gameObject);
             return;
         }
         Instance = this;
-    }
-
-    private void OnEnable()
-    {
-        GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
-        GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
-        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
-    }
-
-    private void OnDisable()
-    {
-        GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
-        GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
-        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
     }
 
     private async void Start()
@@ -72,6 +53,9 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("[GameManager] Sprite Sheet 프리로드 실패");
     }
 
+    // =========================================================================
+    // 상태 전환
+    // =========================================================================
     public void ChangeState(GameState newState)
     {
         if (CurrentState == newState) return;
@@ -99,65 +83,15 @@ public class GameManager : MonoBehaviour
         if (newState == GameState.GamePlay)
         {
             if (_stationSpawner != null) _stationSpawner.OnEnterGamePlay();
-            StageStartTime = Time.realtimeSinceStartup;
-            StageEarnedGold = 0;
-            StageEarnedIngot = 0;
-
-            CheckStageClear();
+            StageManager.Instance.OnEnterGamePlay();
         }
 
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
-        UpdateBGMForState(prev, newState);
+        UpdateBGMForState(newState);
     }
 
     public void StartGamePlay() => ChangeState(GameState.GamePlay);
     public void ReturnToLobby() => ChangeState(GameState.Lobby);
-
-    private void HandleStageSelected(string stageId)
-    {
-        Context.LastSelectedStageId = stageId;
-    }
-
-    private void HandleStageClear(string stageId)
-    {
-        Context.StageClearStatus[stageId] = true;
-
-        if (!Context.UnlockedStageIds.Contains(stageId))
-            Context.UnlockedStageIds.Add(stageId);
-
-        int goldEarned = StageEarnedGold;
-        int ingotEarned = StageEarnedIngot;
-
-        StageClearRecord record = new StageClearRecord
-        {
-            ClearTime = Time.realtimeSinceStartup - StageStartTime,
-            GoldEarned = goldEarned,
-            IngotEarned = ingotEarned,
-            Score = goldEarned * 1 + ingotEarned * 10,
-            ClearedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
-        };
-
-        if (!Context.ClearRecords.ContainsKey(stageId))
-            Context.ClearRecords[stageId] = new List<StageClearRecord>();
-
-        Context.ClearRecords[stageId].Add(record);
-
-        Time.timeScale = 0f;
-        StageClear stageClear = UIManager.Instance.PrepareUI<StageClear>(UIId.Popup.StageClear);
-        if (stageClear != null)
-        {
-            stageClear.Setup(record);
-            UIManager.Instance.OpenUI(UIId.Popup.StageClear);
-        }
-    }
-
-    private void HandleStageFailed(string stageId)
-    {
-        Context.StageClearStatus[stageId] = false;
-
-        Time.timeScale = 0f;
-        UIManager.Instance.OpenUI(UIId.Popup.StageFailed);
-    }
 
     // =========================================================================
     // 저장 / 로드
@@ -193,62 +127,6 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================================================================
-    // 재화 관련
-    // =========================================================================
-
-    public void AddGold(int amount)
-    {
-        Context.CurrentGold += amount;
-        GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
-        if (CurrentState == GameState.GamePlay)
-        {
-            StageEarnedGold += amount;
-            GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
-            CheckStageClear();
-        }   
-    }
-
-    public bool TrySpendGold(int amount)
-    {
-        if (Context.CurrentGold < amount) return false;
-        Context.CurrentGold -= amount;
-        GameEventBus.Publish(GameEventType.GoldChanged, Context.CurrentGold);
-        return true;
-    }
-
-    public void AddIngot(int amount)
-    {
-        Context.CurrentIngot += amount;
-        GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
-        if (CurrentState == GameState.GamePlay)
-        {
-            StageEarnedIngot += amount;
-        }
-    }
-
-    public bool TrySpendIngot(int amount)
-    {
-        if (Context.CurrentIngot < amount) return false;
-        Context.CurrentIngot -= amount;
-        GameEventBus.Publish(GameEventType.IngotChanged, Context.CurrentIngot);
-        return true;
-    }
-
-    private void CheckStageClear()
-    {
-        if (CurrentState != GameState.GamePlay) return;
-
-        string stageId = Context.LastSelectedStageId;
-        if (string.IsNullOrEmpty(stageId)) return;
-
-        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
-        if (data == null) return;
-
-        if (Context.CurrentGold >= data.ReqGold)
-            GameEventBus.Publish(GameEventType.StageClearCondition);
-    }
-
-    // =========================================================================
     // 업그레이드 관련
     // =========================================================================
 
@@ -269,8 +147,8 @@ public class GameManager : MonoBehaviour
         if (Context.CurrentGold < goldCost) return false;
         if (Context.CurrentIngot < ingotCost) return false;
 
-        TrySpendGold(goldCost);
-        TrySpendIngot(ingotCost);
+        CurrencyManager.Instance.TrySpendGold(goldCost);
+        CurrencyManager.Instance.TrySpendIngot(ingotCost);
 
         int newLevel = currentLevel + 1;
         Context.UpgradeLevels[upgradeId] = newLevel;
@@ -337,32 +215,16 @@ public class GameManager : MonoBehaviour
         return desc?.Description ?? string.Empty;
     }
 
-    private void UpdateBGMForState(GameState prev, GameState next)
+    private void UpdateBGMForState(GameState next)
     {
-        if (prev == GameState.GamePlay)
+        if (next == GameState.GamePlay)
             SoundManager.Instance.StopBGM();
 
-        string bindState;
-        switch (next)
-        {
-            case GameState.MainMenu:
-                bindState = "MainMenu";
-                break;
-            case GameState.Lobby:
-                bindState = "Lobby";
-                break;
-            case GameState.GamePlay:
-                bindState = "GamePlay";
-                break;
-            default:
-                bindState = null;
-                break;
-        }
-
+        string bindState = StateToString(next);
         if (bindState == null) return;
 
-        var candidates = new List<string>();
-        foreach (var sound in GameDataManager.Instance.GetAll<SoundData>())
+        List<string> candidates = new List<string>();
+        foreach (SoundData sound in GameDataManager.Instance.GetAll<SoundData>())
         {
             if (sound.Type == SoundType.BGM && sound.BindState == bindState)
                 candidates.Add(sound.SoundPath);
@@ -373,10 +235,7 @@ public class GameManager : MonoBehaviour
             string selectedBgm = candidates[UnityEngine.Random.Range(0, candidates.Count)];
             SoundManager.Instance.PlayBGM(selectedBgm);
         }
-        else
-        {
-            Debug.LogWarning($"[GameManager] '{bindState}'에 바인딩된 BGM 없음");
-        }
+        else Debug.LogWarning($"[GameManager] '{bindState}'에 바인딩된 BGM 없음");
     }
 
     private string StateToString(GameState state)

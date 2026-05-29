@@ -43,7 +43,7 @@ public class StageFailed : UIBase
 
     private void Refresh()
     {
-        float playTime = Time.realtimeSinceStartup - GameManager.Instance.StageStartTime;
+        float playTime = Time.realtimeSinceStartup - StageManager.Instance.StageStartTime;
 
         if (_txtValue != null)
             _txtValue.text = MathUtility.FormatTime(playTime);
