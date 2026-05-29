@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StationSpawner _stationSpawner;
     [SerializeField] private ShipSpawner _shipSpawner;
     [SerializeField] private PlanetSpawner _planetSpawner;
-
+    
     public GameState CurrentState { get; private set; } = GameState.Loading;
     public GameContext Context { get; private set; } = new GameContext();
 
@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
         await UIManager.Instance.LoadUIPrefabsAsync();
         await SoundManager.Instance.SetUp();
 
-        GameEventBus.Publish(GameEventType.DataInitialized);
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();
     }

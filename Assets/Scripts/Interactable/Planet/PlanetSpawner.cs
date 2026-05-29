@@ -79,7 +79,13 @@ public class PlanetSpawner : MonoBehaviour
 
     private void HandlePlanetDestroyed(string instanceId)
     {
-        _spawnedPlanets.RemoveAll(p => p == null || p.InstanceId == instanceId);
+        // 뒤 -> 앞으로 검사
+        // 인덱스가 뒤로 밀리는 경우를 방지
+        for (int i = _spawnedPlanets.Count - 1; i >= 0; i--)
+        {
+            if (_spawnedPlanets[i] == null || _spawnedPlanets[i].InstanceId == instanceId)
+                _spawnedPlanets.RemoveAt(i);
+        }
     }
 
     private void OnPrefabLoaded(GameObject prefab)

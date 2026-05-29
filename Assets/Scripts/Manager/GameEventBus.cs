@@ -8,11 +8,10 @@ public enum GameEventType
     // ==========================================
     // [시스템 & 상태] 100번대
     // ==========================================
-    DataInitialized = 100,
-    GameStateChanged = 101,
-    NewGameRequested = 102,
-    ContinueRequested = 103,
-    AchievementCompleted = 104,
+    GameStateChanged = 100,
+    NewGameRequested = 101,
+    ContinueRequested = 102,
+    AchievementCompleted = 103,
     // ==========================================
     // [사운드] 200번대
     // ==========================================
@@ -48,11 +47,6 @@ public enum GameEventType
     PlanetWarning = 600,
     PlanetDestroyed = 601,
     PlanetHovered = 602,
-
-    // ==========================================
-    // [우주 정거장] 700번대
-    // ==========================================
-    StationInteractionChanged = 700,
 
     // ==========================================
     // [스폰 관련] 800번대
