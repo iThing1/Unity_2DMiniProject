@@ -16,7 +16,7 @@ public class StageList : MonoBehaviour
     [SerializeField] private Button _btnRight;
 
     [Header("잠금 표시")]
-    [SerializeField] private float _lockedAlpha = 0.3f; // TODO: 스프라이트 교체 방식으로 변경 고려
+    [SerializeField] private float _lockedAlpha = 0.3f;
 
     // =========================================================================
     // 내부 상태
@@ -143,12 +143,20 @@ public class StageList : MonoBehaviour
 
         GameEventBus.Publish(GameEventType.StageSelected, current.Id);
         GameManager.Instance.ChangeState(GameState.GamePlay);
+        Time.timeScale = 0f;
 
-        StageStart stageStart = UIManager.Instance.PrepareUI<StageStart>(UIId.Popup.StageStart);
-        if (stageStart != null)
+        if (!GameManager.Instance.Context.HasSeenTutorial)
         {
-            stageStart.Setup(current.Id);
-            UIManager.Instance.OpenUI(UIId.Popup.StageStart);
+            UIManager.Instance.OpenTutorialUI();
+        }
+        else
+        {
+            StageStart stageStart = UIManager.Instance.PrepareUI<StageStart>(UIId.Popup.StageStart);
+            if (stageStart != null)
+            {
+                stageStart.Setup(current.Id);
+                UIManager.Instance.OpenUI(UIId.Popup.StageStart);
+            }
         }
     }
 

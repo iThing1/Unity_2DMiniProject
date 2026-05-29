@@ -23,6 +23,11 @@ public class UIManager : MonoBehaviour
     [Header("Intro UI")]
     [SerializeField] private GameObject _introUIPrefab;
 
+    [Header("튜토리얼 UI")]
+    [SerializeField] private GameObject _howToMovePrefab;
+    [SerializeField] private GameObject _howToLoopPrefab;
+    [SerializeField] private GameObject _tutorialOverlayPrefab;
+
     [Header("재화 표기")]
     [SerializeField] private GameObject _currencyUIPrefab;
 
@@ -34,6 +39,8 @@ public class UIManager : MonoBehaviour
     private readonly HashSet<string> _openedUISet = new HashSet<string>();
     private GameObject _currencyUIInstance;
 
+    public Transform VeryFrontRoot => _veryFrontRoot;
+    public Transform MainRoot => _mainRoot;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -213,6 +220,39 @@ public class UIManager : MonoBehaviour
         GameObject instance = Instantiate(_loadingUIPrefab, _veryFrontRoot);
         _createdUIDic[loadingId] = instance;
         _openedUISet.Add(loadingId);
+    }
+
+    // =========================================================================
+    // 튜토리얼 전용
+    // =========================================================================
+    public void OpenTutorialUI()
+    {
+        HowToMove howToMove = PrepareUI<HowToMove>(UIId.Popup.HowToMove);
+        if (howToMove != null)
+            OpenUI(UIId.Popup.HowToMove);
+    }
+
+    public void OpenAllUIByBindState(string bindState)
+    {
+        if (bindState == null) return;
+
+        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
+        {
+            if (data.BindState != bindState) continue;
+            OpenUI(data.Id);
+        }
+    }
+
+    public void CloseAllPopupsByBindState(string bindState)
+    {
+        if (bindState == null) return;
+
+        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
+        {
+            if (data.BindState != bindState) continue;
+            if (data.Type != UIType.Popup) continue;
+            CloseUI(data.Id);
+        }
     }
 
     // =========================================================================

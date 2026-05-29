@@ -117,5 +117,26 @@
     "Type": "VeryFront",
     "BindState": null,
     "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_01",
+    "Name": "TutorialOverlay",
+    "Type": "VeryFront",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_02",
+    "Name": "HowToMove",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_03",
+    "Name": "HowToLoop",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
   }
 ]

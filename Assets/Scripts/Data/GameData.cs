@@ -35,7 +35,7 @@ namespace GameData
             public const string GamePlay = "UI_Panel_02";
             public const string GameLobby = "UI_Panel_03";
             public const string Upgrade = "UI_Panel_04";
-            public const string Achievement = "UI_Panel_05";
+            public const string Achievement = "UI_Panel_05";     
         }
 
         public struct Popup
@@ -50,6 +50,9 @@ namespace GameData
             public const string StationMarket = "UI_Popup_08";
             public const string Scoreboard = "UI_Popup_09";
 
+            public const string HowToMove = "UI_Tutorial_02";
+            public const string HowToLoop = "UI_Tutorial_03";
+
             public const string DebugMenu = "UI_Debug_01";
             
         }
@@ -58,6 +61,7 @@ namespace GameData
         {
             public const string Loading = "UI_Loading_01";
             public const string Intro = "UI_Intro_01";
+            public const string TutorialOverlay = "UI_Tutorial_01";
         }
     }
 

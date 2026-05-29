@@ -19,6 +19,7 @@ namespace GameData
         public int CurrentGold;
         public int CurrentIngot;
 
+        public bool HasSeenTutorial = false;
         public string LastSelectedStageId;
         public List<string> UnlockedStageIds = new List<string>();
 

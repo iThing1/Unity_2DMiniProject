@@ -948,6 +948,9 @@ MonoBehaviour:
   _veryFrontRoot: {fileID: 100637882}
   _loadingUIPrefab: {fileID: 7164749988134846369, guid: df7015a9b02c01b479d09e6758579288, type: 3}
   _introUIPrefab: {fileID: 7164749988134846369, guid: a09c579d777ef4c4f96bded4f4e9fbdb, type: 3}
+  _howToMovePrefab: {fileID: 4106927974819121615, guid: 2d0a54a3f46d4834a8fc09212eed2fc2, type: 3}
+  _howToLoopPrefab: {fileID: 4106927974819121615, guid: 5f38136e68b4b30488e6c182a1d394fd, type: 3}
+  _tutorialOverlayPrefab: {fileID: 7164749988134846369, guid: 66e4553ad2c60d046ba991952733235a, type: 3}
   _currencyUIPrefab: {fileID: 1980468809077043724, guid: 49f2d438c9ee8fd4ba6663c871fa6df3, type: 3}
 --- !u!4 &1307725867
 Transform:
