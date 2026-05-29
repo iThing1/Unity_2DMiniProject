@@ -20,7 +20,6 @@ public class ResourceManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()

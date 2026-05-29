@@ -13,8 +13,6 @@ public class GameDataManager : MonoBehaviour
     private readonly Dictionary<Type, object> _tables = new Dictionary<Type, object>();
 
     public bool IsInitialized { get; private set; } = false;
-    public GameConstants Constants { get; private set; }
-    public GameSetting Settings { get; private set; }
 
     public float LoadingProgress { get; private set; }
     private readonly List<AsyncOperationHandle> _loadingHandles = new List<AsyncOperationHandle>();
@@ -27,7 +25,6 @@ public class GameDataManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public async Task RegisterTable<T>(string address) where T : IGameData
@@ -64,9 +61,6 @@ public class GameDataManager : MonoBehaviour
         await Task.WhenAll(tasks);
 
         LoadingProgress = 1f;
-        CacheConstants();
-        CacheSetting();
-
         IsInitialized = true;
     }
 
@@ -96,62 +90,6 @@ public class GameDataManager : MonoBehaviour
     }
 
     public bool HasTable<T>() where T : IGameData => _tables.ContainsKey(typeof(T));
-
-    private void CacheConstants()
-    {
-        float GetConstant(string id, float fallback)
-        {
-            var data = Get<GameConstantData>(id);
-            if (data == null)
-                Debug.LogWarning($"[GameDataManager] 상수 키 없음: '{id}' → 기본값 {fallback} 사용");
-            return data?.Value ?? fallback;
-        }
-
-        Constants = new GameConstants
-        {
-            // 우주선
-            FuelConsumeRate = GetConstant("FUEL_CONSUME_RATE", 50f),
-            OverheatDuration = GetConstant("OVERHEAT_DURATION", 5f),
-            ShipAcceleration = GetConstant("SHIP_ACCELERATION", 5f),
-            ShipBoostAccel = GetConstant("SHIP_BOOST_ACCELERATION", 20f),
-
-            // 행성
-            ProsperityChangeRate = GetConstant("PROSPERITY_CHANGE_RATE", 0.15f),
-            ProsperityIncreaseMax = GetConstant("PROSPERITY_INCREASE_MAX", 20f),
-            PopulationChangeRate = GetConstant("POPULATION_CHANGE_RATE", 0.1f),
-            PopulationIncreaseMax = GetConstant("POPULATION_INCREASE_MAX", 0.2f),
-            PlanetGameoverTime = GetConstant("PLANET_GAMEOVER_TIME", 10f),
-            PlanetConsumeInterval = GetConstant("PLANET_CONSUME_INTERVAL", 10f),
-            PlanetProsperityMax = GetConstant("PLANET_PROSPERITY_MAX", 100f),
-
-            // 정거장 / 화물
-            OreToIngotRatio = GetConstant("ORE_TO_INGOT_RATIO", 10f),
-            StationDockingRange = GetConstant("STATION_DOCKING_RANGE", 5f),
-
-            FoodConsumeBase = GetConstant("FOOD_CONSUME_BASE", 0f),
-            FoodConsumeRate = GetConstant("FOOD_CONSUME_RATE", 0.00005f),
-            OreProdRate = GetConstant("ORE_PRODUCE_RATE", 0.00005f),
-        };
-    }
-
-    private void CacheSetting()
-    {
-        float GetConstant(string id, float fallback)
-        {
-            var Settings = Get<GameSettingData>(id);
-            if (Settings == null)
-                Debug.LogWarning($"[GameSettingData] 상수 키 없음: '{id}' → 기본값 {fallback} 사용");
-            return Settings?.DefaultValue ?? fallback;
-        }
-
-        Settings = new GameSetting
-        {
-            CameraHeightDefault = GetConstant("CAM_HEIGHT_DEFAULT", 20f),
-            CameraShakePower = GetConstant("CAM_SHAKE_PWR", 0.2f),
-            SoundBackgroundVolume = GetConstant("SOUND_BACKGROUND_VOLUME", 100),
-            SoundEffectVolume = GetConstant("SOUND_EFFECT_VOLUME", 100),
-        };
-    }
 
     private async Task LoadTableAsync<T>(string address, Dictionary<string, T> dictionary) where T : IGameData
     {

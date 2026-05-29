@@ -22,9 +22,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
+        if (Instance != null) 
+        { 
+            Destroy(gameObject); 
+            return;
+        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     private void OnEnable()
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
     private async Task InitializeAsync()
     {
         await GameDataManager.Instance.RegisterAllTables();
+        GameConfig.Instance.Initialize();
         await UIManager.Instance.LoadUIPrefabsAsync();
         await SoundManager.Instance.SetUp();
 

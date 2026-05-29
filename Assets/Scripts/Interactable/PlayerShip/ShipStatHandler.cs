@@ -61,7 +61,7 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     public void LoadConstantStats()
     {
-        var c = GameDataManager.Instance.Constants;
+        var c = GameConfig.Instance.Constants;
 
         FuelConsumeRate = c.FuelConsumeRate != 0f ? c.FuelConsumeRate : _defaultFuelConsumeRate;
         OverheatDuration = c.OverheatDuration != 0f ? c.OverheatDuration : _defaultOverheatDuration;

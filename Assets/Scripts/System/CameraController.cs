@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour
     // =========================================================================
     private void InitializeData()
     {
-        _defaultZ = -GameDataManager.Instance.Settings.CameraHeightDefault;
+        _defaultZ = -GameConfig.Instance.Settings.CameraHeightDefault;
         _targetZ = _defaultZ;
         transform.position = new Vector3(0f, 0f, _defaultZ);
     }

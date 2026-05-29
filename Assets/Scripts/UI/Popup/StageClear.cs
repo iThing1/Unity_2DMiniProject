@@ -21,8 +21,6 @@ public class StageClear : UIBase
     [SerializeField] private TMP_Text _txtEarnGold;
     [SerializeField] private TMP_Text _txtEarnIngot;
 
-    private const int GoldScoreMultiplier = 1;
-    private const int IngotScoreMultiplier = 10;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -69,10 +67,10 @@ public class StageClear : UIBase
             _txtTotalScore.text = $"{record.Score:N0}";
 
         if (_txtEarnGold != null)
-            _txtEarnGold.text = $"{record.GoldEarned:N0} x {GoldScoreMultiplier} = {record.GoldEarned * GoldScoreMultiplier:N0}";
+            _txtEarnGold.text = $"{record.GoldEarned:N0}x{GameConfig.GoldScoreMultiplier} = {record.GoldEarned * GameConfig.GoldScoreMultiplier:N0}";
 
         if (_txtEarnIngot != null)
-            _txtEarnIngot.text = $"{record.IngotEarned:N0} x {IngotScoreMultiplier} = {record.IngotEarned * IngotScoreMultiplier:N0}";
+            _txtEarnIngot.text = $"{record.IngotEarned:N0}x{GameConfig.IngotScoreMultiplier} = {record.IngotEarned * GameConfig.IngotScoreMultiplier:N0}";
     }
 
     // =========================================================================

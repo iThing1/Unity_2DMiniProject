@@ -148,7 +148,7 @@ public class StationSimulator : MonoBehaviour
     // =========================================================================
     private void LoadStats()
     {
-        _oreToIngotRatio = GameDataManager.Instance.Constants.OreToIngotRatio;
+        _oreToIngotRatio = GameConfig.Instance.Constants.OreToIngotRatio;
         ApplyStats(GameManager.Instance.SetStationStats());
     }
 

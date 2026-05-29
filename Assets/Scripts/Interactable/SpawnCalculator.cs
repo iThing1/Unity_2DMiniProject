@@ -69,7 +69,7 @@ public static class SpawnCalculator
         if (cameraController != null)
             return cameraController.ViewHalfWidth - colliderRadius - spawnPadding;
 
-        float defaultSize = GameDataManager.Instance.Settings.CameraHeightDefault;
+        float defaultSize = GameConfig.Instance.Settings.CameraHeightDefault;
         return defaultSize - colliderRadius - spawnPadding;
     }
 

@@ -265,7 +265,7 @@ public class PlanetSimulator : MonoBehaviour
 
     private void LoadConstants()
     {
-        var c = GameDataManager.Instance.Constants;
+        var c = GameConfig.Instance.Constants;
 
         _prosperityMax = c.PlanetProsperityMax;
         _prosperityChangeRate = c.ProsperityChangeRate;

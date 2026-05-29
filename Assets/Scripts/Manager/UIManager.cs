@@ -52,7 +52,6 @@ public class UIManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         SpawnLoadingUI();
         SpawnCurrencyUI();
