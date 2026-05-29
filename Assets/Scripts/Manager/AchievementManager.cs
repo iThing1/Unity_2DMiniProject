@@ -63,7 +63,7 @@ public class AchievementManager : MonoBehaviour
             // 앞 단계가 완료되지 않은 경우 진행도를 받지 않음
             if (!IsActiveChainStep(data.Id)) continue;
 
-            bool justCompleted = context.UpdateAchievementProgress(data.Id, amount);
+            bool justCompleted = UpdateAchievementProgress(data.Id, amount);
             if (justCompleted)
                 NotifyAchievementCompleted(data.Id);
         }
@@ -86,13 +86,13 @@ public class AchievementManager : MonoBehaviour
 
             if (data.AchievementType == AchievementType.Stacked)
             {
-                bool justCompleted = context.UpdateAchievementProgress(data.Id, 1);
+                bool justCompleted = UpdateAchievementProgress(data.Id, 1);
                 if (justCompleted)
                     NotifyAchievementCompleted(data.Id);
             }
             else if (data.AchievementType == AchievementType.Acomplished)
             {
-                bool justCompleted = context.CompleteAchievement(data.Id);
+                bool justCompleted = CompleteAchievement(data.Id);
                 if (justCompleted)
                     NotifyAchievementCompleted(data.Id);
             }
@@ -107,6 +107,61 @@ public class AchievementManager : MonoBehaviour
         GameManager.Instance.SaveCurrentGame();
         GameEventBus.Publish(GameEventType.AchievementCompleted, achievementId);
         Debug.Log($"[AchievementManager] 업적 달성: {achievementId}");
+    }
+
+    // =========================================================================
+    // 업적 처리 메서드
+    // =========================================================================
+    private bool UpdateAchievementProgress(string achievementId, int addValue)
+    {
+        GameContext context = GameManager.Instance.Context;
+
+        if (context.IsAchievementCompleted(achievementId)) return false;
+
+        AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
+        if (data == null) return false;
+
+        if (data.AchievementType == AchievementType.Stacked && (data.TargetValue == null || data.TargetValue <= 0))
+            return false;
+
+        if (!context.AchievementProgress.ContainsKey(achievementId))
+            context.AchievementProgress[achievementId] = 0;
+
+        context.AchievementProgress[achievementId] += addValue;
+
+        if (context.AchievementProgress[achievementId] >= (data.TargetValue ?? 0))
+        {
+            context.AchievementStatus[achievementId] = true;
+            context.AchievementScore += data.Score;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool CompleteAchievement(string achievementId)
+    {
+        GameContext context = GameManager.Instance.Context;
+
+        if (context.IsAchievementCompleted(achievementId)) return false;
+
+        context.AchievementStatus[achievementId] = true;
+        AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
+        if (data != null)
+            context.AchievementScore += data.Score;
+
+        return true;
+    }
+
+    [System.Diagnostics.Conditional("UNITY_EDITOR")]
+    public void ForceCompleteAchievement(string achievementId)
+    {
+        bool completed = CompleteAchievement(achievementId);
+        if (completed)
+        {
+            NotifyAchievementCompleted(achievementId);
+            Debug.Log($"[AchievementManager] 강제 달성: {achievementId}");
+        }
     }
 
     private bool IsActiveChainStep(string achievementId)

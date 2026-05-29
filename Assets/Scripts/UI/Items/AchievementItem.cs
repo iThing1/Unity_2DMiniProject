@@ -158,8 +158,6 @@ public class AchievementItem : MonoBehaviour
     {
         if (_currentData == null) return;
 
-        bool completed = GameManager.Instance.Context.CompleteAchievement(_currentData.Id);
-        if (completed)
-            GameEventBus.Publish(GameEventType.AchievementCompleted, _currentData.Id);
+        AchievementManager.Instance.ForceCompleteAchievement(_currentData.Id);
     }
 }
