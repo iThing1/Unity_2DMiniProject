@@ -11,12 +11,12 @@
   },
   {
     "Id": "SHIP_ACCELERATION",
-    "Value": 5,
+    "Value": 3,
     "Desc": "우주선 기본 가속력"
   },
   {
     "Id": "SHIP_BOOST_ACCELERATION",
-    "Value": 20,
+    "Value": 10,
     "Desc": "부스터 기본 가속력"
   },
   {
