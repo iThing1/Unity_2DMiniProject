@@ -118,7 +118,9 @@ public class ShipController : MonoBehaviour
     {
         if (_moveInput == Vector2.zero)
         {
-            _rigidbody2D.linearDamping = 2f;
+            _rigidbody2D.linearVelocity = Vector2.Lerp(
+            _rigidbody2D.linearVelocity, Vector2.zero, Time.fixedDeltaTime * 8f);
+            _rigidbody2D.linearDamping = 0f;
             return;
         }
 
@@ -127,8 +129,10 @@ public class ShipController : MonoBehaviour
         float force = IsBoosting ? _stats.BoostAcceleration : _stats.Acceleration;
         _rigidbody2D.AddForce(_moveInput * force, ForceMode2D.Force);
 
-        if (!IsBoosting && _rigidbody2D.linearVelocity.magnitude > _stats.BaseSpeed)
-            _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _stats.BaseSpeed;
+        float targetSpeed = IsBoosting ? _stats.BoostAcceleration : _stats.BaseSpeed;
+        Vector2 targetVelocity = _moveInput * targetSpeed;
+        _rigidbody2D.linearVelocity = Vector2.Lerp(
+            _rigidbody2D.linearVelocity, targetVelocity, Time.fixedDeltaTime * 5f);
     }
 
     // =========================================================================
