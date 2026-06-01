@@ -26,14 +26,12 @@ public class StageManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
     }
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
     }
@@ -63,11 +61,6 @@ public class StageManager : MonoBehaviour
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleStageSelected(string stageId)
-    {
-        GameManager.Instance.Context.LastSelectedStageId = stageId;
-    }
-
     private void HandleStageClear(string stageId)
     {
         GameContext context = GameManager.Instance.Context;

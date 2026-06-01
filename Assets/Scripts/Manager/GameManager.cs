@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
         int newLevel = currentLevel + 1;
         Context.UpgradeLevels[upgradeId] = newLevel;
 
-        GameEventBus.Publish(GameEventType.UpgradeCompleted, upgradeId, newLevel);
+        GameEventBus.Publish(GameEventType.UpgradeCompleted, upgradeId);
         RaiseStatsIfNeeded(upgradeId);
 
         return true;

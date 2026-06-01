@@ -46,12 +46,12 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     private void OnEnable()
     {
-        GameEventBus.Subscribe<string, int>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
+        GameEventBus.Subscribe<string>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
     }
 
     private void OnDisable()
     {
-        GameEventBus.Unsubscribe<string, int>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
+        GameEventBus.Unsubscribe<string>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
         _upgradeInfo?.Hide();
     }
 
@@ -135,7 +135,7 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================
-    private void HandleUpgradeCompleted(string upgradeId, int newLevel)
+    private void HandleUpgradeCompleted(string upgradeId)
     {
         Refresh();
     }

@@ -141,7 +141,9 @@ public class StageList : MonoBehaviour
 
         StageData current = _stageList[_currentIndex];
 
+        GameManager.Instance.Context.LastSelectedStageId = current.Id;
         GameEventBus.Publish(GameEventType.StageSelected, current.Id);
+
         GameManager.Instance.ChangeState(GameState.GamePlay);
         Time.timeScale = 0f;
 
