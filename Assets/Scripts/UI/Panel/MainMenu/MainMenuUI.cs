@@ -10,6 +10,7 @@ public class MainMenuUI : UIBase
     [Header("버튼")]
     [SerializeField] private Button _btnNewGame;
     [SerializeField] private Button _btnContinue;
+    [SerializeField] private Button _btnOption;
     [SerializeField] private Button _btnQuit;
 
     // =========================================================================
@@ -23,6 +24,8 @@ public class MainMenuUI : UIBase
             _btnNewGame.onClick.AddListener(OnClickNewGame);
         if (_btnContinue != null)
             _btnContinue.onClick.AddListener(OnClickContinue);
+        if (_btnOption != null)
+            _btnOption.onClick.AddListener(OnClickOption);
         if (_btnQuit != null)
             _btnQuit.onClick.AddListener(OnClickQuit);
 
@@ -45,6 +48,8 @@ public class MainMenuUI : UIBase
             _btnNewGame.onClick.RemoveListener(OnClickNewGame);
         if (_btnContinue != null)
             _btnContinue.onClick.RemoveListener(OnClickContinue);
+        if (_btnOption != null)
+            _btnOption.onClick.RemoveListener(OnClickOption);
         if (_btnQuit != null)
             _btnQuit.onClick.RemoveListener(OnClickQuit);
     }
@@ -70,6 +75,11 @@ public class MainMenuUI : UIBase
             slotSelect.Setup(SlotSelectMode.Continue);
             UIManager.Instance.OpenUI(UIId.Popup.ContinueInfo);
         }
+    }
+
+    private void OnClickOption()
+    {
+        UIManager.Instance.OpenUI(UIId.Popup.Option);
     }
 
     private void OnClickQuit()

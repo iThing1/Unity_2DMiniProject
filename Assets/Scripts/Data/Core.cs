@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace GameData
 {
@@ -52,6 +53,7 @@ namespace GameData
             public const string Upgrade = "UI_Panel_04";
             public const string Achievement = "UI_Panel_05";
             public const string Currency = "UI_Panel_06";
+            public const string Setting = "UI_Panel_07";
         }
 
         public struct Popup
@@ -65,6 +67,7 @@ namespace GameData
             public const string StationUpgrade = "UI_Popup_07";
             public const string StationMarket = "UI_Popup_08";
             public const string Scoreboard = "UI_Popup_09";
+            public const string Option = "UI_Popup_10";
 
             public const string HowToMove = "UI_Tutorial_02";
             public const string HowToLoop = "UI_Tutorial_03";

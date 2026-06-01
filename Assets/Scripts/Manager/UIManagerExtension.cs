@@ -8,6 +8,9 @@ public static class UIManagerExtension
     {
         bool showCurrencyUI = (next == GameState.Lobby || next == GameState.GamePlay);
         uiManager.ShowCurrencyUI(showCurrencyUI);
+
+        bool showSettingUI = (next == GameState.Lobby || next == GameState.GamePlay);
+        uiManager.ShowSettingUI(showSettingUI);
     }
 
     // =========================================================================
@@ -37,6 +40,26 @@ public static class UIManagerExtension
         else
         {
             uiManager.CloseUI(currencyUiId);
+        }
+    }
+    // =========================================================================
+    // Setting UI
+    // =========================================================================
+    public static void ShowSettingUI(this UIManager uiManager, bool active)
+    {
+        string settingUiId = UIId.Panel.Setting;
+
+        if (active)
+        {
+            uiManager.OpenUI(settingUiId);
+
+            GameObject settingUI = uiManager.GetUI<UIBase>(settingUiId)?.gameObject;
+            if (settingUI != null)
+                settingUI.transform.SetAsLastSibling();
+        }
+        else
+        {
+            uiManager.CloseUI(settingUiId);
         }
     }
 

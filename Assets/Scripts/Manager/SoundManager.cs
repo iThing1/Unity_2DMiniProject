@@ -21,6 +21,12 @@ public class SoundManager : MonoBehaviour
     private AsyncOperationHandle<AudioClip>? _bgmHandle;
     private string _currentBgmKey;
 
+    public bool IsBGMOn { get; private set; } = true;
+
+    public float BGMVolume => _bgmSource != null ? _bgmSource.volume : 1f;
+    public float SFXVolume => _sfxSource != null ? _sfxSource.volume : 1f;
+
+
     private void Awake()
     {
         if (Instance != null)
@@ -96,20 +102,41 @@ public class SoundManager : MonoBehaviour
     // =========================================================================
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
-        Debug.Log($"[SoundManager] 게임 상태 변경: {prev} -> {next}");
-        string bindState = GameUtility.StateToString(next);
+        if (!IsBGMOn) return;
+        PlayBGMForState(next);
+    }
+
+    // =========================================================================
+    // BGM On/Off 토글
+    // =========================================================================
+    public void ToggleBGM(GameState currentState)
+    {
+        IsBGMOn = !IsBGMOn;
+
+        if (IsBGMOn)
+            PlayBGMForState(currentState);
+        else
+            StopBGM();
+    }
+
+    // =========================================================================
+    // 상태별 BGM 재생 (내부 공통 메서드)
+    // =========================================================================
+    private void PlayBGMForState(GameState state)
+    {
+        string bindState = GameUtility.StateToString(state);
         if (bindState == null) return;
 
-        List<string> candidate = new List<string>();
-        foreach(SoundData sound in GameDataManager.Instance.GetAll<SoundData>())
+        List<string> candidates = new List<string>();
+        foreach (SoundData sound in GameDataManager.Instance.GetAll<SoundData>())
         {
             if (sound.Type == SoundType.BGM && sound.BindState == bindState)
-                candidate.Add(sound.SoundPath);
+                candidates.Add(sound.SoundPath);
         }
 
-        if (candidate.Count > 0)
+        if (candidates.Count > 0)
         {
-            string selected = candidate[Random.Range(0, candidate.Count)];
+            string selected = candidates[Random.Range(0, candidates.Count)];
             PlayBGM(selected);
         }
         else Debug.LogWarning($"[SoundManager] BGM 후보 없음: {bindState}");
@@ -118,7 +145,6 @@ public class SoundManager : MonoBehaviour
     // =========================================================================
     // BGM
     // =========================================================================
-
     public void PlayBGM(string key)
     {
         if (_currentBgmKey == key) return;

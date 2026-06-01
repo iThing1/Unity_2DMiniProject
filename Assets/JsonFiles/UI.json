@@ -63,6 +63,13 @@
     "Auto": false
   },
   {
+    "Id": "UI_Popup_10",
+    "Name": "Option",
+    "Type": "Popup",
+    "BindState": "MainMenu",
+    "Auto": false
+  },
+  {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",
@@ -100,6 +107,13 @@
   {
     "Id": "UI_Panel_06",
     "Name": "Currency",
+    "Type": "Main",
+    "BindState": null,
+    "Auto": true
+  },
+  {
+    "Id": "UI_Panel_07",
+    "Name": "Setting",
     "Type": "Main",
     "BindState": null,
     "Auto": true

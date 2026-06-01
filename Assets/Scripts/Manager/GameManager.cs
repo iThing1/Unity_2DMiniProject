@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGamePlay() => ChangeState(GameState.GamePlay);
     public void ReturnToLobby() => ChangeState(GameState.Lobby);
+    public void ReturnToMainMenu() => ChangeState(GameState.MainMenu);
 
     // =========================================================================
     // 저장 / 로드
