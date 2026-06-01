@@ -234,7 +234,8 @@ public class ShipInventory : MonoBehaviour
 
     private void HandleShipSpawned(Transform shipTransform)
     {
+        _cargo.Clear();
+        RaiseCargoChanged();
         InitializeData();
-        Debug.Log($"[ShipInventory] 스폰 후 초기화 완료. 용량: {Capacity}");
     }
 }
