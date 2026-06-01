@@ -6,7 +6,7 @@ using GameData;
 
 public enum SlotSelectMode { NewGame, Continue }
 
-public class SlotSelectUI : UIBase
+public class SaveSlot : UIBase
 {
     // =========================================================================
     // Inspector 연결

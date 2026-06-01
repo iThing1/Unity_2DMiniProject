@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // 재화(골드/주괴) 표시 공통 컴포넌트
-public class CurrencyUI : MonoBehaviour
+public class CurrencyUI : UIBase
 {
     // =========================================================================
     // Inspector 연결
@@ -14,7 +14,7 @@ public class CurrencyUI : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void OnEnable()
+    protected override void RegisterEvents()
     {
         GameEventBus.Subscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
         GameEventBus.Subscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
@@ -28,11 +28,12 @@ public class CurrencyUI : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    protected override void UnregisterEvents()
     {
         GameEventBus.Unsubscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
         GameEventBus.Unsubscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
     }
+
 
     // =========================================================================
     // 이벤트 핸들러

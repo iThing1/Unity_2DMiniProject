@@ -54,7 +54,7 @@ public class MainMenuUI : UIBase
     // =========================================================================
     private void OnClickNewGame()
     {
-        SlotSelectUI slotSelect = UIManager.Instance.PrepareUI<SlotSelectUI>(UIId.Popup.ContinueInfo);
+        SaveSlot slotSelect = UIManager.Instance.PrepareUI<SaveSlot>(UIId.Popup.ContinueInfo);
         if (slotSelect != null)
         {
             slotSelect.Setup(SlotSelectMode.NewGame);
@@ -64,7 +64,7 @@ public class MainMenuUI : UIBase
 
     private void OnClickContinue()
     {
-        SlotSelectUI slotSelect = UIManager.Instance.PrepareUI<SlotSelectUI>(UIId.Popup.ContinueInfo);
+        SaveSlot slotSelect = UIManager.Instance.PrepareUI<SaveSlot>(UIId.Popup.ContinueInfo);
         if (slotSelect != null)
         {
             slotSelect.Setup(SlotSelectMode.Continue);

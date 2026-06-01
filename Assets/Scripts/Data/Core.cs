@@ -35,7 +35,8 @@ namespace GameData
             public const string GamePlay = "UI_Panel_02";
             public const string GameLobby = "UI_Panel_03";
             public const string Upgrade = "UI_Panel_04";
-            public const string Achievement = "UI_Panel_05";     
+            public const string Achievement = "UI_Panel_05";
+            public const string Currency = "UI_Panel_06";
         }
 
         public struct Popup

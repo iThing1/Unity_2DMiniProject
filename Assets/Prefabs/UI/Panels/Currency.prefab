@@ -445,6 +445,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774206bcc7b342748bcae26422d71dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CurrencyUI
+  _uiId: UI_Panel_06
+  _btnClose: {fileID: 0}
+  _slideDirection: 0
+  _slideDuration: 0.25
   _txtGold: {fileID: 3527892541154426489}
   _txtIngot: {fileID: 9023639716116627882}
 --- !u!1 &2470651523074147807

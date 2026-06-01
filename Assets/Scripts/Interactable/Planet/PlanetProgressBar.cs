@@ -11,7 +11,7 @@ public class PlanetProgressBar : MonoBehaviour
     [SerializeField] private Slider _slider;
     [SerializeField] private Image _fillImage;
 
-    [Header("Prosperty Images")]    // TODO: 일단 컬러로 구분, 스프라이트 교체로 구현
+    [Header("Prosperty Images")]
     [SerializeField] private Color _veryProsperousColor = new Color(0.4f, 0.9f, 1.0f);   // 밝은 파랑;    
     [SerializeField] private Color _prosperousColor = new Color(0.2f, 0.5f, 1.0f);   // 파랑
     [SerializeField] private Color _neutralColor = new Color(0.2f, 0.8f, 0.2f);   // 초록

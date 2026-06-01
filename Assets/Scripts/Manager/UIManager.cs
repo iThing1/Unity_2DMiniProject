@@ -20,24 +20,12 @@ public class UIManager : MonoBehaviour
     [Header("Loading UI")]
     [SerializeField] private GameObject _loadingUIPrefab;
 
-    [Header("Intro UI")]
-    [SerializeField] private GameObject _introUIPrefab;
-
-    [Header("튜토리얼 UI")]
-    [SerializeField] private GameObject _howToMovePrefab;
-    [SerializeField] private GameObject _howToLoopPrefab;
-    [SerializeField] private GameObject _tutorialOverlayPrefab;
-
-    [Header("재화 표기")]
-    [SerializeField] private GameObject _currencyUIPrefab;
-
     // =========================================================================
     // 내부 상태
     // =========================================================================
     private readonly Dictionary<string, GameObject> _prefabMap = new Dictionary<string, GameObject>();
     private readonly Dictionary<string, GameObject> _createdUIDic = new Dictionary<string, GameObject>();
     private readonly HashSet<string> _openedUISet = new HashSet<string>();
-    private GameObject _currencyUIInstance;
 
     public Transform VeryFrontRoot => _veryFrontRoot;
     public Transform MainRoot => _mainRoot;
@@ -54,7 +42,6 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         SpawnLoadingUI();
-        SpawnCurrencyUI();
     }
 
     // =========================================================================
@@ -107,9 +94,6 @@ public class UIManager : MonoBehaviour
                 instance.SetActive(true);
 
             _openedUISet.Add(uiId);
-
-            if (_currencyUIInstance != null && _currencyUIInstance.activeSelf)
-                _currencyUIInstance.transform.SetAsLastSibling();
         }
     }
 
@@ -172,41 +156,6 @@ public class UIManager : MonoBehaviour
         _createdUIDic[uiId] = instance;
     }
 
-    public void OpenIntroUI()
-    {
-        if (_introUIPrefab == null)
-        {
-            Debug.LogWarning("[UIManager] IntroUIPrefab이 연결되지 않았습니다.");
-            return;
-        }
-
-        GameObject instance = Instantiate(_introUIPrefab, _veryFrontRoot);
-        IntroUI introUI = instance.GetComponent<IntroUI>();
-        if (introUI != null)
-            introUI.Open();
-
-        SoundManager.Instance.PlayBGM("Sounds/BGM/Intro");
-    }
-
-    private void SpawnCurrencyUI()
-    {
-        if (_currencyUIPrefab == null)
-        {
-            Debug.LogWarning("[UIManager] CurrencyUIPrefab이 연결되지 않았습니다.");
-            return;
-        }
-
-        _currencyUIInstance = Instantiate(_currencyUIPrefab, _mainRoot);
-        _currencyUIInstance.SetActive(false);
-    }
-
-    public void ShowCurrencyUI(bool active)
-    {
-        if (_currencyUIInstance == null) return;
-        _currencyUIInstance.SetActive(active);
-        if (active) _currencyUIInstance.transform.SetAsLastSibling();
-    }
-
     private void SpawnLoadingUI()
     {
         if (_loadingUIPrefab == null)
@@ -221,58 +170,6 @@ public class UIManager : MonoBehaviour
         _openedUISet.Add(loadingId);
     }
 
-    // =========================================================================
-    // 튜토리얼 전용
-    // =========================================================================
-    public void OpenTutorialUI()
-    {
-        HowToMove howToMove = PrepareUI<HowToMove>(UIId.Popup.HowToMove);
-        if (howToMove != null)
-            OpenUI(UIId.Popup.HowToMove);
-    }
-
-    public void OpenAllUIByBindState(string bindState)
-    {
-        if (bindState == null) return;
-
-        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
-        {
-            if (data.BindState != bindState) continue;
-            OpenUI(data.Id);
-        }
-    }
-
-    public void CloseAllPopupsByBindState(string bindState)
-    {
-        if (bindState == null) return;
-
-        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
-        {
-            if (data.BindState != bindState) continue;
-            if (data.Type != UIType.Popup) continue;
-            CloseUI(data.Id);
-        }
-    }
-
-    // =========================================================================
-    // 상태별 UI 처리 공통 메서드
-    // =========================================================================
-    public void SetUIByBindState(string bindState, bool activate)
-    {
-        if (bindState == null) return;
-
-        foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
-        {
-            if (data.BindState != bindState) continue;
-
-            if (activate)
-            {
-                if (data.Auto) OpenUI(data.Id);
-            }
-            else
-                CloseUI(data.Id);
-        }
-    }
     // =========================================================================
     // 유틸
     // =========================================================================
