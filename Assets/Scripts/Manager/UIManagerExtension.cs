@@ -4,12 +4,19 @@ using UnityEngine;
 // 특정 상황에 맞게 UI를 여닫는 헬퍼 클래스
 public static class UIManagerExtension
 {
+    public static void OnGameStateChanged(this UIManager uiManager, GameState prev, GameState next)
+    {
+        bool showCurrencyUI = (next == GameState.Lobby || next == GameState.GamePlay);
+        uiManager.ShowCurrencyUI(showCurrencyUI);
+    }
+
     // =========================================================================
     // 인트로
     // =========================================================================
     public static void OpenIntroUI(this UIManager uiManager)
     {
         uiManager.OpenUI(UIId.VeryFront.Intro);
+        SoundManager.Instance.PlayBGM("Sounds/BGM/Intro");
     }
 
     // =========================================================================

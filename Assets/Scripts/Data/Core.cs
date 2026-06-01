@@ -27,6 +27,21 @@ namespace GameData
         StageClear,
     }
 
+    public static class GameUtility
+    {
+        public static string StateToString(GameState state)
+        {
+            switch (state)
+            {
+                case GameState.Loading: return "Loading";
+                case GameState.MainMenu: return "MainMenu";
+                case GameState.Lobby: return "Lobby";
+                case GameState.GamePlay: return "GamePlay";
+                default: return null;
+            }
+        }
+    }
+
     public struct UIId
     {
         public struct Panel

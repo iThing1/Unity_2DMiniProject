@@ -107,7 +107,6 @@ public class AchievementManager : MonoBehaviour
     // =========================================================================
     private void NotifyAchievementCompleted(string achievementId)
     {
-        GameManager.Instance.SaveCurrentGame();
         GameEventBus.Publish(GameEventType.AchievementCompleted, achievementId);
         Debug.Log($"[AchievementManager] 업적 달성: {achievementId}");
     }

@@ -44,6 +44,16 @@ public class UIManager : MonoBehaviour
         SpawnLoadingUI();
     }
 
+    private void OnEnable()
+    {
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+    }
+
+    private void OnDisable()
+    {
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+    }
+
     // =========================================================================
     // GameManager에서 호출 - UI 프리팹 일괄 로드
     // =========================================================================
@@ -137,6 +147,14 @@ public class UIManager : MonoBehaviour
     public bool IsOpen(string uiId)
     {
         return _openedUISet.Contains(uiId);
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        this.OnGameStateChanged(prev, next);
     }
 
     // =========================================================================

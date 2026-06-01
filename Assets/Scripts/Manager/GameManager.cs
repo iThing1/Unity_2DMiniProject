@@ -1,5 +1,4 @@
 ﻿using GameData;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -23,6 +22,16 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        GameEventBus.Subscribe<string>(GameEventType.AchievementCompleted, HandleAchievementCompleted);
+    }
+
+    private void OnDisable()
+    {
+        GameEventBus.Unsubscribe<string>(GameEventType.AchievementCompleted, HandleAchievementCompleted);
     }
 
     private async void Start()
@@ -59,17 +68,14 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentState == newState) return;
 
-        string prevBindState = StateToString(CurrentState);
+        string prevBindState = GameUtility.StateToString(CurrentState);
         UIManager.Instance.SetUIByBindState(prevBindState, false);
 
         GameState prev = CurrentState;
         CurrentState = newState;
 
-        string nextBindState = StateToString(CurrentState);
+        string nextBindState = GameUtility.StateToString(CurrentState);
         UIManager.Instance.SetUIByBindState(nextBindState, true);
-
-        bool showCurrency = (newState == GameState.Lobby || newState == GameState.GamePlay);
-        UIManager.Instance.ShowCurrencyUI(showCurrency);
 
         if (prev == GameState.GamePlay)
         {
@@ -86,7 +92,6 @@ public class GameManager : MonoBehaviour
         }
 
         GameEventBus.Publish(GameEventType.GameStateChanged, prev, newState);
-        UpdateBGMForState(newState);
     }
 
     public void StartGamePlay() => ChangeState(GameState.GamePlay);
@@ -126,6 +131,14 @@ public class GameManager : MonoBehaviour
     }
 
     // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleAchievementCompleted(string achievementId)
+    {
+        SaveCurrentGame();
+    }
+
+    // =========================================================================
     // 업그레이드 관련
     // =========================================================================
 
@@ -149,8 +162,7 @@ public class GameManager : MonoBehaviour
         CurrencyManager.Instance.TrySpendGold(goldCost);
         CurrencyManager.Instance.TrySpendIngot(ingotCost);
 
-        int newLevel = currentLevel + 1;
-        Context.UpgradeLevels[upgradeId] = newLevel;
+        Context.UpgradeLevels[upgradeId] = currentLevel + 1;
 
         GameEventBus.Publish(GameEventType.UpgradeCompleted, upgradeId);
         RaiseStatsIfNeeded(upgradeId);
@@ -212,40 +224,5 @@ public class GameManager : MonoBehaviour
     {
         var desc = GameDataManager.Instance.Get<UpgradeData>(upgradeId);
         return desc?.Description ?? string.Empty;
-    }
-
-    private void UpdateBGMForState(GameState next)
-    {
-        if (next == GameState.GamePlay)
-            SoundManager.Instance.StopBGM();
-
-        string bindState = StateToString(next);
-        if (bindState == null) return;
-
-        List<string> candidates = new List<string>();
-        foreach (SoundData sound in GameDataManager.Instance.GetAll<SoundData>())
-        {
-            if (sound.Type == SoundType.BGM && sound.BindState == bindState)
-                candidates.Add(sound.SoundPath);
-        }
-
-        if (candidates.Count > 0)
-        {
-            string selectedBgm = candidates[UnityEngine.Random.Range(0, candidates.Count)];
-            SoundManager.Instance.PlayBGM(selectedBgm);
-        }
-        else Debug.LogWarning($"[GameManager] '{bindState}'에 바인딩된 BGM 없음");
-    }
-
-    private string StateToString(GameState state)
-    {
-        switch (state)
-        {
-            case GameState.Loading: return "Loading";
-            case GameState.MainMenu: return "MainMenu";
-            case GameState.Lobby: return "Lobby";
-            case GameState.GamePlay: return "GamePlay";
-            default: return null;
-        }
     }
 }

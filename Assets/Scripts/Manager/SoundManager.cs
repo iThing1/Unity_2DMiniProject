@@ -31,6 +31,16 @@ public class SoundManager : MonoBehaviour
         Instance = this;
     }
 
+    private void OnEnable()
+    {
+        GameEventBus.Subscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+    }
+
+    private void OnDisable()
+    {
+        GameEventBus.Unsubscribe<GameState, GameState>(GameEventType.GameStateChanged, HandleGameStateChanged);
+    }
+
     private void OnDestroy()
     {
         foreach (var handle in _sfxHandles.Values)
@@ -79,6 +89,30 @@ public class SoundManager : MonoBehaviour
 
         var sfxVol = GameDataManager.Instance.Get<GameSettingData>("SOUND_EFFECT_VOLUME");
         if (sfxVol != null) SetSFXVolume(sfxVol.DefaultValue / 100f);
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
+    private void HandleGameStateChanged(GameState prev, GameState next)
+    {
+        Debug.Log($"[SoundManager] 게임 상태 변경: {prev} -> {next}");
+        string bindState = GameUtility.StateToString(next);
+        if (bindState == null) return;
+
+        List<string> candidate = new List<string>();
+        foreach(SoundData sound in GameDataManager.Instance.GetAll<SoundData>())
+        {
+            if (sound.Type == SoundType.BGM && sound.BindState == bindState)
+                candidate.Add(sound.SoundPath);
+        }
+
+        if (candidate.Count > 0)
+        {
+            string selected = candidate[Random.Range(0, candidate.Count)];
+            PlayBGM(selected);
+        }
+        else Debug.LogWarning($"[SoundManager] BGM 후보 없음: {bindState}");
     }
 
     // =========================================================================
