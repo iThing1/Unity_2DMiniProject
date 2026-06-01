@@ -3,8 +3,6 @@ using UnityEngine;
 using GameData;
 
 // 우주선 업그레이드 트리
-// 각 업그레이드 행은 링크드리스트로 노드를 관리
-// Head 노드에서 Next를 따라 순회하며 연결선 생성
 public class ShipUpgrade : MonoBehaviour
 {
     // =========================================================================
@@ -113,6 +111,21 @@ public class ShipUpgrade : MonoBehaviour
             // 헤드 노드 보관
             if (headNode != null)
                 _headNodes.Add(headNode);
+        }
+
+        RefreshAllNodes();
+    }
+
+    private void RefreshAllNodes()
+    {
+        foreach (ShipUpgradeNode head in _headNodes)
+        {
+            ShipUpgradeNode current = head;
+            while (current != null)
+            {
+                current.Refresh();
+                current = current.Next;
+            }
         }
     }
 

@@ -6,7 +6,7 @@ using System.IO;
 using GameData;
 
 // 우주선 업그레이드 트리 노드
-// 나중에 분기 트리 확장 시 Prev → List<ShipUpgradeNode> _prevNodes 로 변경
+// TODO: 분기 트리 확장 시 Prev → List<ShipUpgradeNode> _prevNodes 로 변경
 public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // =========================================================================
@@ -22,6 +22,8 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
     [SerializeField] private Color _colorLocked = new Color(0.15f, 0.15f, 0.15f, 1f);
     [SerializeField] private Color _colorDone = new Color(0.2f, 0.9f, 0.2f, 1f);
 
+    [Header("잠금 알파")]
+    [SerializeField] private float _lockedAlpha = 0.3f;
     // =========================================================================
     // 링크드리스트
     // =========================================================================
@@ -76,7 +78,6 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
         _slotLevel = slotLevel;
 
         _upgradeInfo?.Hide();
-        Refresh();
     }
 
     public void SetNext(ShipUpgradeNode next)
@@ -143,7 +144,7 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
     // =========================================================================
     // UI 갱신
     // =========================================================================
-    private void Refresh()
+    public void Refresh()
     {
         if (string.IsNullOrEmpty(_upgradeId)) return;
 
@@ -176,6 +177,14 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
                 _imgFrame.color = _colorLocked;
         }
 
+        // 잠긴 노드 알파값 조절
+        if (_imgNode != null)
+        {
+            Color nodeColor = _imgNode.color;
+            nodeColor.a = isUnlocked ? 1f : _lockedAlpha;
+            _imgNode.color = nodeColor;
+        }
+
         // 버튼 활성 여부
         if (_btnNode != null)
             _btnNode.interactable = isUnlocked && !isAlreadyDone;
@@ -188,5 +197,9 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
     {
         if (_imgNode != null && sprite != null)
             _imgNode.sprite = sprite;
+
+        Color nodeColor = _imgNode.color;
+        nodeColor.a = IsUnlocked() ? 1f : _lockedAlpha;
+        _imgNode.color = nodeColor;
     }
 }
