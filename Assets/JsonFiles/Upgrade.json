@@ -25,7 +25,7 @@
     "CostIncrease": 300,
     "BaseIngotCost": 0,
     "IngotIncrease": 3,
-    "BaseStats": 10,
+    "BaseStats": 5,
     "UpgradeValue": 5,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/EngineOverclock",
@@ -42,7 +42,7 @@
     "BaseIngotCost": 0,
     "IngotIncrease": 5,
     "BaseStats": 2,
-    "UpgradeValue": 30,
+    "UpgradeValue": 20,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/EnhancedNozzle",
     "Description": "Retrofitted plasma nozzle array delivers explosive burst acceleration"
@@ -74,7 +74,7 @@
     "BaseIngotCost": 0,
     "IngotIncrease": 0,
     "BaseStats": 2,
-    "UpgradeValue": 30,
+    "UpgradeValue": 50,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/NanoRefiner",
     "Description": "Nanoscale refinery bots process raw ore with unprecedented efficiency"
@@ -90,7 +90,7 @@
     "BaseIngotCost": 3,
     "IngotIncrease": 3,
     "BaseStats": 2,
-    "UpgradeValue": 50,
+    "UpgradeValue": 30,
     "CalcType": "Multi",
     "SpritePath": "Upgrade/Hydroponics",
     "Description": "Zero-gravity hydroponic systems maximize food production yield"

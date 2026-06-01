@@ -238,7 +238,7 @@ public class ShipController : MonoBehaviour
         float newMax = _stats.MaxFuel;
         if (Mathf.Approximately(newMax, MaxFuel)) return;
 
-        float ratio = CurrentFuel / MaxFuel;
+        float ratio = MaxFuel > 0f ? CurrentFuel / MaxFuel : 1f;
         MaxFuel = newMax;
         CurrentFuel = MaxFuel * ratio;
     }
