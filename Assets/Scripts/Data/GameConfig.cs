@@ -49,8 +49,8 @@ public class GameConfig : MonoBehaviour
             // 우주선
             FuelConsumeRate = GetConstant("FUEL_CONSUME_RATE", 50f),
             OverheatDuration = GetConstant("OVERHEAT_DURATION", 5f),
-            ShipAcceleration = GetConstant("SHIP_ACCELERATION", 5f),
-            ShipBoostAccel = GetConstant("SHIP_BOOST_ACCELERATION", 20f),
+            ShipAcceleration = GetConstant("SHIP_ACCELERATION", 3f),
+            ShipBoostAccel = GetConstant("SHIP_BOOST_ACCELERATION", 10f),
 
             // 행성
             ProsperityChangeRate = GetConstant("PROSPERITY_CHANGE_RATE", 0.15f),
@@ -58,7 +58,7 @@ public class GameConfig : MonoBehaviour
             PopulationChangeRate = GetConstant("POPULATION_CHANGE_RATE", 0.1f),
             PopulationIncreaseMax = GetConstant("POPULATION_INCREASE_MAX", 0.2f),
             PlanetGameoverTime = GetConstant("PLANET_GAMEOVER_TIME", 10f),
-            PlanetConsumeInterval = GetConstant("PLANET_CONSUME_INTERVAL", 10f),
+            PlanetConsumeInterval = GetConstant("PLANET_CONSUME_INTERVAL", 20f),
             PlanetProsperityMax = GetConstant("PLANET_PROSPERITY_MAX", 100f),
 
             // 정거장 / 화물
@@ -68,7 +68,7 @@ public class GameConfig : MonoBehaviour
             // 행성 생산/소비 계수
             FoodConsumeBase = GetConstant("FOOD_CONSUME_BASE", 0f),
             FoodConsumeRate = GetConstant("FOOD_CONSUME_RATE", 0.00005f),
-            OreProdRate = GetConstant("ORE_PRODUCE_RATE", 0.00005f),
+            OreProdRate = GetConstant("ORE_PRODUCE_RATE", 0.00003f),
         };
     }
 

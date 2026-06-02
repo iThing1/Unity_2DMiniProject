@@ -25,11 +25,27 @@ public class AchievementUI : UIBase
     // =========================================================================
     private const string CheatCode = "OZCoding";
 
-
     // =========================================================================
     // 내부 상태
     // =========================================================================
     private readonly List<AchievementItem> _spawnedItems = new List<AchievementItem>();
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+
+    protected override void Start()
+    {
+        base.Start();
+        if (_btnConfirmCode != null)
+            _btnConfirmCode.onClick.AddListener(OnClickConfirmCode);
+    }
+
+    private void OnDestroy()
+    {
+        if (_btnConfirmCode != null)
+            _btnConfirmCode.onClick.RemoveListener(OnClickConfirmCode);
+    }
 
     // =========================================================================
     // 열기
@@ -42,9 +58,6 @@ public class AchievementUI : UIBase
         if (_inputCheatCode != null)
             _inputCheatCode.text = string.Empty;
 
-        if (_btnConfirmCode != null)
-            _btnConfirmCode.onClick.AddListener(OnClickConfirmCode);
-
         if (_txtScore != null)
             _txtScore.text = $"Score : {GameManager.Instance.Context.AchievementScore}";
     }
@@ -52,9 +65,6 @@ public class AchievementUI : UIBase
     protected override void OnBeforeClose()
     {
         ClearItems();
-
-        if (_btnConfirmCode != null)
-            _btnConfirmCode.onClick.RemoveListener(OnClickConfirmCode);
     }
 
     // =========================================================================

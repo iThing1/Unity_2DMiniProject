@@ -225,6 +225,6 @@ public class IntroUI : UIBase
         }
 
         GameManager.Instance.ChangeState(GameState.Lobby);
-        Destroy(gameObject);
+        UIManager.Instance.DestroyUI(UiId);
     }
 }

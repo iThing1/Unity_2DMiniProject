@@ -15,6 +15,8 @@ public class StageManager : MonoBehaviour
     public int StageEarnedGold { get; set; }
     public int StageEarnedIngot { get; set; }
 
+    private int _lastGold = 0;
+    private int _lastIngot = 0;
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -28,12 +30,16 @@ public class StageManager : MonoBehaviour
     {
         GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Subscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Subscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Subscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
     }
 
     private void OnDisable()
     {
         GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
         GameEventBus.Unsubscribe<string>(GameEventType.StageFailed, HandleStageFailed);
+        GameEventBus.Subscribe<int>(GameEventType.GoldChanged, HandleGoldChanged);
+        GameEventBus.Subscribe<int>(GameEventType.IngotChanged, HandleIngotChanged);
     }
 
     // =========================================================================
@@ -44,6 +50,9 @@ public class StageManager : MonoBehaviour
         StageStartTime = Time.realtimeSinceStartup;
         StageEarnedGold = 0;
         StageEarnedIngot = 0;
+
+        _lastGold = GameManager.Instance.Context.CurrentGold;
+        _lastIngot = GameManager.Instance.Context.CurrentIngot;
     }
 
     // =========================================================================
@@ -101,5 +110,42 @@ public class StageManager : MonoBehaviour
 
         Time.timeScale = 0f;
         UIManager.Instance.OpenUI(UIId.Popup.StageFailed);
+    }
+
+    private void HandleGoldChanged(int totalGold)
+    {
+        if (GameManager.Instance.CurrentState != GameState.GamePlay) return;
+
+        int earned = totalGold - _lastGold;
+        _lastGold = totalGold;
+
+        if (earned > 0)
+        {
+            StageEarnedGold += earned;
+            CheckStageClearCondition(totalGold);
+        }
+    }
+
+    private void HandleIngotChanged(int totalIngot)
+    {
+        if (GameManager.Instance.CurrentState != GameState.GamePlay) return;
+
+        int earned = totalIngot - _lastIngot;
+        _lastIngot = totalIngot;
+
+        if (earned > 0)
+            StageEarnedIngot += earned;
+    }
+
+    private void CheckStageClearCondition(int totalGold)
+    {
+        string stageId = GameManager.Instance.Context.LastSelectedStageId;
+        if (string.IsNullOrEmpty(stageId)) return;
+
+        StageData data = GameDataManager.Instance.Get<StageData>(stageId);
+        if (data == null) return;
+
+        if (totalGold >= data.ReqGold)
+            GameEventBus.Publish(GameEventType.StageClearCondition);
     }
 }

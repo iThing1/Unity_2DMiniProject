@@ -149,6 +149,20 @@ public class UIManager : MonoBehaviour
         return _openedUISet.Contains(uiId);
     }
 
+    // 재사용 하지 않는 UI는 파괴
+    public void DestroyUI(string uiId)
+    {
+        _openedUISet.Remove(uiId);
+
+        if (!_createdUIDic.TryGetValue(uiId, out GameObject panel))
+            return;
+
+        _createdUIDic.Remove(uiId);
+
+        if (panel != null)
+            Destroy(panel);
+    }
+
     // =========================================================================
     // 이벤트 핸들러
     // =========================================================================

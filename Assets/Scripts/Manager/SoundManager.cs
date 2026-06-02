@@ -56,13 +56,11 @@ public class SoundManager : MonoBehaviour
         ReleaseBgmHandle();
     }
 
-    public async Task SetUp()
+    public void SetUp()
     {
         RegisterBGMFromData();
         PreloadSFXFromData();
         ApplyVolumeSettings();
-
-        await Task.CompletedTask;
     }
 
     public void RegisterBGMFromData()

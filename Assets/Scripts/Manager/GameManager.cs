@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         await GameDataManager.Instance.RegisterAllTables();
         GameConfig.Instance.Initialize();
         await UIManager.Instance.LoadUIPrefabsAsync();
-        await SoundManager.Instance.SetUp();
+        SoundManager.Instance.SetUp();
 
         ChangeState(GameState.MainMenu);
         PreloadPlanetSprites();

@@ -228,7 +228,7 @@ public class GamePlayUI : UIBase
 
         foreach (UIData data in GameDataManager.Instance.GetAll<UIData>())
         {
-            if (data.BindState != "GamePlay") continue;
+            if (data.BindState != GameUtility.StateToString(GameState.GamePlay)) continue;
             if (data.Id == UiId) continue;
 
             _boundPopupIds.Add(data.Id);
