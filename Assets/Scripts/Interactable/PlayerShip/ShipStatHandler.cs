@@ -40,12 +40,6 @@ public class ShipStatHandler : MonoBehaviour
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
-    private void Start()
-    {
-        LoadConstantStats();
-        ApplyUpgradeStats(GameManager.Instance.SetShipStats());
-    }
-
     private void OnEnable()
     {
         GameEventBus.Subscribe<ShipStats>(GameEventType.ShipStatsChanged, HandleShipStatsChanged);

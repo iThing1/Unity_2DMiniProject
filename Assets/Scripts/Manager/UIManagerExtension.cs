@@ -33,6 +33,8 @@ public static class UIManagerExtension
         {
             uiManager.OpenUI(currencyUiId);
             GameObject currencyUI = uiManager.GetUI<UIBase>(currencyUiId)?.gameObject;
+            if (currencyUI != null)
+                currencyUI.transform.SetAsLastSibling();
         }
         else
         {
@@ -50,6 +52,8 @@ public static class UIManagerExtension
         {
             uiManager.OpenUI(settingUiId);
             GameObject settingUI = uiManager.GetUI<UIBase>(settingUiId)?.gameObject;
+            if (settingUI != null)
+                settingUI.transform.SetAsLastSibling();
         }
         else
         {

@@ -286,10 +286,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryVisualize
   _boxPrefab: {fileID: 5244795624702746697, guid: 6f90ce257453db04ca1881d0a27e7149, type: 3}
-  _maxBoxCount: 10
+  _maxBoxCount: 20
   _boxSpacing: 1.2
   _springFrequency: 2
   _springDampingRatio: 0.3
   _boxMass: 0.1
   _boxLinearDrag: 1.5
   _boxAngularDrag: 2
+  _maxStretchMultiplier: 1.2

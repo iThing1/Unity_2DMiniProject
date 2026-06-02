@@ -117,7 +117,7 @@ public class AchievementItem : MonoBehaviour
                 if (_progressBar != null)
                 {
                     _progressBar.gameObject.SetActive(true);
-                    _progressBar.value = isCompleted ? 1f : Mathf.Clamp01((float)currentValue / _currentData.TargetValue ?? 1);
+                    _progressBar.value = isCompleted ? 1f : Mathf.Clamp01((float)currentValue / (_currentData.TargetValue ?? 1));
                 }
 
                 if (_txtProgress != null)
