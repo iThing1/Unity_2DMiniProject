@@ -77,7 +77,7 @@ public class PlanetSimulator : MonoBehaviour
         _basePop = data.BasePop;
 
         Population = data.BasePop;
-        Prosperity = data.Properity;
+        Prosperity = data.Prosperity;
         StoredFood = data.BaseFood;
         StoredOre = data.BaseOre;
 

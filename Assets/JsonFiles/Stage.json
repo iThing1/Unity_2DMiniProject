@@ -6,7 +6,7 @@
     "SpawnInterval": 48,
     "ExpansionSpeed": 0.05,
     "ReqGold": 100,
-    "isClear": true,
+    "IsClear": true,
     "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03"
   },
   {
@@ -16,7 +16,7 @@
     "SpawnInterval": 48,
     "ExpansionSpeed": 0.05,
     "ReqGold": 200,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05"
   },
   {
@@ -26,7 +26,7 @@
     "SpawnInterval": 48,
     "ExpansionSpeed": 0.075,
     "ReqGold": 300,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06"
   },
   {
@@ -36,7 +36,7 @@
     "SpawnInterval": 44,
     "ExpansionSpeed": 0.075,
     "ReqGold": 500,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06"
   },
   {
@@ -46,7 +46,7 @@
     "SpawnInterval": 44,
     "ExpansionSpeed": 0.1,
     "ReqGold": 800,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06,Planet_small_07"
   },
   {
@@ -56,7 +56,7 @@
     "SpawnInterval": 42,
     "ExpansionSpeed": 0.1,
     "ReqGold": 1300,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_02"
   },
   {
@@ -66,7 +66,7 @@
     "SpawnInterval": 40,
     "ExpansionSpeed": 0.125,
     "ReqGold": 2100,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_03,Planet_small_04,Planet_small_06,Planet_small_07,Planet_medium_01,Planet_medium_02,Planet_medium_03"
   },
   {
@@ -76,7 +76,7 @@
     "SpawnInterval": 38,
     "ExpansionSpeed": 0.175,
     "ReqGold": 3400,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_03,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_02,Planet_medium_03,Planet_medium_04"
   },
   {
@@ -86,7 +86,7 @@
     "SpawnInterval": 36,
     "ExpansionSpeed": 0.235,
     "ReqGold": 5500,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_02,Planet_small_04,Planet_medium_01,Planet_medium_02,Planet_medium_04,Planet_medium_05"
   },
   {
@@ -96,7 +96,7 @@
     "SpawnInterval": 32,
     "ExpansionSpeed": 0.285,
     "ReqGold": 9000,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_01,Planet_small_03,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_03,Planet_medium_05,Planet_Large_01"
   },
   {
@@ -106,7 +106,7 @@
     "SpawnInterval": 32,
     "ExpansionSpeed": 0.35,
     "ReqGold": 13500,
-    "isClear": false,
+    "IsClear": false,
     "PlanetList": "Planet_small_02,Planet_small_05,Planet_small_07,Planet_medium_03,Planet_medium_04,Planet_medium_05,Planet_Large_01,Planet_Large_02"
   }
 ]

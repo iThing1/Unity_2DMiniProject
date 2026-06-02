@@ -129,7 +129,7 @@ public class AchievementItem : MonoBehaviour
                 }
                 break;
 
-            case AchievementType.Acomplished:
+            case AchievementType.Accomplished:
                 if (_progressBar != null)
                     _progressBar.gameObject.SetActive(false);
 

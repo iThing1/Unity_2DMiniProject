@@ -35,7 +35,7 @@ public static class SpawnCalculator
 
             // 겹침이더라도 정거장으로부터 거리 기록 (fallback 후보)
             float distFromStation = GetDistanceFromStation(cx, cy, stationCollider);
-            bool isInsideCamera = IsCameraInside(cx, cy, colliderRadius, spawnPadding, cameraController);
+
             if (distFromStation > bestDist)
             {
                 bestDist = distFromStation;

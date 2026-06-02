@@ -24,7 +24,7 @@ namespace GameData
         public int BasePop;
         public int BaseFood;
         public int BaseOre;
-        public int Properity;
+        public int Prosperity;
         public int Grade;
         public string PlanetSprite = null!;
 
@@ -40,7 +40,7 @@ namespace GameData
         public float SpawnInterval;
         public float ExpansionSpeed;
         public int ReqGold;
-        public bool isClear;
+        public bool IsClear;
         public string PlanetList = null!;
 
         public string Id => Stage_ID;

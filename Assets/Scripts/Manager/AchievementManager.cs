@@ -93,7 +93,7 @@ public class AchievementManager : MonoBehaviour
                 if (justCompleted)
                     NotifyAchievementCompleted(data.Id);
             }
-            else if (data.AchievementType == AchievementType.Acomplished)
+            else if (data.AchievementType == AchievementType.Accomplished)
             {
                 bool justCompleted = CompleteAchievement(data.Id);
                 if (justCompleted)

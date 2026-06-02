@@ -17,7 +17,7 @@ namespace GameData
     public enum AchievementType
     {
         Stacked,
-        Acomplished
+        Accomplished
     }
 
     public enum TriggerType

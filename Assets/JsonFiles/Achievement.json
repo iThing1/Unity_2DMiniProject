@@ -74,7 +74,7 @@
   {
     "Id": "Achievement_201",
     "Name": "초보 운전",
-    "AchievementType": "Acomplished",
+    "AchievementType": "Accomplished",
     "TriggerType": "StageClear",
     "Score": 10,
     "TargetValue": null,
@@ -86,7 +86,7 @@
   {
     "Id": "Achievement_202",
     "Name": "나도 이제 어엿한 배달부",
-    "AchievementType": "Acomplished",
+    "AchievementType": "Accomplished",
     "TriggerType": "StageClear",
     "Score": 100,
     "TargetValue": null,
@@ -98,7 +98,7 @@
   {
     "Id": "Achievement_203",
     "Name": "스피드 레이서",
-    "AchievementType": "Acomplished",
+    "AchievementType": "Accomplished",
     "TriggerType": "StageClear",
     "Score": 300,
     "TargetValue": null,
