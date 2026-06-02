@@ -113,10 +113,10 @@
     "AchievementType": "Stacked",
     "TriggerType": "SpeedReached",
     "Score": 10,
-    "TargetValue": "10",
+    "TargetValue": "15",
     "StageId": null,
     "NextId": "Achievement_302",
-    "Description": "우주선 속도를 10에 도달한다.",
+    "Description": "우주선 속도가 15에 도달한다.",
     "SpritePath": "AchievementInfo2_0"
   },
   {
@@ -125,10 +125,10 @@
     "AchievementType": "Stacked",
     "TriggerType": "SpeedReached",
     "Score": 50,
-    "TargetValue": "20",
+    "TargetValue": "30",
     "StageId": null,
     "NextId": "Achievement_303",
-    "Description": "우주선 속도를 20에 도달한다.",
+    "Description": "우주선 속도를 30에 도달한다.",
     "SpritePath": "AchievementInfo2_1"
   },
   {
@@ -137,10 +137,10 @@
     "AchievementType": "Stacked",
     "TriggerType": "SpeedReached",
     "Score": 200,
-    "TargetValue": "30",
+    "TargetValue": "45",
     "StageId": null,
     "NextId": null,
-    "Description": "우주선 속도를 30에 도달한다.",
+    "Description": "우주선 속도를 45에 도달한다.",
     "SpritePath": "AchievementInfo2_2"
   },
   {

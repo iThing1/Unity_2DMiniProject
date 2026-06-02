@@ -71,6 +71,7 @@ namespace GameData
             public const string StationMarket = "UI_Popup_08";
             public const string Scoreboard = "UI_Popup_09";
             public const string Option = "UI_Popup_10";
+            public const string Accomplished = "UI_Popup_11";
 
             public const string HowToMove = "UI_Tutorial_02";
             public const string HowToLoop = "UI_Tutorial_03";

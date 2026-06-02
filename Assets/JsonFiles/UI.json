@@ -70,6 +70,13 @@
     "Auto": false
   },
   {
+    "Id": "UI_Popup_11",
+    "Name": "Accomplished",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
     "Id": "UI_Panel_01",
     "Name": "MainMenu",
     "Type": "Main",

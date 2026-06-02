@@ -66,6 +66,8 @@ public class GameDataManager : MonoBehaviour
 
     public T Get<T>(string id) where T : IGameData
     {
+        if (string.IsNullOrEmpty(id)) return default;
+
         if (_tables.TryGetValue(typeof(T), out var tableObj) &&
             tableObj is Dictionary<string, T> table &&
             table.TryGetValue(id, out var data))

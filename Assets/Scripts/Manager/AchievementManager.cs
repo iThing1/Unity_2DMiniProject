@@ -1,9 +1,16 @@
 ﻿using GameData;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AchievementManager : MonoBehaviour
 {
     public static AchievementManager Instance { get; private set; }
+
+    // =========================================================================
+    // 팝업 큐
+    // =========================================================================
+    private readonly Queue<AchievementData> _popupQueue = new Queue<AchievementData>();
+    private bool _isShowingPopup = false;
 
     // =========================================================================
     // Unity 생명주기
@@ -172,6 +179,41 @@ public class AchievementManager : MonoBehaviour
     {
         GameEventBus.Publish(GameEventType.AchievementCompleted, achievementId);
         Debug.Log($"[AchievementManager] 업적 달성: {achievementId}");
+
+        AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
+        if (data != null)
+        {
+            _popupQueue.Enqueue(data);
+            TryShowNextPopup();
+        }
+    }
+
+    // =========================================================================
+    // 팝업 큐 처리
+    // =========================================================================
+    private void TryShowNextPopup()
+    {
+        if (_isShowingPopup) return;
+        if (_popupQueue.Count == 0) return;
+
+        AchievementData data = _popupQueue.Dequeue();
+        _isShowingPopup = true;
+
+        AchieveAccomplished popup = UIManager.Instance.PrepareUI<AchieveAccomplished>(UIId.Popup.Accomplished);
+        if (popup == null)
+        {
+            _isShowingPopup = false;
+            TryShowNextPopup();
+            return;
+        }
+
+        popup.Show(data);
+    }
+
+    public void OnPopupClosed()
+    {
+        _isShowingPopup = false;
+        TryShowNextPopup();
     }
 
     // =========================================================================
