@@ -26,6 +26,9 @@ namespace GameData
         FoodDelivered,
         IngotRefined,
         StageClear,
+        SpeedReached,
+        UpgradeCompleted,
+        HiddenCodeFound,
     }
 
     public static class GameUtility

@@ -23,6 +23,9 @@ public class AchievementManager : MonoBehaviour
         GameEventBus.Subscribe<int>(GameEventType.FoodDelivered, HandleFoodDelivered);
         GameEventBus.Subscribe<int>(GameEventType.IngotRefined, HandleIngotRefined);
         GameEventBus.Subscribe<string>(GameEventType.StageClear, HandleStageClear);
+        GameEventBus.Subscribe<int>(GameEventType.SpeedReached, HandleSpeedReached);
+        GameEventBus.Subscribe<string>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
+        GameEventBus.Subscribe(GameEventType.HiddenCodeFound, HandleHiddenCodeFound);
     }
 
     private void OnDisable()
@@ -30,6 +33,9 @@ public class AchievementManager : MonoBehaviour
         GameEventBus.Unsubscribe<int>(GameEventType.FoodDelivered, HandleFoodDelivered);
         GameEventBus.Unsubscribe<int>(GameEventType.IngotRefined, HandleIngotRefined);
         GameEventBus.Unsubscribe<string>(GameEventType.StageClear, HandleStageClear);
+        GameEventBus.Unsubscribe<int>(GameEventType.SpeedReached, HandleSpeedReached);
+        GameEventBus.Unsubscribe<string>(GameEventType.UpgradeCompleted, HandleUpgradeCompleted);
+        GameEventBus.Unsubscribe(GameEventType.HiddenCodeFound, HandleHiddenCodeFound);
     }
 
     // =========================================================================
@@ -50,8 +56,23 @@ public class AchievementManager : MonoBehaviour
         CheckStageClearAchievements(stageId);
     }
 
+    private void HandleSpeedReached(int speed)
+    {
+        CheckThresholdAchievements(TriggerType.SpeedReached, speed);
+    }
+
+    private void HandleUpgradeCompleted(string upgradeId)
+    {
+        CheckStackedAchievements(TriggerType.UpgradeCompleted, 1);
+    }
+
+    private void HandleHiddenCodeFound()
+    {
+        CheckAccomplishedAchievements(TriggerType.HiddenCodeFound);
+    }
+
     // =========================================================================
-    // 누적형 업적 처리 (FoodDelivered / IngotRefined)
+    // 누적형 업적 처리 (FoodDelivered / IngotRefined / UpgradeCompleted)
     // =========================================================================
     private void CheckStackedAchievements(TriggerType triggerType, int amount)
     {
@@ -102,6 +123,48 @@ public class AchievementManager : MonoBehaviour
         }
     }
 
+    // =========================================================================
+    // 도달형 업적 처리 (SpeedReached)
+    // =========================================================================
+    private void CheckThresholdAchievements(TriggerType triggerType, int currentValue)
+    {
+        GameContext context = GameManager.Instance.Context;
+
+        foreach (AchievementData data in GameDataManager.Instance.GetAll<AchievementData>())
+        {
+            if (data.TriggerType != triggerType) continue;
+            if (data.AchievementType != AchievementType.Stacked) continue;
+            if (context.IsAchievementCompleted(data.Id)) continue;
+            if (!IsActiveChainStep(data.Id)) continue;
+
+            if (currentValue >= (data.TargetValue ?? 0))
+            {
+                context.AchievementProgress[data.Id] = currentValue;
+                bool justCompleted = CompleteAchievement(data.Id);
+                if (justCompleted)
+                    NotifyAchievementCompleted(data.Id);
+            }
+        }
+    }
+
+    // =========================================================================
+    // 달성형 업적 처리 (HiddenCodeFound)
+    // =========================================================================
+    private void CheckAccomplishedAchievements(TriggerType triggerType)
+    {
+        GameContext context = GameManager.Instance.Context;
+
+        foreach (AchievementData data in GameDataManager.Instance.GetAll<AchievementData>())
+        {
+            if (data.TriggerType != triggerType) continue;
+            if (data.AchievementType != AchievementType.Accomplished) continue;
+            if (context.IsAchievementCompleted(data.Id)) continue;
+
+            bool justCompleted = CompleteAchievement(data.Id);
+            if (justCompleted)
+                NotifyAchievementCompleted(data.Id);
+        }
+    }
     // =========================================================================
     // 공통 처리
     // =========================================================================

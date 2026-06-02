@@ -30,26 +30,48 @@ public class ResourceManager : MonoBehaviour
     // =========================================================================
     // Sprite 로드 (단일 / 스프라이트 시트)
     // =========================================================================
-
-    public void LoadSprite(string address, Action<Sprite> callback)
-        => LoadAsset<Sprite>(address, callback);
+    public void LoadSprite(string address, Action<Sprite> callback) => LoadAsset<Sprite>(address, callback);
 
     public void LoadSpriteFromSheet(string sheetAddress, string spriteName, Action<Sprite> callback)
     {
-        LoadSpriteFromSheetInternal(sheetAddress, sheetAddress, spriteName, callback);
+        LoadSpriteFromSheetInternal(sheetAddress, spriteName, callback);
     }
 
-    private void LoadSpriteFromSheetInternal(string cacheKey, string sheetAddress, string spriteName, Action<Sprite> callback)
+    public void LoadSpriteFromSheets(string[] sheetAddresses, string spriteName, Action<Sprite> callback)
     {
-        if (_handles.TryGetValue(cacheKey, out var cached))
+        TryLoadFromSheetAt(sheetAddresses, spriteName, 0, callback);
+    }
+
+    private void TryLoadFromSheetAt(string[] sheetAddresses, string spriteName, int index, Action<Sprite> callback)
+    {
+        if (index >= sheetAddresses.Length)
         {
-            ResolveAtlasHandle(cached, spriteName, cacheKey, callback);
+            Debug.LogWarning($"[ResourceManager] 모든 시트에서 스프라이트를 찾지 못했습니다: {spriteName}");
+            callback?.Invoke(null);
+            return;
+        }
+
+        string sheetAddress = sheetAddresses[index];
+        LoadSpriteFromSheetInternal(sheetAddress, spriteName, sprite =>
+        {
+            if (sprite != null)
+                callback?.Invoke(sprite);
+            else
+                TryLoadFromSheetAt(sheetAddresses, spriteName, index + 1, callback);
+        });
+    }
+
+    private void LoadSpriteFromSheetInternal(string sheetAddress, string spriteName, Action<Sprite> callback)
+    {
+        if (_handles.TryGetValue(sheetAddress, out var cached))
+        {
+            ResolveAtlasHandle(cached, spriteName, sheetAddress, callback);
             return;
         }
 
         var handle = Addressables.LoadAssetAsync<IList<Sprite>>(sheetAddress);
-        _handles[cacheKey] = handle;
-        AtlasLoadContext ctx = new AtlasLoadContext(spriteName, cacheKey, callback, this);
+        _handles[sheetAddress] = handle;
+        AtlasLoadContext ctx = new AtlasLoadContext(spriteName, sheetAddress, callback, this);
         handle.Completed += ctx.OnAtlasLoadedFromContext;
     }
 
@@ -88,7 +110,6 @@ public class ResourceManager : MonoBehaviour
             if (sprite.name == spriteName) return sprite;
         }
 
-        Debug.LogWarning($"[ResourceManager] 스프라이트 시트에서 스프라이트를 찾지 못했습니다: {cacheKey}");
         return null;
     }
 

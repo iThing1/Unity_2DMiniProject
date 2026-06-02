@@ -23,7 +23,7 @@ public class AchievementUI : UIBase
     // =========================================================================
     // 상수
     // =========================================================================
-    private const string CheatCode = "OZCoding";
+    private const string CheatCode = "SpaceExpress";
 
     // =========================================================================
     // 내부 상태
@@ -145,6 +145,7 @@ public class AchievementUI : UIBase
             foreach (AchievementItem item in _spawnedItems)
                 item.SetForceCompleteVisible(true);
 
+            GameEventBus.Publish(GameEventType.HiddenCodeFound);
             _inputCheatCode.text = string.Empty;
             Debug.Log("[AchievementUI] 치트 코드 인증 성공");
         }

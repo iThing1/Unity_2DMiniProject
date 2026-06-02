@@ -25,6 +25,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b75c757746fef04fb6c8a1a0d080705
+    m_Address: AchievementInfo2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f2e351246b8bb649b23c32f08ba4433
     m_Address: Setting
     m_ReadOnly: 0

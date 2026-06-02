@@ -24,11 +24,13 @@ public class AchievementItem : MonoBehaviour
 
     [Header("치트")]
     [SerializeField] private Button _btnForceComplete;
+
+    private static readonly string[] SpriteSheetAddress = { "AchievementInfo1", "AchievementInfo2" };
     // =========================================================================
     // 내부 상태
     // =========================================================================
     private AchievementData _currentData;
-
+    
     // =========================================================================
     // Unity 생명주기
     // =========================================================================
@@ -106,7 +108,7 @@ public class AchievementItem : MonoBehaviour
             _txtDesc.text = _currentData.Description;
 
         if (_imgAchievement != null && !string.IsNullOrEmpty(_currentData.SpritePath))
-            ResourceManager.Instance.LoadSpriteFromSheet("AchievementInfo", _currentData.SpritePath, OnSpriteLoaded);
+            ResourceManager.Instance.LoadSpriteFromSheets(SpriteSheetAddress, _currentData.SpritePath, OnSpriteLoaded);
 
         if (_imgCompleted != null)
             _imgCompleted.gameObject.SetActive(isCompleted);

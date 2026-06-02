@@ -29,6 +29,7 @@ public class ShipController : MonoBehaviour
     // GamePlay 상태일 때만 입력 허용
     private bool _isControllable = false;
 
+    private int _lastSpeed = 0;
     // =========================================================================
     // 내부 참조
     // =========================================================================
@@ -75,6 +76,7 @@ public class ShipController : MonoBehaviour
     private void FixedUpdate()
     {
         ApplyMovement();
+        CheckSpeedThreshold();
     }
 
     // =========================================================================
@@ -201,6 +203,20 @@ public class ShipController : MonoBehaviour
     }
 
     // =========================================================================
+    // 업적 체크용
+    // =========================================================================
+    private void CheckSpeedThreshold()
+    {
+        if (!_isControllable) return;
+
+        int currentSpeed = (int)_rigidbody2D.linearVelocity.magnitude;
+        if (currentSpeed <= _lastSpeed) return;
+
+        _lastSpeed = currentSpeed;
+        GameEventBus.Publish(GameEventType.SpeedReached, currentSpeed);
+    }
+
+    // =========================================================================
     // 초기화 및 이벤트 핸들러
     // =========================================================================
     public void Initialize()
@@ -247,4 +263,5 @@ public class ShipController : MonoBehaviour
     // 외부 제어 API
     // =========================================================================
     public bool IsInteractable => _rigidbody2D.linearVelocity.magnitude <= _stats.DockingSpeedThreshold;
+
 }

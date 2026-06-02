@@ -136,11 +136,11 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Achievement_0
+      name: AchievementInfo1_0
       rect:
         serializedVersion: 2
-        x: 514
-        y: 713
+        x: 515
+        y: 714
         width: 296
         height: 268
       alignment: 0
@@ -151,14 +151,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c90dd3dd02f26c459031d65a8f01c06
-      internalID: -2141375488
+      spriteID: ccd59b77b7bf0b8459227430e257e8e5
+      internalID: -1136069576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_1
+      name: AchievementInfo1_1
       rect:
         serializedVersion: 2
         x: 853
@@ -173,14 +173,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2ecaa224515959446a97fbeac9103d68
-      internalID: 986705373
+      spriteID: a7d82cc7329ad904cb617ee7ef33edcd
+      internalID: -1019848685
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_2
+      name: AchievementInfo1_2
       rect:
         serializedVersion: 2
         x: 1190
@@ -195,14 +195,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce908981b21dff54699630b5b352b5e8
-      internalID: 943592546
+      spriteID: 2f873fa2f276ba8428c168a39e3795e6
+      internalID: 2035301806
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_3
+      name: AchievementInfo1_3
       rect:
         serializedVersion: 2
         x: 538
@@ -217,14 +217,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 54c30df08707cc541a0904b0360057f8
-      internalID: -581675945
+      spriteID: c536b55e532a9ed4faef1dc314a83abd
+      internalID: 996504227
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_4
+      name: AchievementInfo1_4
       rect:
         serializedVersion: 2
         x: 865
@@ -239,14 +239,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2419774c4c39068429886cac5b8b85ca
-      internalID: -1602046415
+      spriteID: 8e0578b93c381e948897485607a22d9e
+      internalID: 98584363
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_5
+      name: AchievementInfo1_5
       rect:
         serializedVersion: 2
         x: 1201
@@ -261,14 +261,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c800160a1b00fa4fb0dad22de3bf4cb
-      internalID: 1771409345
+      spriteID: 70bb881ea0a1dad4aace77074bb4af2d
+      internalID: 484724095
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_6
+      name: AchievementInfo1_6
       rect:
         serializedVersion: 2
         x: 523
@@ -283,14 +283,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 973643f578a692c4b99aa2cabd2edaec
-      internalID: -2065455370
+      spriteID: 0b0e492042ef38f4d9a7be29f29f5fd1
+      internalID: -1120123094
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_7
+      name: AchievementInfo1_7
       rect:
         serializedVersion: 2
         x: 861
@@ -305,14 +305,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe47aa73e4975654da90bd6747fb74d1
-      internalID: 228059552
+      spriteID: be28147553fd851499fab70094435257
+      internalID: -122720186
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Achievement_8
+      name: AchievementInfo1_8
       rect:
         serializedVersion: 2
         x: 1190
@@ -327,8 +327,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3162912354ad33140a0fef690edb56d7
-      internalID: 1672851138
+      spriteID: 0adc730eb2c69e34287084d2e5c0c149
+      internalID: 863240183
       vertices: []
       indices: 
       edges: []
@@ -349,15 +349,15 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Achievement_0: -2141375488
-      Achievement_1: 986705373
-      Achievement_2: 943592546
-      Achievement_3: -581675945
-      Achievement_4: -1602046415
-      Achievement_5: 1771409345
-      Achievement_6: -2065455370
-      Achievement_7: 228059552
-      Achievement_8: 1672851138
+      AchievementInfo1_0: -1136069576
+      AchievementInfo1_1: -1019848685
+      AchievementInfo1_2: 2035301806
+      AchievementInfo1_3: 996504227
+      AchievementInfo1_4: 98584363
+      AchievementInfo1_5: 484724095
+      AchievementInfo1_6: -1120123094
+      AchievementInfo1_7: -122720186
+      AchievementInfo1_8: 863240183
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

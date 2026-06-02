@@ -32,7 +32,8 @@ public enum GameEventType
     UpgradeCompleted = 400,
     ShipStatsChanged = 401,
     StationStatsChanged = 402,
-
+    SpeedReached = 403,
+    HiddenCodeFound = 404,
     // ==========================================
     // [스테이지] 500번대
     // ==========================================
