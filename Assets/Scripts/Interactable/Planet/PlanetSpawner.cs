@@ -25,7 +25,7 @@ public class PlanetSpawner : MonoBehaviour
     // 내부 상태
     // =========================================================================
     private StageData _currentStageData;
-    private List<PlanetController> _spawnedPlanets = new List<PlanetController>();
+    private List<PlanetController> _spawnedPlanets;
     private Coroutine _spawnCoroutine;
     private GameObject _planetPrefab;
     private float _prefabColliderRadius;
@@ -41,6 +41,8 @@ public class PlanetSpawner : MonoBehaviour
         _cameraController = Camera.main?.GetComponent<CameraController>();
         if (_cameraController == null)
             Debug.LogWarning("[PlanetSpawner] CameraController를 찾지 못했습니다.");
+
+        _spawnedPlanets = new List<PlanetController>();
     }
 
     private void OnEnable()

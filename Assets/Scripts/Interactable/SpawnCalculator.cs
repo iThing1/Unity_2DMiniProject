@@ -118,15 +118,6 @@ public static class SpawnCalculator
         return false;
     }
 
-    private static bool IsCameraInside(float cx, float cy, float colliderRadius, float spawnPadding, CameraController cameraController)
-    {
-        if (cameraController == null) return true;
-
-        float halfW = cameraController.ViewHalfWidth - colliderRadius - spawnPadding;
-        float halfH = cameraController.ViewHalfHeight - colliderRadius - spawnPadding;
-        return MathUtility.IsPointInRect(cx, cy, halfW, halfH);
-    }
-
     private static float GetColliderRadius(Collider2D col)
     {
         float scale = col.transform.lossyScale.x;
