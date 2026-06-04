@@ -23,6 +23,21 @@ public static class UIManagerExtension
     }
 
     // =========================================================================
+    // 우주선 스탯 UI
+    // =========================================================================
+    public static void OpenShipStatUI(this UIManager uiManager)
+    {
+        ShipStatUI shipStatUI = uiManager.PrepareUI<ShipStatUI>(UIId.Popup.ShipStat);
+        if (shipStatUI != null)
+            uiManager.OpenUI(UIId.Popup.ShipStat);
+    }
+
+    public static void CloseShipStatUI(this UIManager uiManager)
+    {
+        uiManager.CloseUI(UIId.Popup.ShipStat);
+    }
+
+    // =========================================================================
     // 재화 UI
     // =========================================================================
     public static void ShowCurrencyUI(this UIManager uiManager, bool active)

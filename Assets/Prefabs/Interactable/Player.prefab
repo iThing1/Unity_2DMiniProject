@@ -13,10 +13,12 @@ GameObject:
   - component: {fileID: 4708531947044412554}
   - component: {fileID: 4167294690862339930}
   - component: {fileID: 8138708024360571631}
+  - component: {fileID: 1849013809960220045}
   - component: {fileID: 3022605805177355951}
   - component: {fileID: 5794337568127101619}
   - component: {fileID: 5678400007094807978}
   - component: {fileID: 3620082188818647356}
+  - component: {fileID: 6817540676653750220}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -96,6 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed0dd6fa8045dee47be43bbc9685c44d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipAnimation
+--- !u!114 &1849013809960220045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589836737873883855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 179b02df04d5c9a458aab076ab4bcbd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipHovering
 --- !u!212 &3022605805177355951
 SpriteRenderer:
   serializedVersion: 2
@@ -238,8 +252,45 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.2939181, y: 0.78301775}
+  m_Offset: {x: 0.000000007598116, y: 0.06373762}
+  m_Size: {x: 2.2939186, y: 1.0263816}
+  m_Direction: 1
+--- !u!70 &6817540676653750220
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589836737873883855}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.11898888, y: 0.069041245}
+  m_Size: {x: 2.9204235, y: 2.0793803}
   m_Direction: 1
 --- !u!1 &619972813707462845
 GameObject:
