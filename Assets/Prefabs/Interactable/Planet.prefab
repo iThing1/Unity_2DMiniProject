@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 2529187700852452149}
   - component: {fileID: 4603943229447279556}
   - component: {fileID: 6383534077554289595}
+  - component: {fileID: 5393500512208159814}
   - component: {fileID: 2117299056285563292}
   - component: {fileID: 701441645592902837}
   m_Layer: 0
@@ -411,6 +412,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75b4a98fdd7de314988b5116086a7d1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlanetSimulator
+--- !u!114 &5393500512208159814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6563278665419688659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e881449a4348ef4ca6669341b563154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlanetVisualEffect
+  _veryProsperousColor: {r: 1, g: 1, b: 1, a: 1}
+  _prosperousColor: {r: 0.9, g: 1, b: 0.9, a: 1}
+  _neutralColor: {r: 0.85, g: 0.85, b: 0.7, a: 1}
+  _poorColor: {r: 0.7, g: 0.6, b: 0.5, a: 1}
+  _criticalColor: {r: 0.5, g: 0.3, b: 0.3, a: 1}
+  _colorTransitionSpeed: 1.5
+  _pulseSpeed: 2.5
+  _pulseIntensity: 0.2
 --- !u!212 &2117299056285563292
 SpriteRenderer:
   serializedVersion: 2

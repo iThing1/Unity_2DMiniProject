@@ -48,6 +48,7 @@ public class ShipController : MonoBehaviour
 
         _rigidbody2D.gravityScale = 0f;
         _rigidbody2D.linearDamping = 0f;
+        _rigidbody2D.centerOfMass = Vector2.zero;
     }
 
     private void OnEnable()
