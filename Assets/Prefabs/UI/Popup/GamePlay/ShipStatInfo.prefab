@@ -545,7 +545,7 @@ MonoBehaviour:
   _uiId: UI_Popup_12
   _btnClose: {fileID: 0}
   _slideDirection: 1
-  _slideDuration: 0.25
+  _slideDuration: 0.5
   _txtSpeed: {fileID: 5425987339573149940}
   _txtBoost: {fileID: 6421092303337074762}
   _txtMaxFuel: {fileID: 8897388509594418542}

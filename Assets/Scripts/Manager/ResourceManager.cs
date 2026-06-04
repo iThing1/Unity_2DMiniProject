@@ -157,7 +157,6 @@ public class ResourceManager : MonoBehaviour
         {
             Addressables.Release(handle);
             _handles.Remove(address);
-            Debug.Log($"[ResourceManager] 리소스 해제: {address}");
         }
     }
 

@@ -286,6 +286,5 @@ public class PlanetSimulator : MonoBehaviour
 
         if (Prosperity <= 0f)
             TriggerGameOverWarning();
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 번영도 강제 감소: {Prosperity}");
     }
 }

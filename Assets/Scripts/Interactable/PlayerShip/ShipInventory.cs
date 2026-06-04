@@ -219,7 +219,6 @@ public class ShipInventory : MonoBehaviour
         ApplyCapacity(stats.Capacity);
         if (stats.LoaderSpeed > 0f)
             _transferInterval = stats.LoaderSpeed;
-        Debug.Log($"[ShipInventory] 용량 갱신. {Capacity}");
     }
 
     private void HandleGameStateChanged(GameState prev, GameState next)

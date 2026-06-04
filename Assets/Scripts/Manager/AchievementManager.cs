@@ -91,7 +91,6 @@ public class AchievementManager : MonoBehaviour
             if (data.AchievementType != AchievementType.Stacked) continue;
             if (context.IsAchievementCompleted(data.Id)) continue;
 
-            // 앞 단계가 완료되지 않은 경우 진행도를 받지 않음
             if (!IsActiveChainStep(data.Id)) continue;
 
             bool justCompleted = UpdateAchievementProgress(data.Id, amount);
@@ -178,7 +177,6 @@ public class AchievementManager : MonoBehaviour
     private void NotifyAchievementCompleted(string achievementId)
     {
         GameEventBus.Publish(GameEventType.AchievementCompleted, achievementId);
-        Debug.Log($"[AchievementManager] 업적 달성: {achievementId}");
 
         AchievementData data = GameDataManager.Instance.Get<AchievementData>(achievementId);
         if (data != null)
@@ -260,14 +258,12 @@ public class AchievementManager : MonoBehaviour
         return true;
     }
 
-    [System.Diagnostics.Conditional("UNITY_EDITOR")]
     public void ForceCompleteAchievement(string achievementId)
     {
         bool completed = CompleteAchievement(achievementId);
         if (completed)
         {
             NotifyAchievementCompleted(achievementId);
-            Debug.Log($"[AchievementManager] 강제 달성: {achievementId}");
         }
     }
 
@@ -279,7 +275,6 @@ public class AchievementManager : MonoBehaviour
         {
             if (data.NextId != achievementId) continue;
 
-            // 이 업적을 NextId로 가리키는 이전 단계가 완료되지 않았으면 비활성
             if (!context.IsAchievementCompleted(data.Id))
                 return false;
         }

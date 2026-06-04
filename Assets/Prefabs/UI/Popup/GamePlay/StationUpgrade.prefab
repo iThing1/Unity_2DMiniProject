@@ -298,7 +298,7 @@ MonoBehaviour:
   _uiId: UI_Popup_07
   _btnClose: {fileID: 0}
   _slideDirection: 3
-  _slideDuration: 0.25
+  _slideDuration: 0.5
   _upgradeItemPrefab: {fileID: 6868254862704934756, guid: e83b9fd5069b25341a287b747fda87a3, type: 3}
   _content: {fileID: 6835872198308503222}
   _upgradeInfo: {fileID: 4675013375248335358}

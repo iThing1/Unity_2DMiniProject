@@ -695,6 +695,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlanetInfo
   _uiId: UI_Popup_06
   _btnClose: {fileID: 0}
+  _slideDirection: 1
+  _slideDuration: 0.5
   _imgPlanet: {fileID: 5703562653534019600}
   _txtName: {fileID: 5425987339573149940}
   _txtFood: {fileID: 1881776455787191679}
