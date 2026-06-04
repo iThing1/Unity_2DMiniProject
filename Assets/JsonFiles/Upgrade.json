@@ -26,7 +26,7 @@
     "BaseIngotCost": 0,
     "IngotIncrease": 3,
     "BaseStats": 5,
-    "UpgradeValue": 5,
+    "UpgradeValue": 2,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/EngineOverclock",
     "Description": "Overclock engine output beyond factory limits for higher top speed"
@@ -58,7 +58,7 @@
     "BaseIngotCost": 5,
     "IngotIncrease": 5,
     "BaseStats": 200,
-    "UpgradeValue": 100,
+    "UpgradeValue": 50,
     "CalcType": "Sum",
     "SpritePath": "Upgrade/ExtraFuelTank",
     "Description": "High-pressure void fuel cells extend operational range significantly"

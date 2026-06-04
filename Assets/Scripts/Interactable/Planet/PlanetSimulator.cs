@@ -195,7 +195,6 @@ public class PlanetSimulator : MonoBehaviour
             StopCoroutine(_gameOverCoroutine);
 
         _gameOverCoroutine = StartCoroutine(GameOverCountdownRoutine());
-        Debug.LogWarning($"[PlanetSimulator] '{_planetName}' 멸망 위기! {_alertTime}초 유예 시작");
     }
 
     private IEnumerator GameOverCountdownRoutine()
@@ -209,7 +208,7 @@ public class PlanetSimulator : MonoBehaviour
             IsGameOverWarning = false;
 
             GameEventBus.Publish(GameEventType.PlanetWarning, _instanceId, false);
-            GameEventBus.Publish(GameEventType.PlanetDestroyed, _instanceId);
+            GameEventBus.Publish(GameEventType.PlanetDestroyed, _instanceId, transform.position);
         }
         else
         {
@@ -229,8 +228,6 @@ public class PlanetSimulator : MonoBehaviour
             StopCoroutine(_gameOverCoroutine);
             _gameOverCoroutine = null;
         }
-
-        Debug.Log($"[PlanetSimulator] '{_planetName}' 게임오버 경고 해제");
     }
 
     // =========================================================================
@@ -277,5 +274,18 @@ public class PlanetSimulator : MonoBehaviour
         _foodConsumeBase = c.FoodConsumeBase;
         _foodConsumeRate = c.FoodConsumeRate;
         _oreProduceRate = c.OreProdRate;
+    }
+
+    // =========================================================================
+    // 디버깅 퉅
+    // =========================================================================
+    public void DebugReduceProsperity(float amount)
+    {
+        Prosperity = Mathf.Max(0f, Prosperity - amount);
+        State = CalcPlanetState(Prosperity);
+
+        if (Prosperity <= 0f)
+            TriggerGameOverWarning();
+        Debug.Log($"[PlanetSimulator] '{_planetName}' 번영도 강제 감소: {Prosperity}");
     }
 }

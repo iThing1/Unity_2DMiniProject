@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using GameData;
 
-// 행성 스폰 시마다 Z축으로 멀어지며 시야를 넓힘
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour
 {
@@ -9,8 +9,13 @@ public class CameraController : MonoBehaviour
     // Inspector 연결
     // =========================================================================
     [Header("카메라 설정")]
-    [SerializeField] private float _lerpSpeed = 3f;         // Z 이동 lerp 속도
+    [SerializeField] private float _lerpSpeed = 3f;
 
+    [Header("연출 설정")]
+    [SerializeField] private float _focusLerpSpeed = 5f;
+    [SerializeField] private float _shakeDuration = 0.5f;
+    [SerializeField] private float _focusHoldDuration = 1.5f;
+    [SerializeField] private float _focusZOffset = 10f;
     // =========================================================================
     // 내부 상태
     // =========================================================================
@@ -21,6 +26,9 @@ public class CameraController : MonoBehaviour
     private float _elapsedTime;
     private bool _isGamePlay;
 
+    private Vector3 _targetXY = Vector3.zero;
+    private bool _isFocusing = false;
+    private Coroutine _shakeCoroutine;
     // =========================================================================
     // 외부 API
     // =========================================================================
@@ -55,9 +63,6 @@ public class CameraController : MonoBehaviour
         ApplyPosition();
     }
 
-    // =========================================================================
-    // 이벤트 핸들러
-    // =========================================================================
     private void InitializeData()
     {
         _defaultZ = -GameConfig.Instance.Settings.CameraHeightDefault;
@@ -65,6 +70,17 @@ public class CameraController : MonoBehaviour
         transform.position = new Vector3(0f, 0f, _defaultZ);
     }
 
+    public void FocusOn(Vector3 worldPos, System.Action onShakeComplete, System.Action onFocusComplete)
+    {
+        if (_shakeCoroutine != null)
+            StopCoroutine(_shakeCoroutine);
+
+        _shakeCoroutine = StartCoroutine(FocusRoutine(worldPos, onShakeComplete, onFocusComplete));
+    }
+
+    // =========================================================================
+    // 이벤트 핸들러
+    // =========================================================================
     private void HandleStageSelected(string stageId)
     {
         StageData data = GameDataManager.Instance.Get<StageData>(stageId);
@@ -85,16 +101,17 @@ public class CameraController : MonoBehaviour
         }
 
         _targetZ = _defaultZ;
+        _targetXY = Vector3.zero;
+        _isFocusing = false;
         transform.position = new Vector3(0f, 0f, _defaultZ);
     }
 
     // =========================================================================
     // 카메라 확장
     // =========================================================================
-
     private void TickExpansion()
     {
-        if (!_isGamePlay) return;
+        if (!_isGamePlay || _isFocusing) return;
         if (_expansionSpeed <= 0f) return;
 
         _elapsedTime += Time.deltaTime;
@@ -111,9 +128,51 @@ public class CameraController : MonoBehaviour
     private void ApplyPosition()
     {
         float currentZ = transform.position.z;
-        if (Mathf.Approximately(currentZ, _targetZ)) return;
-
         float newZ = Mathf.Lerp(currentZ, _targetZ, Time.deltaTime * _lerpSpeed);
-        transform.position = new Vector3(0f, 0f, newZ);
+
+        Vector2 currentXY = transform.position;
+        Vector2 newXY = Vector2.Lerp(currentXY, _targetXY, Time.deltaTime * _focusLerpSpeed);
+
+        transform.position = new Vector3(newXY.x, newXY.y, newZ);
+    }
+
+    private IEnumerator FocusRoutine(Vector3 worldPos, System.Action onShakeComplete, System.Action onFocusComplete)
+    {
+        _isFocusing = true;
+        _targetXY = new Vector3(worldPos.x, worldPos.y, 0f);
+        float originalZ = _targetZ;
+        float focusZ = _targetZ + _focusZOffset;
+
+        _targetZ = focusZ;
+        while (Vector2.Distance(transform.position, _targetXY) > 0.1f)
+            yield return null;
+
+        float elapsed = 0f;
+        Vector3 originalPos = transform.position;
+        float shakeMagnitude = GameConfig.Instance.Settings.CameraShakePower;
+
+        while (elapsed < _shakeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float x = Random.Range(-1f, 1f) * shakeMagnitude;
+            float y = Random.Range(-1f, 1f) * shakeMagnitude;
+            transform.position = new Vector3(
+                originalPos.x + x,
+                originalPos.y + y,
+                originalPos.z
+            );
+            yield return null;
+        }
+
+        transform.position = originalPos;
+        onShakeComplete?.Invoke();
+
+        yield return new WaitForSecondsRealtime(_focusHoldDuration);
+        _shakeCoroutine = null;
+        _isFocusing = false;
+        _targetXY = Vector3.zero;
+        _targetZ = originalZ;
+
+        onFocusComplete?.Invoke();
     }
 }

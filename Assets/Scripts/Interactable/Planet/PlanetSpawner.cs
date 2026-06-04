@@ -50,7 +50,7 @@ public class PlanetSpawner : MonoBehaviour
         GameEventBus.Subscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Subscribe(GameEventType.StageStartRequested, HandleStageStartRequested);
         GameEventBus.Subscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
-        GameEventBus.Subscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Subscribe<string, Vector3>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
     }
 
     private void OnDisable()
@@ -58,7 +58,7 @@ public class PlanetSpawner : MonoBehaviour
         GameEventBus.Unsubscribe<string>(GameEventType.StageSelected, HandleStageSelected);
         GameEventBus.Unsubscribe(GameEventType.StageStartRequested, HandleStageStartRequested);
         GameEventBus.Unsubscribe<Transform>(GameEventType.StationSpawned, HandleStationSpawned);
-        GameEventBus.Unsubscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Unsubscribe<string, Vector3>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
     }
 
     // =========================================================================
@@ -79,10 +79,8 @@ public class PlanetSpawner : MonoBehaviour
         _stationCollider = stationTransform.GetComponentInChildren<Collider2D>();
     }
 
-    private void HandlePlanetDestroyed(string instanceId)
+    private void HandlePlanetDestroyed(string instanceId, Vector3 position)
     {
-        // 뒤 -> 앞으로 검사
-        // 인덱스가 뒤로 밀리는 경우를 방지
         for (int i = _spawnedPlanets.Count - 1; i >= 0; i--)
         {
             if (_spawnedPlanets[i] == null || _spawnedPlanets[i].InstanceId == instanceId)

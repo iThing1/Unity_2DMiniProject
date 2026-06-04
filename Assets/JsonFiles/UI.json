@@ -141,9 +141,9 @@
   },
   {
     "Id": "UI_Debug_01",
-    "Name": "DebugUI",
+    "Name": "DebugMenu",
     "Type": "Popup",
-    "BindState": "Lobby",
+    "BindState": null,
     "Auto": false
   },
   {

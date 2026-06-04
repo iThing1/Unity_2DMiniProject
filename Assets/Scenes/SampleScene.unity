@@ -656,6 +656,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   _lerpSpeed: 3
+  _focusLerpSpeed: 5
+  _shakeDuration: 0.5
+  _focusZOffset: 10
 --- !u!1 &339748616
 GameObject:
   m_ObjectHideFlags: 0

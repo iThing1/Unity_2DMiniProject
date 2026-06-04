@@ -161,4 +161,12 @@ public class PlanetController : InteractableBase
     {
         return !_shipInventory.IsLoading;
     }
+
+    // =========================================================================
+    // 디버깅 퉅
+    // =========================================================================
+    public void DebugReduceProsperity(float amount)
+    {
+        _simulator.DebugReduceProsperity(amount);
+    }
 }

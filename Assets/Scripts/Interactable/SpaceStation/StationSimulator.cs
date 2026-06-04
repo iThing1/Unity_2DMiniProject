@@ -181,7 +181,6 @@ public class StationSimulator : MonoBehaviour
         if (keysToReset.Count > 0)
         {
             LoadStats();
-            Debug.Log($"[StationSimulator] 임시 업그레이드 초기화");
         }
     }
 

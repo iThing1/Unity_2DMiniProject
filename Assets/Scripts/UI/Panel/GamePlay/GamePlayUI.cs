@@ -42,7 +42,7 @@ public class GamePlayUI : UIBase
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
         GameEventBus.Subscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
         GameEventBus.Subscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
-        GameEventBus.Subscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Subscribe <string, Vector3> (GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
         GameEventBus.Subscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
         GameEventBus.Subscribe(GameEventType.StageClearCondition, HandleStageClearCondition);
     }
@@ -52,7 +52,7 @@ public class GamePlayUI : UIBase
         GameEventBus.Unsubscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
         GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetHovered, HandlePlanetHovered);
         GameEventBus.Unsubscribe<Transform>(GameEventType.PlanetSpawned, HandlePlanetSpawned);
-        GameEventBus.Unsubscribe<string>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
+        GameEventBus.Unsubscribe<string, Vector3>(GameEventType.PlanetDestroyed, HandlePlanetDestroyed);
         GameEventBus.Unsubscribe<string, bool>(GameEventType.PlanetWarning, HandlePlanetGameOverWarning);
         GameEventBus.Unsubscribe(GameEventType.StageClearCondition, HandleStageClearCondition);
     }
@@ -74,6 +74,9 @@ public class GamePlayUI : UIBase
     private void Update()
     {
         if (_controller == null || _cargo == null) return;
+
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+            ToggleDebugMenu();
 
         // 연료
         if (!Mathf.Approximately(_controller.CurrentFuel, _lastFuel) ||
@@ -148,7 +151,7 @@ public class GamePlayUI : UIBase
         _planetMap[planet.InstanceId] = planet;
     }
 
-    private void HandlePlanetDestroyed(string instanceId)
+    private void HandlePlanetDestroyed(string instanceId, Vector3 position)
     {
         if (_hoveredPlanet != null && _hoveredPlanet.InstanceId == instanceId)
         {
@@ -157,9 +160,6 @@ public class GamePlayUI : UIBase
         }
 
         _planetMap.Remove(instanceId);
-
-        string stageId = GameManager.Instance.Context.LastSelectedStageId;
-        GameEventBus.Publish(GameEventType.StageFailed, stageId);
     }
 
     private void HandlePlanetHovered(string instanceId, bool isHover)
@@ -235,6 +235,13 @@ public class GamePlayUI : UIBase
         }
     }
 
+    private void ToggleDebugMenu()
+    {
+        if (UIManager.Instance.IsOpen(UIId.Popup.DebugMenu))
+            UIManager.Instance.CloseUI(UIId.Popup.DebugMenu);
+        else
+            UIManager.Instance.OpenUI(UIId.Popup.DebugMenu);
+    }
     // =========================================================================
     // 닫기 전 정리
     // =========================================================================
