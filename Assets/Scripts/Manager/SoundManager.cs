@@ -25,7 +25,9 @@ public class SoundManager : MonoBehaviour
     public float BGMVolume => _bgmSource != null ? _bgmSource.volume : 1f;
     public float SFXVolume => _sfxSource != null ? _sfxSource.volume : 1f;
 
-
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
     private void Awake()
     {
         if (Instance != null)
@@ -55,6 +57,9 @@ public class SoundManager : MonoBehaviour
         ReleaseBgmHandle();
     }
 
+    // =========================================================================
+    // [프로젝트 종속] 초기화 
+    // =========================================================================
     public void SetUp()
     {
         RegisterBGMFromData();
@@ -95,30 +100,14 @@ public class SoundManager : MonoBehaviour
     }
 
     // =========================================================================
-    // 이벤트 핸들러
+    //  [프로젝트 종속] 이벤트 핸들러 - GameState 기반 BGM 전환
     // =========================================================================
     private void HandleGameStateChanged(GameState prev, GameState next)
     {
         if (!IsBGMOn) return;
         PlayBGMForState(next);
     }
-
-    // =========================================================================
-    // BGM On/Off 토글
-    // =========================================================================
-    public void ToggleBGM(GameState currentState)
-    {
-        IsBGMOn = !IsBGMOn;
-
-        if (IsBGMOn)
-            PlayBGMForState(currentState);
-        else
-            StopBGM();
-    }
-
-    // =========================================================================
-    // 상태별 BGM 재생 (내부 공통 메서드)
-    // =========================================================================
+    
     private void PlayBGMForState(GameState state)
     {
         string bindState = GameUtility.StateToString(state);
@@ -137,6 +126,18 @@ public class SoundManager : MonoBehaviour
             PlayBGM(selected);
         }
         else Debug.LogWarning($"[SoundManager] BGM 후보 없음: {bindState}");
+    }
+    // =========================================================================
+    // BGM On/Off
+    // =========================================================================
+    public void ToggleBGM(GameState currentState)
+    {
+        IsBGMOn = !IsBGMOn;
+
+        if (IsBGMOn)
+            PlayBGMForState(currentState);
+        else
+            StopBGM();
     }
 
     // =========================================================================
@@ -180,25 +181,30 @@ public class SoundManager : MonoBehaviour
     // =========================================================================
     // SFX
     // =========================================================================
-
     public void PlaySFX(string address)
     {
         if (_sfxHandles.TryGetValue(address, out var cached))
         {
             if (cached.IsDone)
-                PlaySFXClip(cached.Result);
-            else
             {
-                SfxLoadContext ctx = new SfxLoadContext(address, this);
-                cached.Completed += ctx.OnSfxCachedLoaded;
+                PlaySFXClip(cached.Result);
+                return;
             }
+
+            cached.Completed += handle => PlaySFXClip(handle.Result);
             return;
         }
 
         var newHandle = Addressables.LoadAssetAsync<AudioClip>(address);
         _sfxHandles[address] = newHandle;
-        SfxLoadContext newCtx = new SfxLoadContext(address, this);
-        newHandle.Completed += newCtx.OnSfxNewLoaded;
+
+        newHandle.Completed += handle =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+                PlaySFXClip(handle.Result);
+            else
+                Debug.LogWarning($"[SoundManager] SFX 로드 실패: {address}");
+        };
     }
 
     public void ReleaseSFX(string address)
@@ -219,30 +225,6 @@ public class SoundManager : MonoBehaviour
 
     public void SetSFXVolume(float volume) => _sfxSource.volume = Mathf.Clamp01(volume);
 
-    private class SfxLoadContext
-    {
-        private readonly string _address;
-        private readonly SoundManager _owner;
-
-        public SfxLoadContext(string address, SoundManager owner)
-        {
-            _address = address;
-            _owner = owner;
-        }
-
-        public void OnSfxCachedLoaded(AsyncOperationHandle<AudioClip> handle)
-        {
-            _owner.PlaySFXClip(handle.Result);
-        }
-
-        public void OnSfxNewLoaded(AsyncOperationHandle<AudioClip> handle)
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-                _owner.PlaySFXClip(handle.Result);
-            else
-                Debug.LogWarning($"[SoundManager] SFX 로드 실패: {_address}");
-        }
-    }
     // =========================================================================
     // 내부 구현
     // =========================================================================
@@ -275,4 +257,5 @@ public class SoundManager : MonoBehaviour
             _bgmHandle = null;
         }
     }
+
 }

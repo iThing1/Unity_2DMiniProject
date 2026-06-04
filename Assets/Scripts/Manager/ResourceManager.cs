@@ -30,19 +30,23 @@ public class ResourceManager : MonoBehaviour
     // =========================================================================
     // Sprite 로드 (단일 / 스프라이트 시트)
     // =========================================================================
+
+    // 단일 Sprite 에셋을 직접 로드할 때
     public void LoadSprite(string address, Action<Sprite> callback) => LoadAsset<Sprite>(address, callback);
 
+    // 스프라이트 시트에서 특정 스프라이트 하나를 로드할 때
     public void LoadSpriteFromSheet(string sheetAddress, string spriteName, Action<Sprite> callback)
     {
-        LoadSpriteFromSheetInternal(sheetAddress, spriteName, callback);
+        ResolveSpriteFromSheet(sheetAddress, spriteName, callback);
     }
 
+    // 여러 스프라이트 시트를 순서대로 탐색하여 스프라이트를 찾을 때
     public void LoadSpriteFromSheets(string[] sheetAddresses, string spriteName, Action<Sprite> callback)
     {
-        TryLoadFromSheetAt(sheetAddresses, spriteName, 0, callback);
+        TryLoadFromSheet(sheetAddresses, spriteName, 0, callback);
     }
 
-    private void TryLoadFromSheetAt(string[] sheetAddresses, string spriteName, int index, Action<Sprite> callback)
+    private void TryLoadFromSheet(string[] sheetAddresses, string spriteName, int index, Action<Sprite> callback)
     {
         if (index >= sheetAddresses.Length)
         {
@@ -52,56 +56,53 @@ public class ResourceManager : MonoBehaviour
         }
 
         string sheetAddress = sheetAddresses[index];
-        LoadSpriteFromSheetInternal(sheetAddress, spriteName, sprite =>
+        ResolveSpriteFromSheet(sheetAddress, spriteName, sprite =>
         {
             if (sprite != null)
                 callback?.Invoke(sprite);
             else
-                TryLoadFromSheetAt(sheetAddresses, spriteName, index + 1, callback);
+                TryLoadFromSheet(sheetAddresses, spriteName, index + 1, callback);
         });
     }
 
-    private void LoadSpriteFromSheetInternal(string sheetAddress, string spriteName, Action<Sprite> callback)
+    private void ResolveSpriteFromSheet(string sheetAddress, string spriteName, Action<Sprite> callback)
     {
         if (_handles.TryGetValue(sheetAddress, out var cached))
         {
-            ResolveAtlasHandle(cached, spriteName, sheetAddress, callback);
+            ResolveSheetHandle(cached, spriteName, sheetAddress, callback);
             return;
         }
 
         var handle = Addressables.LoadAssetAsync<IList<Sprite>>(sheetAddress);
         _handles[sheetAddress] = handle;
-        AtlasLoadContext ctx = new AtlasLoadContext(spriteName, sheetAddress, callback, this);
-        handle.Completed += ctx.OnAtlasLoadedFromContext;
+
+        handle.Completed += loadHandle =>
+        {
+            if (loadHandle.Status != AsyncOperationStatus.Succeeded)
+            {
+                Debug.LogWarning($"[ResourceManager] 스프라이트 시트 로드 실패: {sheetAddress}");
+                callback?.Invoke(null);
+                return;
+            }
+            callback?.Invoke(FindSpriteInSheet(loadHandle.Result, spriteName, sheetAddress));
+        };
     }
 
-    private void ResolveAtlasHandle(AsyncOperationHandle cached, string spriteName, string cacheKey, Action<Sprite> callback)
+    private void ResolveSheetHandle(AsyncOperationHandle cached, string spriteName, string cacheKey, Action<Sprite> callback)
     {
         if (cached.IsDone)
         {
-            callback?.Invoke(FindSpriteInAtlas(cached.Result as IList<Sprite>, spriteName, cacheKey));
-        }
-        else
-        {
-            var typed = cached.Convert<IList<Sprite>>();
-            AtlasLoadContext ctx = new AtlasLoadContext(spriteName, cacheKey, callback, this);
-            typed.Completed += ctx.OnAtlasLoadedFromContext;
-        }
-    }
-
-    private void OnAtlasLoaded(AsyncOperationHandle<IList<Sprite>> handle, string spriteName, string cacheKey, Action<Sprite> callback)
-    {
-        if (handle.Status != AsyncOperationStatus.Succeeded)
-        {
-            Debug.LogWarning($"[ResourceManager] 스프라이트 시트 로드 실패: {cacheKey}");
-            callback?.Invoke(null);
+            callback?.Invoke(FindSpriteInSheet(cached.Result as IList<Sprite>, spriteName, cacheKey));
             return;
         }
 
-        callback?.Invoke(FindSpriteInAtlas(handle.Result, spriteName, cacheKey));
+        cached.Convert<IList<Sprite>>().Completed += loadHandle =>
+        {
+            callback?.Invoke(FindSpriteInSheet(loadHandle.Result, spriteName, cacheKey));
+        };
     }
 
-    private Sprite FindSpriteInAtlas(IList<Sprite> list, string spriteName, string cacheKey)
+    private Sprite FindSpriteInSheet(IList<Sprite> list, string spriteName, string cacheKey)
     {
         if (list == null) return null;
 
@@ -116,74 +117,35 @@ public class ResourceManager : MonoBehaviour
     // =========================================================================
     // 범용 에셋 로드
     // =========================================================================
+
+    // Sprite 이외의 에셋(GameObject, AudioClip 등)을 로드할 때
     public void LoadAsset<T>(string address, Action<T> callback) where T : UnityEngine.Object
     {
         if (_handles.TryGetValue(address, out var cached))
         {
             if (cached.IsDone)
-                callback?.Invoke(cached.Result as T);
-            else
             {
-                var typed = cached.Convert<T>();
-                AssetLoadContext<T> ctx = new AssetLoadContext<T>(address, callback);
-                typed.Completed += ctx.OnCachedLoaded;
+                callback?.Invoke(cached.Result as T);
+                return;
             }
+
+            cached.Convert<T>().Completed += handle => callback?.Invoke(handle.Result);
             return;
         }
 
-        var handle = Addressables.LoadAssetAsync<T>(address);
-        _handles[address] = handle;
-        AssetLoadContext<T> newCtx = new AssetLoadContext<T>(address, callback);
-        handle.Completed += newCtx.OnNewLoaded;
-    }
+        var newHandle = Addressables.LoadAssetAsync<T>(address);
+        _handles[address] = newHandle;
 
-    private class AssetLoadContext<T> where T : UnityEngine.Object
-    {
-        private readonly string _address;
-        private readonly Action<T> _callback;
-
-        public AssetLoadContext(string address, Action<T> callback)
-        {
-            _address = address;
-            _callback = callback;
-        }
-
-        public void OnCachedLoaded(AsyncOperationHandle<T> handle)
-        {
-            _callback?.Invoke(handle.Result);
-        }
-
-        public void OnNewLoaded(AsyncOperationHandle<T> handle)
+        newHandle.Completed += handle =>
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
-                _callback?.Invoke(handle.Result);
+                callback?.Invoke(handle.Result);
             else
             {
-                Debug.LogWarning($"[ResourceManager] 에셋 로드 실패: {_address}");
-                _callback?.Invoke(null);
+                Debug.LogWarning($"[ResourceManager] 에셋 로드 실패: {address}");
+                callback?.Invoke(null);
             }
-        }
-    }
-
-    private class AtlasLoadContext
-    {
-        private readonly string _spriteName;
-        private readonly string _cacheKey;
-        private readonly Action<Sprite> _callback;
-        private readonly ResourceManager _owner;
-
-        public AtlasLoadContext(string spriteName, string cacheKey, Action<Sprite> callback, ResourceManager owner)
-        {
-            _spriteName = spriteName;
-            _cacheKey = cacheKey;
-            _callback = callback;
-            _owner = owner;
-        }
-
-        public void OnAtlasLoadedFromContext(AsyncOperationHandle<IList<Sprite>> handle)
-        {
-            _owner.OnAtlasLoaded(handle, _spriteName, _cacheKey, _callback);
-        }
+        };
     }
 
     // =========================================================================

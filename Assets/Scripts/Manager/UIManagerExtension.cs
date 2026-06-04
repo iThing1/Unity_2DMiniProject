@@ -4,6 +4,22 @@ using UnityEngine;
 // 특정 상황에 맞게 UI를 여닫는 헬퍼 클래스
 public static class UIManagerExtension
 {
+    // 공통 메서드
+    private static void ShowPanelUI(this UIManager uiManager, string uiId, bool active)
+    {
+        if (active)
+        {
+            uiManager.OpenUI(uiId);
+            GameObject ui = uiManager.GetUI<UIBase>(uiId)?.gameObject;
+            if (ui != null)
+                ui.transform.SetAsLastSibling();
+        }
+        else
+        {
+            uiManager.CloseUI(uiId);
+        }
+    }
+
     public static void OnGameStateChanged(this UIManager uiManager, GameState prev, GameState next)
     {
         bool showCurrencyUI = (next == GameState.Lobby || next == GameState.GamePlay);
@@ -42,38 +58,14 @@ public static class UIManagerExtension
     // =========================================================================
     public static void ShowCurrencyUI(this UIManager uiManager, bool active)
     {
-        string currencyUiId = UIId.Panel.Currency;
-
-        if (active)
-        {
-            uiManager.OpenUI(currencyUiId);
-            GameObject currencyUI = uiManager.GetUI<UIBase>(currencyUiId)?.gameObject;
-            if (currencyUI != null)
-                currencyUI.transform.SetAsLastSibling();
-        }
-        else
-        {
-            uiManager.CloseUI(currencyUiId);
-        }
+        uiManager.ShowPanelUI(UIId.Panel.Currency, active);
     }
     // =========================================================================
     // Setting UI
     // =========================================================================
     public static void ShowSettingUI(this UIManager uiManager, bool active)
     {
-        string settingUiId = UIId.Panel.Setting;
-
-        if (active)
-        {
-            uiManager.OpenUI(settingUiId);
-            GameObject settingUI = uiManager.GetUI<UIBase>(settingUiId)?.gameObject;
-            if (settingUI != null)
-                settingUI.transform.SetAsLastSibling();
-        }
-        else
-        {
-            uiManager.CloseUI(settingUiId);
-        }
+        uiManager.ShowPanelUI(UIId.Panel.Setting, active);
     }
 
     // =========================================================================
