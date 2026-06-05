@@ -1,0 +1,82 @@
+[
+  {
+    "Id": "FUEL_CONSUME_RATE",
+    "Value": 50,
+    "Desc": "부스터 사용 시 초당 연료 소모량"
+  },
+  {
+    "Id": "OVERHEAT_DURATION",
+    "Value": 5,
+    "Desc": "과열 시 부스터 사용 금지 시간(초)"
+  },
+  {
+    "Id": "SHIP_ACCELERATION",
+    "Value": 3,
+    "Desc": "우주선 기본 가속력"
+  },
+  {
+    "Id": "SHIP_BOOST_ACCELERATION",
+    "Value": 10,
+    "Desc": "부스터 기본 가속력"
+  },
+  {
+    "Id": "STATION_DOCKING_RANGE",
+    "Value": 5,
+    "Desc": "정거장 상호작용 가능 거리"
+  },
+  {
+    "Id": "PROSPERITY_CHANGE_RATE",
+    "Value": 0.15,
+    "Desc": "번영도 변화 조정계수"
+  },
+  {
+    "Id": "PROSPERITY_INCREASE_MAX",
+    "Value": 20,
+    "Desc": "사이클당 번영도 최대 증가폭"
+  },
+  {
+    "Id": "POPULATION_CHANGE_RATE",
+    "Value": 0.1,
+    "Desc": "인구 변화 조정계수"
+  },
+  {
+    "Id": "POPULATION_INCREASE_MAX",
+    "Value": 0.2,
+    "Desc": "사이클당 인구 최대 증가폭 비율 (BasePop 기준)"
+  },
+  {
+    "Id": "PLANET_GAMEOVER_TIME",
+    "Value": 10,
+    "Desc": "번영도 0일 때 유예 시간"
+  },
+  {
+    "Id": "PLANET_CONSUME_INTERVAL",
+    "Value": 20,
+    "Desc": "행성이 자원을 소모하고 생산하는 주기"
+  },
+  {
+    "Id": "PLANET_PROSPERITY_MAX",
+    "Value": 100,
+    "Desc": "번영도의 최대치"
+  },
+  {
+    "Id": "ORE_TO_INGOT_RATIO",
+    "Value": 10,
+    "Desc": "광석과 주괴 제련 비율"
+  },
+  {
+    "Id": "FOOD_CONSUME_BASE",
+    "Value": 0,
+    "Desc": "식량 초당 소비량 기본값"
+  },
+  {
+    "Id": "FOOD_CONSUME_RATE",
+    "Value": 5E-05,
+    "Desc": "식량 초당 소비량 조절계수"
+  },
+  {
+    "Id": "ORE_PRODUCE_RATE",
+    "Value": 3E-05,
+    "Desc": "광석 초당 생산량 조절계수"
+  }
+]

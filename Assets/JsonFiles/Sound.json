@@ -1,0 +1,72 @@
+[
+  {
+    "Id": "BGM_sound_01",
+    "Name": "GamePlay_01",
+    "Type": "BGM",
+    "BindState": "GamePlay",
+    "SoundPath": "Sounds/BGM/GamePlay_01"
+  },
+  {
+    "Id": "BGM_sound_02",
+    "Name": "GamePlay_02",
+    "Type": "BGM",
+    "BindState": "GamePlay",
+    "SoundPath": "Sounds/BGM/GamePlay_02"
+  },
+  {
+    "Id": "BGM_sound_03",
+    "Name": "GamePlay_03",
+    "Type": "BGM",
+    "BindState": "GamePlay",
+    "SoundPath": "Sounds/BGM/GamePlay_03"
+  },
+  {
+    "Id": "BGM_sound_04",
+    "Name": "Lobby_01",
+    "Type": "BGM",
+    "BindState": "Lobby",
+    "SoundPath": "Sounds/BGM/Lobby_01"
+  },
+  {
+    "Id": "BGM_sound_05",
+    "Name": "Lobby_02",
+    "Type": "BGM",
+    "BindState": "Lobby",
+    "SoundPath": "Sounds/BGM/Lobby_02"
+  },
+  {
+    "Id": "BGM_sound_06",
+    "Name": "Lobby_03",
+    "Type": "BGM",
+    "BindState": "Lobby",
+    "SoundPath": "Sounds/BGM/Lobby_03"
+  },
+  {
+    "Id": "BGM_sound_07",
+    "Name": "MainMenu_01",
+    "Type": "BGM",
+    "BindState": "MainMenu",
+    "SoundPath": "Sounds/BGM/MainMenu_01"
+  },
+  {
+    "Id": "BGM_sound_08",
+    "Name": "Intro",
+    "Type": "BGM",
+    "BindState": null,
+    "SoundPath": "Sounds/BGM/Intro"
+  },
+  {
+    "Id": "SFX_sound_01",
+    "Name": "PowerOff",
+    "Type": "SFX",
+    "BindState": null,
+    "SoundPath": "Sounds/SFX/PowerOff"
+  },
+  {
+    "Id": "SFX_sound_02",
+    "Name": "Success",
+    "Type": "SFX",
+    "BindState": null,
+    "SoundPath": "Sounds/SFX/Success"
+  }
+]

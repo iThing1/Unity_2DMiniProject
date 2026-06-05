@@ -1,0 +1,286 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using GameData;
+
+public struct StationStats
+{
+    public float FarmRate;
+    public float RefineRate;
+}
+
+// 우주정거장 오브젝트의 진입점
+[RequireComponent(typeof(StationSimulator))]
+public class StationController : InteractableBase
+{
+    [Header("스폰 포인트")]
+    [SerializeField] private Transform _spawnPoint;
+
+    [Header("타이머 UI")]
+    [SerializeField] private StationTimer _timerUI;
+
+    public float StoredFood => _simulator.StoredFood;
+    public float StoredOre => _simulator.StoredOre;
+    public float StoredIngot => _simulator.StoredIngot;
+
+    private StationSimulator _simulator;
+
+    private readonly Dictionary<StationZoneType, StationZone> _zones = new Dictionary<StationZoneType, StationZone>();
+
+    private StationZoneType? _activeZone;
+    public StationZoneType? CurrentZone => _activeZone;
+
+    private bool _isGamePlay = false;
+    private Coroutine _interactCoroutine;
+    private int _pendingFoodLoad;
+
+    // =========================================================================
+    // Unity 생명주기
+    // =========================================================================
+    protected override void Awake()
+    {
+        base.Awake();
+        _simulator = GetComponent<StationSimulator>();
+
+        _zones.Clear();
+        foreach (var zone in GetComponentsInChildren<StationZone>())
+        {
+            if (_zones.ContainsKey(zone.ZoneType))
+            {
+                Debug.LogWarning($"[StationController] 중복 ZoneType 무시: {zone.ZoneType} ({zone.gameObject.name})");
+                continue;
+            }
+            _zones[zone.ZoneType] = zone;
+        }
+
+        if (_zones.Count == 0)
+            Debug.LogError("[StationController] 자식에서 StationZone을 찾지 못했습니다.");
+    }
+
+    // =========================================================================
+    // 초기화
+    // =========================================================================
+    public void Initialize()
+    {
+        _isGamePlay = true;
+        _simulator.Initialize();
+        _timerUI?.Initialize(_simulator);
+    }
+
+    public void StopSimulation()
+    {
+        _isGamePlay = false;
+        _simulator.StopProduction();
+    }
+
+    // =========================================================================
+    // 스폰 포인트
+    // =========================================================================
+    public void PlacePlayerAtSpawn(Transform playerTransform)
+    {
+        if (_spawnPoint == null) return;
+        playerTransform.position = _spawnPoint.position;
+        playerTransform.rotation = _spawnPoint.rotation;
+    }
+
+    // =========================================================================
+    // 외부 API
+    // =========================================================================
+    public bool TryStationUpgrade(string upgradeId)
+    {
+        return GameManager.Instance.TryUpgrade(upgradeId);
+    }
+
+    // =========================================================================
+    // 구역 진입 / 이탈
+    // =========================================================================
+    public void OnPlayerEnterZone(StationZoneType zoneType)
+    {
+        if (_activeZone.HasValue && _activeZone.Value != zoneType)
+        {
+            StopInteractCoroutine();
+            OnDeactivate();
+            if (_activeZone.Value == StationZoneType.Center)
+                CloseMarketUI();
+        }
+
+        _activeZone = zoneType;
+        _isPlayerInside = true;
+
+        if (!_isGamePlay) return;
+        if (zoneType == StationZoneType.Left || zoneType == StationZoneType.Right)
+            OpenUpgradeUI(zoneType);
+        else if (zoneType == StationZoneType.Center)
+            OpenMarketUI();
+    }
+
+    public void OnPlayerExitZone(StationZoneType zoneType)
+    {
+        if (_activeZone != zoneType) return;
+        _activeZone = null;
+        _isPlayerInside = false;
+
+        StopInteractCoroutine();
+        _shipInventory?.StopTransfer();
+        if (zoneType == StationZoneType.Left || zoneType == StationZoneType.Right)
+            CloseUpgradeUI();
+        if (zoneType == StationZoneType.Center)
+            CloseMarketUI();
+    }
+
+    // =========================================================================
+    // InteractableBase 구현
+    // =========================================================================
+    protected override void OnTriggerEnter2D(Collider2D other) { }
+    protected override void OnTriggerExit2D(Collider2D other) { }
+
+    protected override bool CanInteract() => _isGamePlay && _activeZone != null;
+
+    protected override void OnActivate()
+    {
+        if (_activeZone == null) return;
+
+        StopInteractCoroutine();
+        _shipInventory.StopTransfer();
+
+        IEnumerator routine = null;
+
+        switch (_activeZone.Value)
+        {
+            case StationZoneType.Left:
+                routine = UnloadOreRoutine();
+                break;
+            case StationZoneType.Right:
+                routine = LoadFoodRoutine();
+                break;
+            default:
+                routine = null;
+                break;
+        }
+
+        if (routine == null)
+        {
+            CompleteInteraction();
+            return;
+        }
+
+        _interactCoroutine = StartCoroutine(routine);
+    }
+
+    protected override void OnDeactivate()
+    {
+        StopInteractCoroutine();
+        _shipInventory?.StopTransfer();
+    }
+
+    // =========================================================================
+    // 적재 코루틴: 식량 → 우주선
+    // =========================================================================
+    private IEnumerator LoadFoodRoutine()
+    {
+        if (_shipInventory == null) { CompleteInteraction(); yield break; }
+
+        int available = Mathf.FloorToInt(_simulator.StoredFood);
+        if (available <= 0)
+        {
+            CompleteInteraction();
+            yield break;
+        }
+
+        int toLoad = Mathf.Min(available, _shipInventory.Capacity - _shipInventory.Count);
+        if (toLoad <= 0)
+        {
+            CompleteInteraction();
+            yield break;
+        }
+
+        _pendingFoodLoad = toLoad;
+        _simulator.TryConsumeFood(toLoad);
+
+        _shipInventory.StartLoading(ShipInventory.CargoType.Food, toLoad, null, OnFoodLoadComplete);
+
+        yield return new WaitUntil(IsLoadingDone);
+        _interactCoroutine = null;
+        CompleteInteraction();
+    }
+
+    // =========================================================================
+    // 하역 코루틴: 우주선 광석 → 정거장 저장소
+    // =========================================================================
+    private IEnumerator UnloadOreRoutine()
+    {
+        if (_shipInventory == null) { CompleteInteraction(); yield break; }
+
+        if (_shipInventory.CountOf(ShipInventory.CargoType.Ore) <= 0)
+        {
+            CompleteInteraction();
+            yield break;
+        }
+
+        _shipInventory.StartUnloading(ShipInventory.CargoType.Ore, OnOreUnloadEach, null);
+
+        yield return new WaitUntil(IsLoadingDone);
+        _interactCoroutine = null;
+        CompleteInteraction();
+    }
+
+    // =========================================================================
+    // 적재/하역 콜백 메서드
+    // =========================================================================
+    private void OnFoodLoadComplete(int loaded)
+    {
+        int refund = _pendingFoodLoad - loaded;
+        if (refund > 0)
+            _simulator.RefundFood(refund);
+    }
+
+    private void OnOreUnloadEach()
+    {
+        _simulator.UnloadOre(1f);
+    }
+
+    private bool IsLoadingDone()
+    {
+        return !_shipInventory.IsLoading;
+    }
+
+    // =========================================================================
+    // 업그레이드 UI -> Zone 진입/이탈에서만 호출
+    // =========================================================================
+    private void OpenUpgradeUI(StationZoneType zoneType)
+    {
+        StationUpgrade upgradeUI = UIManager.Instance.PrepareUI<StationUpgrade>(UIId.Popup.StationUpgrade);
+        if (upgradeUI != null)
+        {
+            upgradeUI.Setup(new StationUpgradeData(zoneType, this));
+            UIManager.Instance.OpenUI(UIId.Popup.StationUpgrade);
+        }
+    }
+
+    private void CloseUpgradeUI()
+    {
+        UIManager.Instance.CloseUI(UIId.Popup.StationUpgrade);
+    }
+
+    private void OpenMarketUI()
+    {
+        UIManager.Instance.OpenUI(UIId.Popup.StationMarket);
+    }
+
+    private void CloseMarketUI()
+    {
+        UIManager.Instance.CloseUI(UIId.Popup.StationMarket);
+    }
+    // =========================================================================
+    // 내부 유틸
+    // =========================================================================
+    private void StopInteractCoroutine()
+    {
+        if (_interactCoroutine != null)
+        {
+            StopCoroutine(_interactCoroutine);
+            _interactCoroutine = null;
+        }
+    }
+}

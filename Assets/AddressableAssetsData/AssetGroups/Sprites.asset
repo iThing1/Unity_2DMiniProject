@@ -1,0 +1,168 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Sprites
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Sprites
+  m_GUID: 7f6fa1a585f28b947aa0d0d3547c4d5a
+  m_SerializeEntries:
+  - m_GUID: 061bad4a42f660443bd65a7b02392d6d
+    m_Address: Icon/CargoBox
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f8610c350d44a343880112ee67de222
+    m_Address: Icon/Ore
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10d43ba5493ee684a80dfde92ce8131c
+    m_Address: Icon/Ingot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 14efd0521b3865d44a6131f25337e995
+    m_Address: Upgrade/EngineOverclock
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f58d7daf265ecb48b3d4af7948b0d1e
+    m_Address: Background/Lobby_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 31e236a41c3fc4c408e6515eff9b1cfd
+    m_Address: Upgrade/NanoRefiner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35e127fa1a997754381846da7249542e
+    m_Address: Upgrade/CargoExpand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42917889fe61a724e923d0b5cb6c9918
+    m_Address: Planet
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5da0f5985d6bd484c9b24e6688a6cc67
+    m_Address: Upgrade/Hydroponics
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6fb5781901c75134fb7dac3fa2bcf6b1
+    m_Address: Icon/Gold
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7afc635918789074280f6f4cc21e0f45
+    m_Address: Icon/Pop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ee9a86a366db0045a1c845830052032
+    m_Address: Upgrade/ExtraFuelTank
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88f0d2e25dd371345a87ece345e178d1
+    m_Address: Icon/Food
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ab21f351df488844b88d46683e9881a
+    m_Address: UI/ProgressBar
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92b53094d6162c44b8228cb2dab1bf39
+    m_Address: AchievementInfo1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99ca28cd618a43b4784ab4967c552cbb
+    m_Address: UI/GUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99ec9edb83779004e828456201c7efe6
+    m_Address: Background/Loading_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a037c64284a4974992df1be2459e499
+    m_Address: Background/GamePlay_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a749b3414ab64ff47947e84daba3dd7f
+    m_Address: Upgrade/MagneticDockingSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8913844dd194d742a85f99f6bfaba83
+    m_Address: Upgrade/EnhancedNozzle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6aee839027aaba40b6431dff9d7f5a3
+    m_Address: Background/Intro_bg3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4164995fc44da8459687c1f3616c9b2
+    m_Address: Upgrade/VoidCrystalResonator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8608a9fd31ef614786f1093654376e7
+    m_Address: Upgrade/GravitonCargoManipulator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9519fe567300f741a5e78f6f693ea4e
+    m_Address: UI/ContainerMessage
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2057cde9563007419543f5a7d0609b5
+    m_Address: Background/Intro_bg1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ddbf3a8c7e557d8419cc3d7692a3376a
+    m_Address: Background/MainMenu_01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e211c616af30e8c4daf8a28decff2a87
+    m_Address: Background/Intro_bg2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e55bfba1959fd884c8c8a5d400fd172d
+    m_Address: UI/ContainerPopup
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa8bd40a0d4d8b7468b5db190ef26b53
+    m_Address: Background/Intro_bg4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 8c0f1b297cf3d994f90b126a4b26b215, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 77bb2eaa8f8ad5442a0ad27597ef12c8, type: 2}
+    - {fileID: 11400000, guid: c097657378917e9419d63903f5efd63b, type: 2}

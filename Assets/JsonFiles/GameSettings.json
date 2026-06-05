@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "CAM_HEIGHT_DEFAULT",
+    "DefaultValue": 20,
+    "Desc": "카메라 초기값"
+  },
+  {
+    "Id": "CAM_SHAKE_PWR",
+    "DefaultValue": 0.2,
+    "Desc": "행성에 충돌하거나 부스터를 켤 때 카메라를 흔들어주는 강도"
+  },
+  {
+    "Id": "SOUND_BACKGROUND_VOLUME",
+    "DefaultValue": 10,
+    "Desc": "배경음악 소리 크기"
+  },
+  {
+    "Id": "SOUND_EFFECT_VOLUME",
+    "DefaultValue": 10,
+    "Desc": "효과음 소리 크기"
+  }
+]

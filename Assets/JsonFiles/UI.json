@@ -1,0 +1,177 @@
+[
+  {
+    "Id": "UI_Popup_01",
+    "Name": "Confirm",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_02",
+    "Name": "SlotSelect",
+    "Type": "Popup",
+    "BindState": "MainMenu",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_03",
+    "Name": "StageClear",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_04",
+    "Name": "StageFailed",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_05",
+    "Name": "StageStart",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_06",
+    "Name": "PlanetInfo",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_07",
+    "Name": "StationUpgrade",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_08",
+    "Name": "StationMarket",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_09",
+    "Name": "Scoreboard",
+    "Type": "Popup",
+    "BindState": "Lobby",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_10",
+    "Name": "Option",
+    "Type": "Popup",
+    "BindState": "MainMenu",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_11",
+    "Name": "Accomplished",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Popup_12",
+    "Name": "ShipStat",
+    "Type": "Popup",
+    "BindState": "GamePlay",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Panel_01",
+    "Name": "MainMenu",
+    "Type": "Main",
+    "BindState": "MainMenu",
+    "Auto": true
+  },
+  {
+    "Id": "UI_Panel_02",
+    "Name": "GamePlay",
+    "Type": "Main",
+    "BindState": "GamePlay",
+    "Auto": true
+  },
+  {
+    "Id": "UI_Panel_03",
+    "Name": "GameLobby",
+    "Type": "Main",
+    "BindState": "Lobby",
+    "Auto": true
+  },
+  {
+    "Id": "UI_Panel_04",
+    "Name": "Upgrade",
+    "Type": "Main",
+    "BindState": "Lobby",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Panel_05",
+    "Name": "Achievement",
+    "Type": "Main",
+    "BindState": "Lobby",
+    "Auto": false
+  },
+  {
+    "Id": "UI_Panel_06",
+    "Name": "Currency",
+    "Type": "Main",
+    "BindState": null,
+    "Auto": true
+  },
+  {
+    "Id": "UI_Panel_07",
+    "Name": "Setting",
+    "Type": "Main",
+    "BindState": null,
+    "Auto": true
+  },
+  {
+    "Id": "UI_Loading_01",
+    "Name": "Loading",
+    "Type": "VeryFront",
+    "BindState": "Loading",
+    "Auto": true
+  },
+  {
+    "Id": "UI_Debug_01",
+    "Name": "DebugMenu",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Intro_01",
+    "Name": "Intro",
+    "Type": "VeryFront",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_01",
+    "Name": "TutorialOverlay",
+    "Type": "VeryFront",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_02",
+    "Name": "HowToMove",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  },
+  {
+    "Id": "UI_Tutorial_03",
+    "Name": "HowToLoop",
+    "Type": "Popup",
+    "BindState": null,
+    "Auto": false
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "Id": "ex_01",
+    "Name": "Small Exchange",
+    "GoldValue": 20,
+    "IngotValue": 1,
+    "Desc": "소량 교환"
+  },
+  {
+    "Id": "ex_02",
+    "Name": "Medium Exchange",
+    "GoldValue": 100,
+    "IngotValue": 5,
+    "Desc": "적당량 교환"
+  },
+  {
+    "Id": "ex_03",
+    "Name": "Large Exchange",
+    "GoldValue": 200,
+    "IngotValue": 10,
+    "Desc": "대량 교환"
+  }
+]

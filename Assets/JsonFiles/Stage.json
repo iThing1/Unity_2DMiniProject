@@ -1,0 +1,112 @@
+[
+  {
+    "Stage_ID": "Stage_normal_00",
+    "Name": "모의 시뮬레이션",
+    "MaxPlanet": 3,
+    "SpawnInterval": 48,
+    "ExpansionSpeed": 0.05,
+    "ReqGold": 100,
+    "IsClear": true,
+    "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03"
+  },
+  {
+    "Stage_ID": "Stage_normal_01",
+    "Name": "첫 임무",
+    "MaxPlanet": 5,
+    "SpawnInterval": 48,
+    "ExpansionSpeed": 0.05,
+    "ReqGold": 200,
+    "IsClear": false,
+    "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05"
+  },
+  {
+    "Stage_ID": "Stage_normal_02",
+    "Name": "소행성대",
+    "MaxPlanet": 5,
+    "SpawnInterval": 48,
+    "ExpansionSpeed": 0.075,
+    "ReqGold": 300,
+    "IsClear": false,
+    "PlanetList": "Planet_small_01,Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06"
+  },
+  {
+    "Stage_ID": "Stage_normal_03",
+    "Name": "외곽 지대",
+    "MaxPlanet": 6,
+    "SpawnInterval": 44,
+    "ExpansionSpeed": 0.075,
+    "ReqGold": 500,
+    "IsClear": false,
+    "PlanetList": "Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06"
+  },
+  {
+    "Stage_ID": "Stage_normal_04",
+    "Name": "성운 항로",
+    "MaxPlanet": 6,
+    "SpawnInterval": 44,
+    "ExpansionSpeed": 0.1,
+    "ReqGold": 800,
+    "IsClear": false,
+    "PlanetList": "Planet_small_02,Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_06,Planet_small_07"
+  },
+  {
+    "Stage_ID": "Stage_normal_05",
+    "Name": "심우주",
+    "MaxPlanet": 7,
+    "SpawnInterval": 42,
+    "ExpansionSpeed": 0.1,
+    "ReqGold": 1300,
+    "IsClear": false,
+    "PlanetList": "Planet_small_03,Planet_small_04,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_02"
+  },
+  {
+    "Stage_ID": "Stage_normal_06",
+    "Name": "우주 교차로",
+    "MaxPlanet": 7,
+    "SpawnInterval": 40,
+    "ExpansionSpeed": 0.125,
+    "ReqGold": 2100,
+    "IsClear": false,
+    "PlanetList": "Planet_small_03,Planet_small_04,Planet_small_06,Planet_small_07,Planet_medium_01,Planet_medium_02,Planet_medium_03"
+  },
+  {
+    "Stage_ID": "Stage_normal_07",
+    "Name": "청색 성단",
+    "MaxPlanet": 8,
+    "SpawnInterval": 38,
+    "ExpansionSpeed": 0.175,
+    "ReqGold": 3400,
+    "IsClear": false,
+    "PlanetList": "Planet_small_03,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_02,Planet_medium_03,Planet_medium_04"
+  },
+  {
+    "Stage_ID": "Stage_normal_08",
+    "Name": "은하 개척지",
+    "MaxPlanet": 8,
+    "SpawnInterval": 36,
+    "ExpansionSpeed": 0.235,
+    "ReqGold": 5500,
+    "IsClear": false,
+    "PlanetList": "Planet_small_02,Planet_small_04,Planet_medium_01,Planet_medium_02,Planet_medium_04,Planet_medium_05"
+  },
+  {
+    "Stage_ID": "Stage_normal_09",
+    "Name": "초성단 핵심부",
+    "MaxPlanet": 8,
+    "SpawnInterval": 32,
+    "ExpansionSpeed": 0.285,
+    "ReqGold": 9000,
+    "IsClear": false,
+    "PlanetList": "Planet_small_01,Planet_small_03,Planet_small_05,Planet_small_07,Planet_medium_01,Planet_medium_03,Planet_medium_05,Planet_Large_01"
+  },
+  {
+    "Stage_ID": "Stage_normal_10",
+    "Name": "공허 심부",
+    "MaxPlanet": 9,
+    "SpawnInterval": 32,
+    "ExpansionSpeed": 0.35,
+    "ReqGold": 13500,
+    "IsClear": false,
+    "PlanetList": "Planet_small_02,Planet_small_05,Planet_small_07,Planet_medium_03,Planet_medium_04,Planet_medium_05,Planet_Large_01,Planet_Large_02"
+  }
+]

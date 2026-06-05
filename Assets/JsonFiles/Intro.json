@@ -1,0 +1,22 @@
+[
+  {
+    "Id": "Intro_01",
+    "Message": "은하계를 하나로 이어주던 '워프 게이트'/우주의 질서를 유지하던 워프게이트에 원인모를 폭발 사고가 발생했습니다.",
+    "BackgroundPath": "Background/Intro_bg1"
+  },
+  {
+    "Id": "Intro_02",
+    "Message": "워프게이트를 통해 필요한 자원을 교환하던 각 행성들/시간이 지나면서 식량이 부족해지고, 광석을 팔지 못해 점차 빛을 잃어가고 있습니다.",
+    "BackgroundPath": "Background/Intro_bg2"
+  },
+  {
+    "Id": "Intro_03",
+    "Message": "전우주 배달 서비스 업체 - 스페이스 익스프레스 - 에 취직한 당신은 오늘부터 배달업무에 투입됩니다. ",
+    "BackgroundPath": "Background/Intro_bg3"
+  },
+  {
+    "Id": "Intro_04",
+    "Message": "이제 각 우주에 활기를 다시 불어넣을 시간입니다.",
+    "BackgroundPath": "Background/Intro_bg4"
+  }
+]
