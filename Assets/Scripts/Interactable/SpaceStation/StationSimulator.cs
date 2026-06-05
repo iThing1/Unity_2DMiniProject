@@ -50,9 +50,17 @@ public class StationSimulator : MonoBehaviour
     public void Initialize()
     {
         _refineAccumulator = 0f;
+        ResetStation();
         LoadStats();
         ResetTempUpgrades();
         StartProduction();
+    }
+
+    public void ResetStation()
+    {
+        StoredFood = 0f;
+        StoredOre = 0f;
+        StoredIngot = 0f;
     }
 
     public void StopProduction()
