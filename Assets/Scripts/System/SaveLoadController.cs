@@ -51,7 +51,6 @@ public static class SaveLoadController
         string path = GetPath(fileName);
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
         File.WriteAllText(path, json);
-        Debug.Log($"[SaveLoadController] 저장 완료: {path}");
     }
 
     private static T LoadFromFile<T>(string fileName)

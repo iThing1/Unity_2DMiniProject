@@ -97,7 +97,6 @@ public class UpgradeItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         bool success = _station.TryStationUpgrade(_upgradeId);
         if (!success)
         {
-            Debug.Log($"[UpgradeItem] 업그레이드 실패: {_upgradeId} (재화 부족)");
             return;
         }
         

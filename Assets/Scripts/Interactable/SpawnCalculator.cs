@@ -43,7 +43,6 @@ public static class SpawnCalculator
             }
         }
 
-        Debug.LogWarning("[SpawnCalculator] fallback: 최대 시도 초과, 정거장과 가장 먼 후보 위치로 소환");
         return new Vector3(bestCandidate.x, bestCandidate.y, 0f);
     }
 

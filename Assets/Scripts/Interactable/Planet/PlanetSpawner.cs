@@ -168,9 +168,6 @@ public class PlanetSpawner : MonoBehaviour
             yield return new WaitForSeconds(_currentStageData.SpawnInterval);
         }
 
-#if UNITY_EDITOR
-        Debug.Log($"[PlanetSpawner] 최대 행성 수 도달: {_currentStageData.MaxPlanet}");
-#endif
         _spawnCoroutine = null;
     }
 

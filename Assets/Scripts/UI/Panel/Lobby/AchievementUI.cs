@@ -76,7 +76,6 @@ public class AchievementUI : UIBase
 
         if (_achievementItemPrefab == null || _content == null) return;
 
-        // 체인 첫 번째 업적만 스폰 (다른 업적의 NextId에 포함되지 않는 것)
         HashSet<string> nextIds = new HashSet<string>();
         foreach (AchievementData data in GameDataManager.Instance.GetAll<AchievementData>())
         {
@@ -86,11 +85,8 @@ public class AchievementUI : UIBase
 
         foreach (AchievementData data in GameDataManager.Instance.GetAll<AchievementData>())
         {
-            // NextId에 포함된 업적은 체인 중간/끝이므로 스킵
             if (nextIds.Contains(data.Id)) continue;
 
-            // 이미 완료된 업적이고 NextId가 없으면 완료된 채로 표시
-            // NextId가 있으면 AchievementItem이 자동으로 다음 단계로 넘어감
             string displayId = GetCurrentChainId(data.Id);
             AchievementData displayData = GameDataManager.Instance.Get<AchievementData>(displayId);
             if (displayData == null) continue;
@@ -106,7 +102,6 @@ public class AchievementUI : UIBase
 
     // =========================================================================
     // 체인에서 현재 활성화된 업적 ID 반환
-    // 완료된 업적은 NextId로 이동, 미완료거나 NextId 없으면 해당 ID 반환
     // =========================================================================
     private string GetCurrentChainId(string startId)
     {

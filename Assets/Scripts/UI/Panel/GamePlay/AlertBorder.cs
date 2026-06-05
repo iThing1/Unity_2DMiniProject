@@ -7,7 +7,7 @@ public class AlertBorder : MonoBehaviour
     // Inspector 연결
     // =========================================================================
     [SerializeField] private GameObject _alertBorder;
-    [SerializeField] private float _alertBlinkInterval = 0.4f; // TODO: 나중에 9-Slice로 바꿈
+    [SerializeField] private float _alertBlinkInterval = 0.4f;
 
     // =========================================================================
     // 내부 상태

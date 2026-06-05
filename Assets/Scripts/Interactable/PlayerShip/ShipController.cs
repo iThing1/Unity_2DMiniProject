@@ -225,6 +225,8 @@ public class ShipController : MonoBehaviour
         _stats.LoadConstantStats();
         _stats.ApplyUpgradeStats(GameManager.Instance.SetShipStats());
         InitializeFuel();
+        IsOverheat = false;
+        IsBoosting = false;
         _isControllable = GameManager.Instance.CurrentState == GameState.GamePlay;
     }
 

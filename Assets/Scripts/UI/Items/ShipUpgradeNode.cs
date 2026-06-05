@@ -126,7 +126,6 @@ public class ShipUpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExit
         bool success = GameManager.Instance.TryUpgrade(_upgradeId);
         if (!success)
         {
-            Debug.Log($"[ShipUpgradeNode] 업그레이드 실패: {_upgradeId} Lv.{_slotLevel} (재화 부족)");
             return;
         }
 
