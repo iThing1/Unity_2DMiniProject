@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace GameData
 {
@@ -97,6 +96,18 @@ namespace GameData
         public UIType Type;
         public string BindState = null!;
         public bool Auto;
+
+        string IGameData.Id => Id;
+    }
+
+    [Serializable]
+    public class SoundData : IGameData
+    {
+        public string Id = null!;
+        public string Name = null!;
+        public SoundType Type;
+        public string BindState = null!;
+        public string SoundPath = null!;
 
         string IGameData.Id => Id;
     }

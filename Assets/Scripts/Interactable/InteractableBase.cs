@@ -17,7 +17,6 @@ public abstract class InteractableBase : MonoBehaviour
     protected virtual void OnEnable()
     {
         GameEventBus.Subscribe<Transform>(GameEventType.ShipSpawned, HandleShipSpawned);
-
         ShipController ship = FindAnyObjectByType<ShipController>();
         if (ship != null)
             HandleShipSpawned(ship.transform);

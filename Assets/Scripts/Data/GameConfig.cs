@@ -86,11 +86,13 @@ public class GameConfig : MonoBehaviour
     // =========================================================================
     // 내부 유틸
     // =========================================================================
+
+    // TODO: LoggerManager 를 만들어서 로그 관리 -> 유니티에 의존하지 않도록 개선
     private float GetConstant(string id, float fallback)
     {
         GameConstantData data = GameDataManager.Instance.Get<GameConstantData>(id);
         if (data == null)
-            Debug.LogWarning($"[GameConfig] 상수 키 없음: '{id}' → 기본값 {fallback} 사용");
+            Debug.LogWarning($"[GameConfig] 상수 키 없음: '{id}' → 기본값 {fallback} 사용"); 
         return data?.Value ?? fallback;
     }
 

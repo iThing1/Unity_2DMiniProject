@@ -24,9 +24,6 @@ public class StationSimulator : MonoBehaviour
     private float _refineRate;
     private float _oreToIngotRatio;
 
-    // =========================================================================
-    // 내부 상태
-    // =========================================================================
     private Coroutine _farmCoroutine;
     private Coroutine _refineCoroutine;
     private float _refineAccumulator;
@@ -45,7 +42,7 @@ public class StationSimulator : MonoBehaviour
     }
 
     // =========================================================================
-    // 외부 API: 초기화
+    // 초기화
     // =========================================================================
     public void Initialize()
     {
@@ -70,7 +67,7 @@ public class StationSimulator : MonoBehaviour
     }
 
     // =========================================================================
-    // 외부 API: 저장소 접근
+    // 저장소 접근
     // =========================================================================
     public void AddOre(float amount)
     {

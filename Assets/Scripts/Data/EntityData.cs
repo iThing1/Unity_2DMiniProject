@@ -94,16 +94,4 @@ namespace GameData
 
         string IGameData.Id => Id;
     }
-
-    [Serializable]
-    public class SoundData : IGameData
-    {
-        public string Id = null!;
-        public string Name = null!;
-        public SoundType Type;
-        public string BindState = null!;
-        public string SoundPath = null!;
-
-        string IGameData.Id => Id;
-    }
 }
